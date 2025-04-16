@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hidden Walnuts</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🥜 Hidden Walnuts</h1>
+    <button id="toggleTheme">🌓 Toggle Theme</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2>Whimsy Meets Wonder</h2>
+      <p>We create playful designs, cheeky products, and curious little digital things.</p>
+    </section>
+
+    <section class="about">
+      <h3>About Us</h3>
+      <p>Hidden Walnuts is your cozy corner for unexpected delights—custom tees, quirky totes, and creative apps.</p>
+    </section>
+
+    <section class="products">
+      <h3>Coming Soon</h3>
+      <p>We're crafting some treasures... stay tuned!</p>
+    </section>
+
+    <section class="contact">
+      <h3>Contact</h3>
+      <p>Email us at <a href="mailto:info@hiddenwalnuts.com">info@hiddenwalnuts.com</a></p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Hidden Walnuts LLC — Made with 🍂 and ☕</p>
+  </footer>
+
+  <script>
+    const button = document.getElementById('toggleTheme');
+    button.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+/* Base Theme */
+:root {
+  --bg-color: #fffaf2;
+  --text-color: #333;
+  --accent-color: #9c5bcd;
+  --header-color: #532d84;
+}
+
+/* Dark Theme Overrides */
+body.dark-mode {
+  --bg-color: #1e1b23;
+  --text-color: #f8f6f2;
+  --accent-color: #c084fc;
+  --header-color: #e0bbff;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Comic Sans MS', cursive, sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.5s, color 0.5s;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--accent-color);
+  color: white;
+  padding: 1rem 2rem;
+  font-size: 1.5rem;
+}
+
+#toggleTheme {
+  font-size: 1rem;
+  padding: 0.5rem;
+  background: white;
+  color: var(--accent-color);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+main {
+  padding: 2rem;
+  max-width: 800px;
+  margin: auto;
+  text-align: center;
+}
+
+section {
+  margin: 3rem 0;
+}
+
+h1, h2, h3 {
+  color: var(--header-color);
+}
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  background: var(--accent-color);
+  color: white;
+}
