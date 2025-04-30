@@ -1,0 +1,26 @@
+# Worker API Configuration
+name = "hidden-walnuts-api"
+compatibility_date = "2024-04-29"
+
+[env.categories]
+name = "categories-api"
+main = "src/workers/categories/index.ts"
+compatibility_date = "2024-04-29"
+
+kv_namespaces = [
+  { binding = "CATEGORIES", id = "54488ea74dd245609cb84d643d9023f6" }
+]
+
+r2_buckets = [
+  { binding = "IMAGES", bucket_name = "hiddenwalnuts-bucket" }
+]
+
+# Future APIs can be added like:
+# [env.photos]
+# name = "photos-api"
+# main = "src/workers/photos/index.ts"
+
+[[r2_buckets]]
+binding = "HW_R2"
+bucket_name = "hiddenwalnuts-bucket"
+preview_bucket_name = "hiddenwalnuts-bucket-preview" 

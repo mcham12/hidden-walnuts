@@ -1,0 +1,24 @@
+{
+  "name": "hidden-walnuts-website",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "vercel-build": "next build && next-on-pages",
+    "deploy": "wrangler pages deploy .vercel/output/static --project-name=hidden-walnuts"
+  },
+  "dependencies": {
+    "@cloudflare/next-on-pages": "latest",
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250429.0",
+    "@types/react": "19.1.2",
+    "@types/react-dom": "latest",
+    "typescript": "latest"
+  },
+  "license": "MIT"
+}
