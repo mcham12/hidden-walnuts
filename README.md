@@ -1,40 +1,41 @@
 # Hidden Walnuts Website
 
-A beautiful, single-page website for Hidden Walnuts built with Next.js and Tailwind CSS.
+A beautiful, modern, and responsive website for Hidden Walnuts built with HTML, CSS, and JavaScript. Designed to be deployed on Cloudflare Pages.
 
 ## Features
 
 - Configuration-driven content management
-- Responsive design
+- Responsive design for all device sizes
 - Beautiful category cards with hover effects
 - Social media integration
 - Clean, professional aesthetic
-
-## Setup
-
-1. Install dependencies:
-```bash
-npm install
-```
-
-2. Run the development server:
-```bash
-npm run dev
-```
-
-3. Open [http://localhost:3000](http://localhost:3000) in your browser.
+- No build process required - simple deployment
 
 ## Configuration
 
-Edit `src/config/site.ts` to update:
-- Tagline
-- Announcement
-- Categories (title, image, URL)
-- Social media links
+The website is fully configurable through the `config.js` file:
 
-## Project Structure
+- Update the tagline and announcement
+- Add, modify, or remove category cards
+- Change social media links
+- Customize site details
 
-- `src/pages/index.tsx` - Main page component
-- `src/config/site.ts` - Website configuration
-- `src/styles/globals.css` - Global styles
-- `public/` - Static assets (images, etc.)
+## Deployment on Cloudflare Pages
+
+1. Push this repository to GitHub
+2. Log in to Cloudflare Pages
+3. Connect your GitHub repository
+4. Configure your project settings:
+   - Build command: (leave empty)
+   - Build output directory: `/`
+5. Deploy
+
+## Local Development
+
+Simply open the `index.html` file in your browser. No build process or server is required.
+
+## Customization
+
+- Update colors in the `:root` section of `styles.css`
+- Add new hero images to the `public` directory
+- Add new categories in the `config.js` file

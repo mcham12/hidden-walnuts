@@ -1,0 +1,12 @@
+# Cloudflare Pages configuration
+# Documentation: https://developers.cloudflare.com/pages/
+
+# Set the directory that should be deployed
+directory = "."
+
+# Build settings
+[build]
+  command = ""  # No build command needed for static site
+  publish = "."  # The directory to publish (root directory)
+
+# Headers, redirects, and more can be added as needed 
