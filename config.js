@@ -31,6 +31,6 @@ const siteConfig = {
     socialMedia: {
         instagram: 'https://instagram.com/hiddenwalnuts',
         pinterest: 'https://pinterest.com/hiddenwalnuts',
-        twitter: 'https://twitter.com/hiddenwalnuts'
+        twitter: 'https://x.com/hiddenwalnuts'
     }
 }; 
