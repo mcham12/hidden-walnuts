@@ -8,11 +8,12 @@ interface PlaceholderImageProps {
 
 export default function PlaceholderImage({ src, alt, className = '' }: PlaceholderImageProps) {
   return (
-    <div className={`relative aspect-w-16 aspect-h-9 ${className}`}>
+    <div className={`relative w-full h-96 ${className}`}>
       <Image
         src={src}
         alt={alt}
         fill
+        sizes="100vw"
         className="object-cover"
         onError={(e) => {
           const target = e.target as HTMLImageElement;

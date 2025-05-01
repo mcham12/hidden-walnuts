@@ -16,24 +16,19 @@ export interface SiteConfig {
 }
 
 export const siteConfig: SiteConfig = {
-  tagline: "Discover the Extraordinary in the Everyday",
-  announcement: "New collection coming soon!",
+  tagline: "Great Things For You",
+  announcement: "New collections coming soon!",
   categories: [
-    {
-      title: "Fine Art",
-      imageUrl: "/placeholder-fineart.jpg",
-      url: "/fine-art"
-    },
-    {
-      title: "Poetry",
-      imageUrl: "/placeholder-poetry.jpg",
-      url: "/poetry"
-    },
-    {
-      title: "Nature",
-      imageUrl: "/placeholder-nature.jpg",
-      url: "/nature"
-    }
+    // {
+    //   title: "Fine Art",
+    //   imageUrl: "/hero-celebrating-fine-art.png",
+    //   url: "/fine-art"
+    // },
+    // {
+    //   title: "Poetry",
+    //   imageUrl: "/hero-poetry.png",
+    //   url: "/poetry"
+    // },
   ],
   socialMedia: {
     instagram: "https://instagram.com/hiddenwalnuts",
