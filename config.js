@@ -15,13 +15,13 @@ const siteConfig = {
         {
             id: 'fine-art',
             title: 'Fine Art',
-            image: 'public/hero-celebrating-fine-art.png',
+            image: 'hero-celebrating-fine-art.png',
             url: '#fine-art'
         },
         {
             id: 'poetry',
             title: 'Poetry',
-            image: 'public/hero-poetry.png',
+            image: 'hero-poetry.png',
             url: '#poetry'
         },
         // Add more categories as needed
