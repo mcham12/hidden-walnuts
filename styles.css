@@ -1,6 +1,7 @@
 :root {
     --primary-color: #3d7745;
     --secondary-color: #7fad69;
+    --announcement-color: #555;
     --accent-color: #e5edd3;
     --dark-color: #41493a;
     --background-color: #fafcf6;
@@ -66,7 +67,7 @@ header {
 }
 
 .announcement {
-    background-color: var(--secondary-color);
+    background-color: var(--announcement-color);
     color: white;
     padding: 0.7rem 1rem;
     margin: 1.5rem auto;
@@ -129,18 +130,6 @@ main {
     margin-bottom: 0.5rem;
     color: var(--primary-color);
     font-weight: 600;
-    position: relative;
-    display: inline-block;
-}
-
-.category-title::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 40px;
-    height: 3px;
-    background-color: var(--secondary-color);
 }
 
 .category-link {
