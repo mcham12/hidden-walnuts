@@ -149,19 +149,6 @@ footer {
     overflow: hidden;
 }
 
-/* Walnut decoration */
-footer::before {
-    content: "";
-    position: absolute;
-    top: -80px;
-    right: 15%;
-    width: 160px;
-    height: 120px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 150' fill='none' stroke='rgba(255,255,255,0.25)' stroke-width='1.5'%3E%3Cpath d='M100,30 C135,30 170,45 170,80 C170,115 135,130 100,130 C65,130 30,115 30,80 C30,45 65,30 100,30 Z'%3E%3C/path%3E%3Cpath d='M100,30 C100,50 100,90 100,130'%3E%3C/path%3E%3Cpath d='M60,55 C80,65 120,65 140,55'%3E%3C/path%3E%3Cpath d='M50,80 C80,90 120,90 150,80'%3E%3C/path%3E%3Cpath d='M60,105 C80,115 120,115 140,105'%3E%3C/path%3E%3Cpath d='M85,30 C75,15 125,15 115,30'%3E%3C/path%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    opacity: 0.7;
-    pointer-events: none;
-}
 
 .social-links {
     margin-bottom: 1.5rem;
