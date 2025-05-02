@@ -16,13 +16,13 @@ const siteConfig = {
             id: 'fine-art',
             title: 'Fine Art',
             image: 'hero-celebrating-fine-art.png',
-            url: '#fine-art'
+            url: 'https://teepublic.com'
         },
         {
             id: 'poetry',
             title: 'Poetry',
             image: 'hero-poetry.png',
-            url: '#poetry'
+            url: 'https://teepublic.com'
         },
         // Add more categories as needed
     ],

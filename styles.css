@@ -202,4 +202,15 @@ footer {
     .social-links a {
         margin: 0 0.5rem;
     }
+}
+
+/* X Icon Style */
+.x-icon {
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 } 
