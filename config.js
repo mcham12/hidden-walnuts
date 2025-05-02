@@ -13,17 +13,11 @@ const siteConfig = {
     // Categories
     categories: [
         {
-            id: 'fine-art',
-            title: 'Fine Art',
-            image: 'hero-celebrating-fine-art.png',
-            url: 'https://teepublic.com'
-        },
-        {
-            id: 'poetry',
-            title: 'Poetry',
-            image: 'hero-poetry.png',
-            url: 'https://teepublic.com'
-        },
+            id: 'Pickleball',
+            title: 'Pickleball',
+            image: 'hero-pickleball.png',
+            url: 'https://www.teepublic.com/user/hidden-walnuts?query=pickleball'
+        }
         // Add more categories as needed
     ],
     
