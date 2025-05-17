@@ -12,21 +12,20 @@ const siteConfig = {
     
     // Categories
     categories: [
-        //{
-         //   id: 'Celebrating Fine Art',
-           // title: 'Celebrating Fine Art',
-           // image: 'hero-celebrating-fine-art.png',
-          //  url: 'https://www.teepublic.com/user/hidden-walnuts?query=celebrating%20fine%20art'
-        //},
-        
+        {
+           id: 'Fun',
+           title: 'Fun',
+           image: 'hero-fun.png',
+           url: 'https://www.teepublic.com/user/hidden-walnuts/albums/431836-fun'
+        },
         {
             id: 'Pickleball',
             title: 'Pickleball',
             image: 'hero-pickleball.png',
-            url: 'https://www.teepublic.com/user/hidden-walnuts?query=pickleball'
+            url: 'https://www.teepublic.com/user/hidden-walnuts/albums/435286-pickleball'
         }
-        // Add more categories as needed
     ],
+    // Add more categories as needed
     
     // Social Media Links
     socialMedia: {
