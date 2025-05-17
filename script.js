@@ -3,6 +3,10 @@
  */
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Debug: Log the config
+    console.log('Config loaded:', siteConfig);
+    console.log('Categories:', siteConfig.categories);
+    
     // Update tagline and announcement from config
     document.querySelector('.tagline').textContent = siteConfig.tagline;
     document.querySelector('.announcement').textContent = siteConfig.announcement;
@@ -12,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (siteConfig.categories && siteConfig.categories.length > 0) {
         siteConfig.categories.forEach(category => {
+            console.log('Creating card for category:', category);
             const categoryCard = createCategoryCard(category);
             categoriesContainer.appendChild(categoryCard);
         });
