@@ -8,7 +8,7 @@ const siteConfig = {
     
     // Content
     tagline: "Great Things for You",
-    announcement: "New Collections Coming Soon!",
+    // announcement: "New Collections Coming Soon!",
     
     // Categories
     categories: [
