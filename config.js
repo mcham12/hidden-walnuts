@@ -29,7 +29,7 @@ const siteConfig = {
             title: 'Fine Art',
             image: 'hero-fineart.png',
             url: 'https://www.teepublic.com/user/hidden-walnuts/albums/435481-fine-art'
-        }
+        },
     ],
     // Add more categories as needed
     
