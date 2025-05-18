@@ -23,6 +23,12 @@ const siteConfig = {
             title: 'Pickleball',
             image: 'hero-pickleball.png',
             url: 'https://www.teepublic.com/user/hidden-walnuts/albums/435286-pickleball'
+        },
+        {
+            id: 'Fine Art',
+            title: 'Fine Art',
+            image: 'hero-fineart.png',
+            url: 'https://www.teepublic.com/user/hidden-walnuts/albums/435481-fine-art'
         }
     ],
     // Add more categories as needed
