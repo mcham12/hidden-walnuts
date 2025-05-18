@@ -206,6 +206,17 @@ footer {
     .social-links a {
         margin: 0 0.5rem;
     }
+
+    .category-image {
+        height: 160px;
+        object-fit: contain;
+        padding: 0.5rem;
+        background: #fff;
+    }
+
+    .category-card {
+        margin: 0 0.5rem;
+    }
 }
 
 /* X Icon Style */
