@@ -208,14 +208,16 @@ footer {
     }
 
     .category-image {
-        height: 45vw;
-        max-height: 260px;
+        height: 60vw;
+        max-height: 320px;
         min-height: 140px;
-        object-fit: cover;
+        object-fit: contain;
         width: 100%;
         padding: 0;
         background: #fff;
         border-bottom: 3px solid var(--primary-color);
+        display: block;
+        margin: 0 auto;
     }
 
     .category-card {
