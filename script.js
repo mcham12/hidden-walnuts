@@ -7,9 +7,17 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Config loaded:', siteConfig);
     console.log('Categories:', siteConfig.categories);
     
-    // Update tagline and announcement from config
+    // Update tagline from config
     document.querySelector('.tagline').textContent = siteConfig.tagline;
-    document.querySelector('.announcement').textContent = siteConfig.announcement;
+
+    // Update or remove announcement
+    const announcementDiv = document.querySelector('.announcement');
+    if (siteConfig.announcement) {
+        announcementDiv.textContent = siteConfig.announcement;
+        announcementDiv.style.display = '';
+    } else {
+        announcementDiv.style.display = 'none';
+    }
     
     // Populate category cards
     const categoriesContainer = document.getElementById('categoriesContainer');
