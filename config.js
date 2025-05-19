@@ -30,6 +30,12 @@ const siteConfig = {
             image: 'hero-fineart.png',
             url: 'https://www.teepublic.com/user/hidden-walnuts/albums/435481-fine-art'
         },
+        {
+            id: 'Poetry',
+            title: 'Poetry',
+            image: 'hero-poetry.png',
+            url: 'https://www.teepublic.com/user/hidden-walnuts/albums/435512-poetry'
+        },
     ],
     // Add more categories as needed
     
