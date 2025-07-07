@@ -7,8 +7,8 @@ const siteConfig = {
     siteName: "Hidden Walnuts",
     
     // Content
-    tagline: "Great Things for You",
-    // announcement: "New Collections Coming Soon!",
+    tagline: "Check out our TeePublic Store!",
+    announcement: "Check out these store albums,
     
     // Categories
     categories: [
