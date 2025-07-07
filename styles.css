@@ -41,7 +41,7 @@ header {
 
 .logo-overlay {
     position: absolute;
-    bottom: -40px;
+    bottom: -60px;
     left: 30px;
     z-index: 10;
 }
@@ -49,7 +49,11 @@ header {
 .logo {
     max-width: 180px;
     height: auto;
+    border-radius: 50%;
+    border: 3px solid black;
     filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
+    background-color: white;
+    padding: 5px;
 }
 
 .tagline {
@@ -237,12 +241,14 @@ footer {
     }
 
     .logo-overlay {
-        bottom: -30px;
+        bottom: -45px;
         left: 20px;
     }
 
     .logo {
         max-width: 140px;
+        border: 2px solid black;
+        padding: 3px;
     }
 
     .category-image {
