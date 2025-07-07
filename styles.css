@@ -30,7 +30,7 @@ header {
 .banner-container {
     position: relative;
     width: 100%;
-    margin-bottom: 1rem;
+    margin-bottom: 110px;
 }
 
 .banner {
@@ -44,7 +44,7 @@ header {
     top: 100%;
     left: 30px;
     z-index: 10;
-    transform: translateY(0);
+    transform: translateY(10px);
 }
 
 .logo {
@@ -63,11 +63,6 @@ header {
 @media (min-width: 768px) and (pointer: fine), (min-width: 481px) and (pointer: fine) {
     .mobile-logo {
         display: none !important;
-    }
-    
-    .logo-overlay {
-        top: 100%;
-        transform: translateY(0);
     }
 }
 
