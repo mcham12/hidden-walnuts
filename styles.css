@@ -30,7 +30,7 @@ header {
 .banner-container {
     position: relative;
     width: 100%;
-    margin-bottom: 110px;
+    margin-bottom: 0;
 }
 
 .banner {
@@ -40,11 +40,8 @@ header {
 }
 
 .logo-overlay {
-    position: absolute;
-    top: 100%;
-    left: 30px;
-    z-index: 10;
-    transform: translateY(10px);
+    text-align: center;
+    margin: 20px 0;
 }
 
 .logo {
