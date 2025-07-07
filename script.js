@@ -14,8 +14,14 @@ document.addEventListener('DOMContentLoaded', function() {
     try {
         const taglineElement = document.querySelector('.tagline');
         if (taglineElement) {
-            taglineElement.textContent = siteConfig.tagline;
-            console.log('Tagline updated successfully');
+            if (siteConfig.taglineUrl) {
+                // Create a link for the tagline
+                taglineElement.innerHTML = `<a href="${siteConfig.taglineUrl}" target="_blank" rel="noopener noreferrer">${siteConfig.tagline}</a>`;
+                console.log('Tagline updated successfully with link');
+            } else {
+                taglineElement.textContent = siteConfig.tagline;
+                console.log('Tagline updated successfully');
+            }
         } else {
             console.error('Tagline element not found');
         }

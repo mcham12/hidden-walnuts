@@ -23,18 +23,33 @@ body {
 /* Header Styles */
 header {
     text-align: center;
-    padding: 3rem 1rem 2rem;
+    padding: 0;
     background: linear-gradient(to bottom, white, var(--background-color));
 }
 
-.logo-container {
-    margin-bottom: 1.5rem;
+.banner-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.banner {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.logo-overlay {
+    position: absolute;
+    bottom: -20px;
+    left: 30px;
+    z-index: 10;
 }
 
 .logo {
-    max-width: 220px;
+    max-width: 180px;
     height: auto;
-    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 3px 5px rgba(0,0,0,0.2));
 }
 
 .tagline {
@@ -46,6 +61,17 @@ header {
     position: relative;
     display: inline-block;
     padding: 0 0.5rem;
+}
+
+.tagline a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.tagline a:hover {
+    color: var(--primary-color);
+    text-decoration: underline;
 }
 
 .tagline::before, .tagline::after {
@@ -208,6 +234,15 @@ footer {
     
     .social-links a {
         margin: 0 0.5rem;
+    }
+
+    .logo-overlay {
+        bottom: -15px;
+        left: 20px;
+    }
+
+    .logo {
+        max-width: 140px;
     }
 
     .category-image {
