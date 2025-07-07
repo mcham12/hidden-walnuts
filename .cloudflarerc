@@ -1,30 +1,6 @@
 # Cloudflare Pages configuration
 # Documentation: https://developers.cloudflare.com/pages/
 
-# Set the directory that should be deployed
-directory = "."
-
-# Build settings
 [build]
-  command = ""  # No build command needed for static site
-  publish = "."  # The directory to publish (root directory)
-
-# Environment variables
-[build.environment]
-  NODE_VERSION = "18"
-
-# Headers to prevent redirect loops
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Frame-Options = "DENY"
-    X-Content-Type-Options = "nosniff"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-
-# Redirect rules (if needed)
-# [[redirects]]
-#   from = "/old-page"
-#   to = "/new-page"
-#   status = 301
-
-# Headers, redirects, and more can be added as needed 
+  command = ""
+  publish = "." 
