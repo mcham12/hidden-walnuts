@@ -52,6 +52,7 @@ header {
     display: block;
     text-align: center;
     margin: 2rem auto;
+    width: 100%;
 }
 
 .mobile-logo .logo {
@@ -104,13 +105,14 @@ header {
 .announcement {
     background-color: var(--announcement-color);
     color: white;
-    padding: 0.7rem 1rem;
+    padding: 0.7rem 1.5rem;
     margin: 1.5rem auto;
-    max-width: 900px;
+    max-width: 1200px;
     border-radius: 50px;
     font-weight: 500;
     letter-spacing: 0.5px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
 }
 
 /* Main Content Styles */
