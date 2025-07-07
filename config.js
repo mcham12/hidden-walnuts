@@ -8,7 +8,7 @@ const siteConfig = {
     
     // Content
     tagline: "Check out our TeePublic Store!",
-    announcement: "Check out these store albums,
+    announcement: "We have shirts and more in our Fun, Pickleball, Fine Art, and Poetry collections!",
     
     // Categories
     categories: [
@@ -35,7 +35,7 @@ const siteConfig = {
             title: 'Poetry',
             image: 'hero-poetry.png',
             url: 'https://www.teepublic.com/user/hidden-walnuts/albums/435512-poetry'
-        },
+        }
     ],
     // Add more categories as needed
     
