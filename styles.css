@@ -41,13 +41,14 @@ header {
 
 .logo-overlay {
     position: absolute;
-    bottom: -60px;
+    bottom: -50%;
     left: 30px;
     z-index: 10;
+    transform: translateY(50%);
 }
 
 .logo {
-    max-width: 180px;
+    max-width: 153px;
     height: auto;
     border-radius: 50%;
     border: 3px solid black;
@@ -241,12 +242,13 @@ footer {
     }
 
     .logo-overlay {
-        bottom: -45px;
+        bottom: -50%;
         left: 20px;
+        transform: translateY(50%);
     }
 
     .logo {
-        max-width: 140px;
+        max-width: 119px;
         border: 2px solid black;
         padding: 3px;
     }
