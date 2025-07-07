@@ -64,6 +64,11 @@ header {
     .mobile-logo {
         display: none !important;
     }
+    
+    .logo-overlay {
+        bottom: -110%;
+        transform: translateY(0);
+    }
 }
 
 .tagline {
