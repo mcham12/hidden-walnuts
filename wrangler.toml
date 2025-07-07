@@ -1,0 +1,20 @@
+name = "hiddenwalnuts-website"
+compatibility_date = "2024-01-01"
+
+[site]
+bucket = "."
+
+[env.production]
+name = "hiddenwalnuts-website"
+
+# Prevent redirect loops
+[env.production.vars]
+ENVIRONMENT = "production"
+
+# Headers to prevent issues
+[[env.production.headers]]
+for = "/*"
+[env.production.headers.values]
+  X-Frame-Options = "DENY"
+  X-Content-Type-Options = "nosniff"
+  Referrer-Policy = "strict-origin-when-cross-origin" 
