@@ -60,13 +60,13 @@ header {
     display: none;
 }
 
-@media (min-width: 481px) {
+@media (min-width: 768px) and (pointer: fine), (min-width: 481px) and (pointer: fine) {
     .mobile-logo {
         display: none !important;
     }
     
     .logo-overlay {
-        bottom: -110%;
+        bottom: -92px;
         transform: translateY(0);
     }
 }
@@ -246,7 +246,7 @@ footer {
     }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 767px) and (pointer: coarse), (max-width: 480px) {
     .categories-container {
         grid-template-columns: 1fr;
     }
