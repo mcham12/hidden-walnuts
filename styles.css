@@ -106,7 +106,7 @@ header {
     background-color: var(--announcement-color);
     color: white;
     padding: 0.7rem 1rem;
-    margin: 1.5rem auto;
+    margin: 1.5rem auto 2.5rem auto;
     max-width: 700px;
     border-radius: 50px;
     font-weight: 500;
