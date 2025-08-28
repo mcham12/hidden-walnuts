@@ -99,11 +99,36 @@ header {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    cursor: pointer;
+    position: relative;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
 }
 
 .tagline a:hover {
     transform: scale(1.05);
     filter: brightness(1.2);
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: underline;
+    text-decoration-thickness: 3px;
+    text-underline-offset: 8px;
+    text-decoration-color: var(--secondary-color);
+}
+
+.tagline a::after {
+    content: ' →';
+    font-size: 0.8em;
+    opacity: 0;
+    transition: var(--transition);
+    margin-left: 8px;
+}
+
+.tagline a:hover::after {
+    opacity: 1;
+    transform: translateX(4px);
 }
 
 .tagline::before, .tagline::after {
