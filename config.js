@@ -36,6 +36,12 @@ const siteConfig = {
             title: 'Poetry',
             image: 'hero-poetry.png',
             url: 'https://www.teepublic.com/user/hidden-walnuts/albums/435512-poetry'
+        },
+        {
+            id: 'Vintage Poster Designs',
+            title: 'Vintage Poster Designs',
+            image: 'hero-vintage-posters.png',
+            url: 'https://www.teepublic.com/user/hidden-walnuts/albums/456291-vintage-poster-designs'
         }
     ],
     // Add more categories as needed
