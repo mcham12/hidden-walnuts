@@ -9,7 +9,7 @@ const siteConfig = {
     // Content
     tagline: "Check out our TeePublic Store!",
     taglineUrl: "https://www.teepublic.com/user/hidden-walnuts",
-    announcement: "Or click below to go to a specific category in our store, for tshirts, stickers, and more!",
+    announcement: "Or click below for a specific collection our store:  tshirts, stickers, and more!",
     
     // Categories
     categories: [
