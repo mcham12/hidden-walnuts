@@ -1,73 +1,102 @@
 # Custom Domain Setup for hiddenwalnuts.com
 
-## ⚠️ UPDATED FOR MULTI-SERVICE DOMAIN
+## ✅ CORRECTED FOR MAIN DOMAIN
 
-Since you have other workers and `game.hiddenwalnuts.com`, I've changed the setup to use a **subdomain** to avoid conflicts.
+You want the main `hiddenwalnuts.com` domain to show the portfolio. I've configured specific routes to avoid conflicts with your existing services.
 
 ## Current Status ✅
 
-The worker has been **successfully deployed with subdomain route**:
-- `portfolio.hiddenwalnuts.com/*` ✅ (SAFE - won't affect your other services)
+The worker has been **successfully deployed with main domain routes**:
+- `hiddenwalnuts.com` ✅ (root domain)
+- `hiddenwalnuts.com/` ✅ (main page)  
+- `hiddenwalnuts.com/admin` ✅ (admin interface)
+- `hiddenwalnuts.com/api/*` ✅ (portfolio API)
+- `www.hiddenwalnuts.com/*` ✅ (www subdomain)
+
+**This WON'T affect**:
+- `game.hiddenwalnuts.com` (different subdomain)
+- `api.hiddenwalnuts.com` (different subdomain)  
+- Other existing subdomains
 
 ## What I've Done ✅
 
-1. **Updated wrangler.toml** with safe subdomain route (avoiding root domain conflicts)
-2. **Deployed worker** with portfolio subdomain routing
-3. **Confirmed deployment** - Route active for portfolio subdomain only
+1. **Updated wrangler.toml** with specific route patterns for main domain
+2. **Deployed worker** with targeted routing (root + specific paths only)
+3. **Confirmed deployment** - Routes active for main domain without affecting subdomains
 
 ## What You Need to Do 👤
 
-### Step 1: Add DNS Record for Portfolio Subdomain
+### Step 1: Verify Your Existing DNS Setup
 
-**Go to Cloudflare Dashboard > DNS > Records for hiddenwalnuts.com**
+**Check Cloudflare Dashboard > DNS > Records for hiddenwalnuts.com**
 
-**Add this ONE record** (won't affect existing services):
+You should already have these records for your main domain:
 
-#### Portfolio Subdomain (portfolio.hiddenwalnuts.com)
-- **Type**: `CNAME` or `A`
-- **Name**: `portfolio`
-- **Target**: `100.96.0.1` (Cloudflare dummy IP) OR your existing target
+#### Root Domain (hiddenwalnuts.com)
+- **Type**: `A` or `CNAME`
+- **Name**: `@` (or blank for root)
 - **Proxy Status**: 🟠 **Proxied** (MUST be orange cloud)
 
+#### WWW Subdomain (www.hiddenwalnuts.com)
+- **Type**: `CNAME`  
+- **Name**: `www`
+- **Target**: `hiddenwalnuts.com` (or your existing target)
+- **Proxy Status**: 🟠 **Proxied** (MUST be orange cloud)
+
+**If these don't exist or aren't proxied (🟠 orange cloud), update them.**
+
 **This is safe because**:
-- ✅ Doesn't touch your root domain (hiddenwalnuts.com)
-- ✅ Doesn't affect game.hiddenwalnuts.com
-- ✅ Doesn't interfere with other workers
-- ✅ Only adds one specific subdomain
+- ✅ Uses specific route patterns, not wildcards
+- ✅ Only affects root domain + /admin + /api paths
+- ✅ Doesn't interfere with game.hiddenwalnuts.com
+- ✅ Doesn't interfere with api.hiddenwalnuts.com
+- ✅ Leaves all other subdomains alone
 
 ### Step 2: Verify Worker Routes
 
 **Go to Cloudflare Dashboard > Workers & Pages > Your Worker**
 
 Under "Triggers" tab, you should see:
-- `portfolio.hiddenwalnuts.com/*` - Zone: hiddenwalnuts.com ✅
+- `hiddenwalnuts.com` - Zone: hiddenwalnuts.com ✅
+- `hiddenwalnuts.com/` - Zone: hiddenwalnuts.com ✅  
+- `hiddenwalnuts.com/admin` - Zone: hiddenwalnuts.com ✅
+- `hiddenwalnuts.com/api/*` - Zone: hiddenwalnuts.com ✅
+- `www.hiddenwalnuts.com/*` - Zone: hiddenwalnuts.com ✅
 
-### Step 3: Test the Setup
+### Step 2: Test the Setup
 
-After adding the DNS record (may take a few minutes to propagate):
+After verifying DNS is proxied (may take a few minutes to propagate):
 
 ```bash
-# Test portfolio subdomain
-curl -I https://portfolio.hiddenwalnuts.com
+# Test main domain
+curl -I https://hiddenwalnuts.com
+
+# Test www subdomain
+curl -I https://www.hiddenwalnuts.com
 
 # Test admin interface  
-curl -I https://portfolio.hiddenwalnuts.com/admin
+curl -I https://hiddenwalnuts.com/admin
 
 # Test API
-curl https://portfolio.hiddenwalnuts.com/api/portfolio
+curl https://hiddenwalnuts.com/api/portfolio
+
+# Test that subdomains still work
+curl -I https://game.hiddenwalnuts.com  # Should still work
+curl -I https://api.hiddenwalnuts.com   # Should still work
 ```
 
 Expected responses:
-- **200 OK** for portfolio subdomain
+- **200 OK** for main domain and www
 - **401 Unauthorized** for admin (requires auth)
-- **200 OK** with JSON for API
+- **200 OK** with JSON for portfolio API
+- **Your existing responses** for game and api subdomains
 
-### Step 4: Browser Testing
+### Step 3: Browser Testing
 
 Visit these URLs in your browser:
-- **Portfolio**: https://portfolio.hiddenwalnuts.com
-- **Admin**: https://portfolio.hiddenwalnuts.com/admin (login: admin/hidden2024!)
-- **API**: https://portfolio.hiddenwalnuts.com/api/portfolio
+- **Portfolio**: https://hiddenwalnuts.com
+- **Admin**: https://hiddenwalnuts.com/admin (login: admin/hidden2024!)
+- **API**: https://hiddenwalnuts.com/api/portfolio
 
 ## Troubleshooting
 
