@@ -1,78 +1,73 @@
 # Custom Domain Setup for hiddenwalnuts.com
 
+## ⚠️ UPDATED FOR MULTI-SERVICE DOMAIN
+
+Since you have other workers and `game.hiddenwalnuts.com`, I've changed the setup to use a **subdomain** to avoid conflicts.
+
 ## Current Status ✅
 
-The worker has been **successfully deployed with custom domain routes**:
-- `hiddenwalnuts.com/*` ✅
-- `www.hiddenwalnuts.com/*` ✅
+The worker has been **successfully deployed with subdomain route**:
+- `portfolio.hiddenwalnuts.com/*` ✅ (SAFE - won't affect your other services)
 
 ## What I've Done ✅
 
-1. **Updated wrangler.toml** with custom domain routes
-2. **Deployed worker** with the new routing configuration
-3. **Confirmed deployment** - Cloudflare shows the routes are active
+1. **Updated wrangler.toml** with safe subdomain route (avoiding root domain conflicts)
+2. **Deployed worker** with portfolio subdomain routing
+3. **Confirmed deployment** - Route active for portfolio subdomain only
 
 ## What You Need to Do 👤
 
-### Step 1: DNS Configuration in Cloudflare Dashboard
+### Step 1: Add DNS Record for Portfolio Subdomain
 
 **Go to Cloudflare Dashboard > DNS > Records for hiddenwalnuts.com**
 
-You need to ensure the following DNS records exist:
+**Add this ONE record** (won't affect existing services):
 
-#### Root Domain (hiddenwalnuts.com)
-- **Type**: `A` or `CNAME` 
-- **Name**: `@` (or leave blank for root)
-- **Target**: Your current target OR `100.96.0.1` (Cloudflare dummy IP)
-- **Proxy Status**: 🟠 **Proxied** (MUST be orange cloud, not gray)
+#### Portfolio Subdomain (portfolio.hiddenwalnuts.com)
+- **Type**: `CNAME` or `A`
+- **Name**: `portfolio`
+- **Target**: `100.96.0.1` (Cloudflare dummy IP) OR your existing target
+- **Proxy Status**: 🟠 **Proxied** (MUST be orange cloud)
 
-#### WWW Subdomain (www.hiddenwalnuts.com)  
-- **Type**: `CNAME`
-- **Name**: `www`
-- **Target**: `hiddenwalnuts.com` OR `100.96.0.1`
-- **Proxy Status**: 🟠 **Proxied** (MUST be orange cloud, not gray)
-
-**Important**: The 🟠 **Proxied status** (orange cloud) is **REQUIRED** for Workers to intercept requests.
+**This is safe because**:
+- ✅ Doesn't touch your root domain (hiddenwalnuts.com)
+- ✅ Doesn't affect game.hiddenwalnuts.com
+- ✅ Doesn't interfere with other workers
+- ✅ Only adds one specific subdomain
 
 ### Step 2: Verify Worker Routes
 
 **Go to Cloudflare Dashboard > Workers & Pages > Your Worker**
 
 Under "Triggers" tab, you should see:
-- `hiddenwalnuts.com/*` - Zone: hiddenwalnuts.com ✅
-- `www.hiddenwalnuts.com/*` - Zone: hiddenwalnuts.com ✅
-
-If these are missing, the deployment didn't work correctly.
+- `portfolio.hiddenwalnuts.com/*` - Zone: hiddenwalnuts.com ✅
 
 ### Step 3: Test the Setup
 
-After DNS changes (may take a few minutes to propagate):
+After adding the DNS record (may take a few minutes to propagate):
 
 ```bash
-# Test main domain
-curl -I https://hiddenwalnuts.com
+# Test portfolio subdomain
+curl -I https://portfolio.hiddenwalnuts.com
 
-# Test www subdomain  
-curl -I https://www.hiddenwalnuts.com
-
-# Test admin interface
-curl -I https://hiddenwalnuts.com/admin
+# Test admin interface  
+curl -I https://portfolio.hiddenwalnuts.com/admin
 
 # Test API
-curl https://hiddenwalnuts.com/api/portfolio
+curl https://portfolio.hiddenwalnuts.com/api/portfolio
 ```
 
 Expected responses:
-- **200 OK** for main domain and www
+- **200 OK** for portfolio subdomain
 - **401 Unauthorized** for admin (requires auth)
 - **200 OK** with JSON for API
 
 ### Step 4: Browser Testing
 
 Visit these URLs in your browser:
-- **Portfolio**: https://hiddenwalnuts.com
-- **Admin**: https://hiddenwalnuts.com/admin (login: admin/hidden2024!)
-- **API**: https://hiddenwalnuts.com/api/portfolio
+- **Portfolio**: https://portfolio.hiddenwalnuts.com
+- **Admin**: https://portfolio.hiddenwalnuts.com/admin (login: admin/hidden2024!)
+- **API**: https://portfolio.hiddenwalnuts.com/api/portfolio
 
 ## Troubleshooting
 

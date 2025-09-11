@@ -16,13 +16,9 @@ binding = "PORTFOLIO_KV"
 id = "6f7bb7f0d8064c7d8d3dbc7ba320ad6b"
 preview_id = "9da2c6a1d97543c9b5edfbc084e68203"
 
-# Routes for custom domain (hiddenwalnuts.com)
+# Routes for portfolio subdomain (safe for multi-service domain)
 [[routes]]
-pattern = "hiddenwalnuts.com/*"
-zone_name = "hiddenwalnuts.com"
-
-[[routes]]
-pattern = "www.hiddenwalnuts.com/*" 
+pattern = "portfolio.hiddenwalnuts.com/*"
 zone_name = "hiddenwalnuts.com"
 
 # No build configuration needed for worker-only architecture

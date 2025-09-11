@@ -14,8 +14,8 @@ A modern portfolio website for Hidden Walnuts artwork with admin interface, buil
 ## Live URLs
 
 ### Custom Domain (Preferred)
-- **Portfolio Site**: https://hiddenwalnuts.com  
-- **Admin Interface**: https://hiddenwalnuts.com/admin
+- **Portfolio Site**: https://portfolio.hiddenwalnuts.com  
+- **Admin Interface**: https://portfolio.hiddenwalnuts.com/admin
   - Username: `admin`  
   - Password: `hidden2024!`
 
