@@ -1,0 +1,49 @@
+# Cloudflare Workers configuration for Hidden Walnuts Portfolio
+
+name = "hidden-walnuts-portfolio"
+compatibility_date = "2024-01-15"
+main = "_worker.js"
+
+# Environment variables (you'll need to set these via CLI or dashboard)
+[vars]
+# These will be set during deployment
+# CLOUDFLARE_ACCOUNT_ID = "your-account-id"
+# CLOUDFLARE_API_TOKEN = "your-api-token"
+
+# KV Namespaces
+[[kv_namespaces]]
+binding = "PORTFOLIO_KV"
+id = "6f7bb7f0d8064c7d8d3dbc7ba320ad6b"
+preview_id = "9da2c6a1d97543c9b5edfbc084e68203"
+
+# Routes for production (we'll use the worker's *.workers.dev domain for now)
+# [[routes]]
+# pattern = "your-domain.com/api/*"
+# zone_name = "your-domain.com"
+#
+# [[routes]]  
+# pattern = "your-domain.com/admin"
+# zone_name = "your-domain.com"
+
+# Custom domains (optional)
+# [env.production]
+# routes = [
+#   { pattern = "hiddenwalnuts.com/api/*", zone_name = "hiddenwalnuts.com" },
+#   { pattern = "hiddenwalnuts.com/admin", zone_name = "hiddenwalnuts.com" }
+# ]
+
+# Development configuration
+[env.development]
+kv_namespaces = [
+  { binding = "PORTFOLIO_KV", id = "your-dev-kv-namespace-id" }
+]
+
+# Build configuration
+[build]
+command = ""
+cwd = ""
+watch_dir = ""
+
+# Deployment settings
+[triggers]
+crons = []
