@@ -13,10 +13,17 @@ A modern portfolio website for Hidden Walnuts artwork with admin interface, buil
 
 ## Live URLs
 
-- **Portfolio Site**: https://hidden-walnuts-portfolio.mattmcarroll.workers.dev
-- **Admin Interface**: https://hidden-walnuts-portfolio.mattmcarroll.workers.dev/admin
+### Custom Domain (Preferred)
+- **Portfolio Site**: https://hiddenwalnuts.com  
+- **Admin Interface**: https://hiddenwalnuts.com/admin
   - Username: `admin`  
   - Password: `hidden2024!`
+
+### Workers.dev Domain (Fallback)
+- **Portfolio Site**: https://hidden-walnuts-portfolio.mattmcarroll.workers.dev
+- **Admin Interface**: https://hidden-walnuts-portfolio.mattmcarroll.workers.dev/admin
+
+> **Note**: Custom domain setup requires DNS configuration in Cloudflare Dashboard. See `CUSTOM_DOMAIN_SETUP.md` for instructions.
 
 ## Features
 
@@ -45,14 +52,15 @@ A modern portfolio website for Hidden Walnuts artwork with admin interface, buil
 
 ```
 /
-├── _worker.js          # Complete Cloudflare Worker (API + HTML + CSS + JS)
-├── wrangler.toml       # Worker configuration
-├── images/             # GitHub-hosted images directory
-├── LogoForInsta.png    # Site logo
-├── fav-walnuts.png     # Favicon
-├── README.md           # This file
-├── DEPLOYMENT.md       # Deployment instructions
-└── CLAUDE.md          # Claude Code instructions
+├── _worker.js                # Complete Cloudflare Worker (API + HTML + CSS + JS)
+├── wrangler.toml             # Worker configuration with custom domain routes
+├── images/                   # GitHub-hosted images directory
+├── LogoForInsta.png          # Site logo
+├── fav-walnuts.png           # Favicon
+├── README.md                 # This file
+├── DEPLOYMENT.md             # Deployment instructions  
+├── CUSTOM_DOMAIN_SETUP.md    # Custom domain configuration guide
+└── CLAUDE.md                # Claude Code instructions
 ```
 
 ## Local Development
