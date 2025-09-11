@@ -1,7 +1,49 @@
 /**
  * Cloudflare Worker for Hidden Walnuts Portfolio Admin
- * Handles CRUD operations for portfolio items using KV storage and Images API
+ * Handles CRUD operations for portfolio items using KV storage and GitHub image hosting
  */
+
+// Configuration
+const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/';
+const ADMIN_USERNAME = 'admin';
+const ADMIN_PASSWORD = 'hidden2024!';
+
+// Authentication middleware
+function requireAuth(request) {
+  const authorization = request.headers.get('authorization');
+  if (!authorization) {
+    return new Response('Authentication required', {
+      status: 401,
+      headers: {
+        'WWW-Authenticate': 'Basic realm="Admin Interface"',
+        'Content-Type': 'text/plain'
+      }
+    });
+  }
+  
+  const [scheme, encoded] = authorization.split(' ');
+  if (scheme !== 'Basic') {
+    return new Response('Invalid authentication scheme', { 
+      status: 401,
+      headers: { 'Content-Type': 'text/plain' }
+    });
+  }
+  
+  const credentials = atob(encoded);
+  const [username, password] = credentials.split(':');
+  
+  if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+    return new Response('Invalid credentials', { 
+      status: 401,
+      headers: {
+        'WWW-Authenticate': 'Basic realm="Admin Interface"',
+        'Content-Type': 'text/plain'
+      }
+    });
+  }
+  
+  return null; // Authentication successful
+}
 
 export default {
   async fetch(request, env) {
@@ -30,21 +72,24 @@ export default {
         });
       }
       
-      // Admin interface route
+      // Admin interface route (protected)
       if (path === '/admin' || path === '/admin/') {
+        const authResult = requireAuth(request);
+        if (authResult) return authResult;
+        
         return new Response(ADMIN_HTML, {
           headers: { 'Content-Type': 'text/html' }
         });
       }
       
-      // Default: serve portfolio data for main site
-      if (path === '/api/portfolio') {
-        const items = await getPortfolioItems(env);
-        return new Response(JSON.stringify(items), {
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+      // Main portfolio site route
+      if (path === '/' || path === '') {
+        return new Response(MAIN_HTML, {
+          headers: { 'Content-Type': 'text/html' }
         });
       }
       
+      // Portfolio API route (this was duplicated, moved to handleAPI)
       return new Response('Not Found', { status: 404 });
       
     } catch (error) {
@@ -252,6 +297,789 @@ async function handleImageUpload(request, env) {
 function generateId() {
   return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
+
+// Main Website HTML
+const MAIN_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Walnuts Portfolio</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="fav-walnuts.png?v=3">
+    <link rel="icon" type="image/png" sizes="16x16" href="fav-walnuts.png?v=3">
+    <link rel="shortcut icon" type="image/x-icon" href="fav-walnuts.png?v=3">
+    <link rel="apple-touch-icon" sizes="180x180" href="fav-walnuts.png?v=3">
+    <meta name="msapplication-TileImage" content="fav-walnuts.png?v=3">
+    <style>
+:root {
+    --primary-color: #2a5d31;
+    --primary-light: #4a7c55;
+    --primary-dark: #1e4022;
+    --secondary-color: #7fad69;
+    --accent-color: #f8faf6;
+    --accent-warm: #f5f7f1;
+    --text-light: #6c757d;
+    --background-color: #ffffff;
+    --card-shadow: 0 4px 20px rgba(42, 93, 49, 0.08);
+    --card-shadow-hover: 0 8px 30px rgba(42, 93, 49, 0.15);
+    --border-radius: 12px;
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background: #ffffff;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Navigation Styles */
+.main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.logo-container h1 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #666;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: var(--transition);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--primary-color);
+    background: var(--accent-color);
+}
+
+.store-link {
+    background: var(--primary-color);
+    color: white !important;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.store-link:hover {
+    background: var(--primary-dark) !important;
+    transform: translateY(-2px);
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, var(--accent-color) 0%, #ffffff 100%);
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.hero-content h2 {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    font-weight: 700;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    color: var(--text-light);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Portfolio Section */
+.portfolio-section {
+    padding: 2rem 0;
+}
+
+/* Portfolio Grid - Masonry Style */
+.portfolio-grid {
+    columns: 4;
+    column-gap: 15px;
+    margin: 0;
+}
+
+.portfolio-item {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 15px;
+    break-inside: avoid;
+    cursor: pointer;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.portfolio-item:hover {
+    transform: scale(1.02);
+}
+
+.portfolio-item-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: var(--transition);
+}
+
+.portfolio-item:hover .portfolio-item-image {
+    filter: brightness(0.9);
+}
+
+/* Overlay for hover effect */
+.portfolio-item::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(42, 93, 49, 0.8);
+    opacity: 0;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.portfolio-item:hover::after {
+    opacity: 1;
+}
+
+/* Remove all card-style elements */
+.portfolio-item-content,
+.portfolio-item-title,
+.portfolio-item-description,
+.portfolio-item-tags,
+.portfolio-item-actions,
+.btn-primary,
+.featured-badge,
+.tag {
+    display: none;
+}
+
+/* Loading States */
+.loading-state {
+    text-align: center;
+    padding: 4rem 0;
+    color: var(--text-light);
+}
+
+.spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Lightbox Modal */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.lightbox.active {
+    display: flex;
+}
+
+.lightbox-content {
+    background: white;
+    border-radius: var(--border-radius);
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-image-container {
+    position: relative;
+}
+
+.lightbox-image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.lightbox-info {
+    padding: 2rem;
+}
+
+.lightbox-info h3 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.lightbox-info p {
+    color: var(--text-light);
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.lightbox-actions {
+    text-align: center;
+}
+
+.lightbox-actions .btn-primary {
+    display: inline-flex !important;
+    background: var(--primary-color);
+    color: white;
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    align-items: center;
+    gap: 8px;
+    transition: var(--transition);
+}
+
+.lightbox-actions .btn-primary:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* Footer */
+footer {
+    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);
+    color: white;
+    padding: 3rem 0 2rem;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.footer-section h3 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.social-links a {
+    color: white;
+    font-size: 1.5rem;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.social-links a:hover {
+    background: white;
+    color: var(--primary-color);
+    transform: translateY(-3px);
+}
+
+.footer-store-link {
+    color: white;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    transition: var(--transition);
+}
+
+.footer-store-link:hover {
+    background: white;
+    color: var(--primary-color);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.copyright {
+    opacity: 0.8;
+    font-size: 0.9rem;
+}
+
+/* X Icon Style */
+.x-icon {
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+    .portfolio-grid {
+        columns: 3;
+        column-gap: 12px;
+    }
+    
+    .portfolio-item {
+        margin-bottom: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .main-nav {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    
+    .nav-links {
+        gap: 1rem;
+    }
+    
+    .hero-content h2 {
+        font-size: 2.5rem;
+    }
+    
+    .portfolio-grid {
+        columns: 2;
+        column-gap: 10px;
+    }
+    
+    .portfolio-item {
+        margin-bottom: 10px;
+    }
+    
+    .lightbox-content {
+        max-width: 95%;
+        margin: 20px;
+    }
+    
+    .lightbox-info {
+        padding: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .logo-container h1 {
+        font-size: 1.5rem;
+    }
+    
+    .hero-content h2 {
+        font-size: 2rem;
+    }
+    
+    .hero-content p {
+        font-size: 1rem;
+    }
+    
+    .portfolio-grid {
+        columns: 1;
+        column-gap: 0;
+    }
+    
+    .portfolio-item {
+        margin-bottom: 8px;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+}
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="main-nav">
+            <div class="logo-container">
+                <img src="LogoForInsta.png" alt="Hidden Walnuts" class="nav-logo">
+                <h1>Hidden Walnuts</h1>
+            </div>
+            <div class="nav-links">
+                <a href="#portfolio" class="nav-link active">Portfolio</a>
+                <a href="https://www.teepublic.com/user/hidden-walnuts" target="_blank" class="nav-link store-link">
+                    <i class="fas fa-external-link-alt"></i> TeePublic Store
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h2>Welcome to Hidden Walnuts</h2>
+                <p>Discover unique artwork and designs available on quality products</p>
+            </div>
+        </section>
+
+        <section id="portfolio" class="portfolio-section">
+            <div class="container">
+                <div class="portfolio-grid" id="portfolioGrid">
+                    <div class="loading-state">
+                        <div class="spinner"></div>
+                        <p>Loading portfolio...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="https://instagram.com/hiddenwalnuts" target="_blank" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://pinterest.com/hiddenwalnuts" target="_blank" aria-label="Pinterest">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                        <a href="https://x.com/hiddenwalnuts" target="_blank" aria-label="X">
+                            <span class="x-icon">𝕏</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Shop</h3>
+                    <a href="https://www.teepublic.com/user/hidden-walnuts" target="_blank" class="footer-store-link">
+                        Visit our TeePublic Store
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <div class="copyright">
+                    &copy; <span id="currentYear"></span> Hidden Walnuts. All rights reserved.
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Image Lightbox Modal -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close">&times;</button>
+            <div class="lightbox-image-container">
+                <img id="lightboxImage" src="" alt="">
+            </div>
+            <div class="lightbox-info">
+                <h3 id="lightboxTitle"></h3>
+                <p id="lightboxDescription"></p>
+                <div class="lightbox-actions">
+                    <a id="lightboxBuyLink" href="#" target="_blank" class="btn-primary">
+                        <i class="fas fa-shopping-cart"></i> Buy on Redbubble
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    initializePortfolio();
+    initializeLightbox();
+    updateCopyright();
+});
+
+let allPortfolioItems = [];
+
+async function initializePortfolio() {
+    try {
+        await loadPortfolioItems();
+        renderPortfolioItems();
+    } catch (error) {
+        console.error('Failed to load portfolio:', error);
+        showError('Failed to load portfolio items. Please try again later.');
+    }
+}
+
+async function loadPortfolioItems() {
+    const portfolioGrid = document.getElementById('portfolioGrid');
+    
+    if (window.location.protocol === 'file:') {
+        console.log('Running locally, using sample data');
+        allPortfolioItems = getSampleData();
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/portfolio');
+        
+        if (!response.ok) {
+            console.log('API not available, using sample data');
+            allPortfolioItems = getSampleData();
+        } else {
+            allPortfolioItems = await response.json();
+            
+            if (allPortfolioItems.length === 0) {
+                console.log('No items from API, using sample data');
+                allPortfolioItems = getSampleData();
+            }
+        }
+        
+    } catch (error) {
+        console.error('Error loading portfolio items:', error);
+        console.log('Using sample data as fallback');
+        allPortfolioItems = getSampleData();
+    }
+}
+
+function getSampleData() {
+    return [
+        {
+            id: 'sample-1',
+            title: 'Vintage Mountain Adventure',
+            description: 'A beautiful vintage-style design featuring mountain landscapes and adventure themes.',
+            imageUrl: 'hero-vintage-posters.png',
+            redbubbleUrl: 'https://www.redbubble.com/shop/ap/123456789/1',
+            tags: ['vintage', 'mountains', 'adventure'],
+            featured: true,
+            dateAdded: '2024-01-15'
+        },
+        {
+            id: 'sample-2',
+            title: 'Fun Pickleball Design',
+            description: 'Playful and energetic pickleball-themed artwork perfect for sports enthusiasts.',
+            imageUrl: 'hero-pickleball.png',
+            redbubbleUrl: 'https://www.redbubble.com/shop/ap/123456790/1',
+            tags: ['pickleball', 'sports', 'fun'],
+            featured: false,
+            dateAdded: '2024-01-10'
+        },
+        {
+            id: 'sample-3',
+            title: 'Abstract Fine Art',
+            description: 'Sophisticated abstract art piece with flowing forms and beautiful color harmony.',
+            imageUrl: 'hero-fineart.png',
+            redbubbleUrl: 'https://www.redbubble.com/shop/ap/123456791/1',
+            tags: ['abstract', 'fine art', 'modern'],
+            featured: true,
+            dateAdded: '2024-01-08'
+        },
+        {
+            id: 'sample-4',
+            title: 'Inspirational Poetry',
+            description: 'Beautiful typography design featuring inspirational poetry and motivational quotes.',
+            imageUrl: 'hero-poetry.png',
+            redbubbleUrl: 'https://www.redbubble.com/shop/ap/123456792/1',
+            tags: ['poetry', 'typography', 'inspiration'],
+            featured: false,
+            dateAdded: '2024-01-05'
+        },
+        {
+            id: 'sample-5',
+            title: 'Whimsical Fun Design',
+            description: 'Bright and cheerful design with whimsical elements that bring joy and laughter.',
+            imageUrl: 'hero-fun.png',
+            redbubbleUrl: 'https://www.redbubble.com/shop/ap/123456793/1',
+            tags: ['fun', 'whimsical', 'colorful'],
+            featured: false,
+            dateAdded: '2024-01-01'
+        }
+    ];
+}
+
+function renderPortfolioItems() {
+    const portfolioGrid = document.getElementById('portfolioGrid');
+    
+    portfolioGrid.innerHTML = '';
+    
+    if (allPortfolioItems.length === 0) {
+        portfolioGrid.innerHTML = '<div class="no-items"><p>No portfolio items found.</p></div>';
+        return;
+    }
+    
+    allPortfolioItems.forEach(item => {
+        const portfolioItem = createPortfolioItemElement(item);
+        portfolioGrid.appendChild(portfolioItem);
+    });
+}
+
+function createPortfolioItemElement(item) {
+    const portfolioItem = document.createElement('div');
+    portfolioItem.className = 'portfolio-item';
+    portfolioItem.setAttribute('data-id', item.id);
+    
+    const imageUrl = item.imageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDI4MCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI4MCIgaGVpZ2h0PSIyNTAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSIxNDAiIHk9IjEyNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OTk5OSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2Ij5JbWFnZTwvdGV4dD48L3N2Zz4=';
+    
+    portfolioItem.innerHTML = '<img src="' + imageUrl + '" alt="' + item.title + '" class="portfolio-item-image" loading="lazy">';
+    
+    portfolioItem.addEventListener('click', () => {
+        openLightbox(item);
+    });
+    
+    return portfolioItem;
+}
+
+function initializeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const closeButton = document.querySelector('.lightbox-close');
+    
+    closeButton.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+            closeLightbox();
+        }
+    });
+}
+
+function openLightbox(item) {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightboxImage');
+    const lightboxTitle = document.getElementById('lightboxTitle');
+    const lightboxDescription = document.getElementById('lightboxDescription');
+    const lightboxBuyLink = document.getElementById('lightboxBuyLink');
+    
+    lightboxImage.src = item.imageUrl;
+    lightboxImage.alt = item.title;
+    lightboxTitle.textContent = item.title;
+    lightboxDescription.textContent = item.description || 'No description available.';
+    lightboxBuyLink.href = item.redbubbleUrl;
+    
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    lightbox.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function showError(message) {
+    const portfolioGrid = document.getElementById('portfolioGrid');
+    portfolioGrid.innerHTML = '<div class="error-state"><p style="color: #dc3545; text-align: center; padding: 2rem;"><i class="fas fa-exclamation-triangle"></i> ' + message + '</p></div>';
+}
+
+function updateCopyright() {
+    const currentYearElement = document.getElementById('currentYear');
+    if (currentYearElement) {
+        currentYearElement.textContent = new Date().getFullYear();
+    }
+}
+
+document.addEventListener('click', function(e) {
+    if (e.target.matches('a[href^="#"]')) {
+        e.preventDefault();
+        const target = document.querySelector(e.target.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }
+});
+    </script>
+</body>
+</html>`;
 
 // Admin Interface HTML
 const ADMIN_HTML = `<!DOCTYPE html>
@@ -553,7 +1381,7 @@ const ADMIN_HTML = `<!DOCTYPE html>
                 <div class="form-group">
                     <label for="imageUrl">Image URL *</label>
                     <div style="display: flex; align-items: center; gap: 5px;">
-                        <span style="color: #666; font-size: 14px; white-space: nowrap;">https://raw.githubusercontent.com/mcham12/Website/main/images/</span>
+                        <span style="color: #666; font-size: 14px; white-space: nowrap;">${GITHUB_BASE_URL}</span>
                         <input type="text" id="imageFilename" name="imageFilename" required placeholder="artwork.jpg" style="flex: 1;">
                     </div>
                     <input type="hidden" id="imageUrl" name="imageUrl">
@@ -623,7 +1451,7 @@ const ADMIN_HTML = `<!DOCTYPE html>
         const imageUrlInput = document.getElementById('imageUrl');
         const imagePreview = document.getElementById('image-preview');
         const previewImg = document.getElementById('preview-img');
-        const baseGitHubUrl = 'https://raw.githubusercontent.com/mcham12/Website/main/images/';
+        const baseGitHubUrl = '${GITHUB_BASE_URL}';
         
         let previewTimeout;
         imageFilenameInput.addEventListener('input', (e) => {
