@@ -470,24 +470,26 @@ body {
     transition: var(--transition);
 }
 
-.portfolio-item:hover .portfolio-item-image {
-    filter: brightness(0.9);
-}
 
-/* Title overlay for hover effect (like Maggie Carroll site) */
+/* Title overlay for hover effect (exactly like Maggie Carroll site) */
 .portfolio-item-title {
     position: absolute;
-    bottom: 0;
+    top: 0;
     left: 0;
     right: 0;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-    color: white;
-    padding: 20px 15px 15px;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: 500;
     opacity: 0;
     transition: var(--transition);
     pointer-events: none;
+    text-align: center;
+    padding: 20px;
 }
 
 .portfolio-item:hover .portfolio-item-title {
@@ -495,7 +497,7 @@ body {
 }
 
 .portfolio-item:hover .portfolio-item-image {
-    filter: brightness(0.7);
+    filter: brightness(1.1) contrast(0.8);
 }
 
 /* Remove card-style elements (except title which we need for hover) */
