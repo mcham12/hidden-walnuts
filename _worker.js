@@ -304,7 +304,7 @@ const MAIN_HTML = `<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hidden Walnuts Portfolio</title>
+    <title>Hidden Walnuts</title>
     <link rel="icon" type="image/png" sizes="32x32" href="fav-walnuts.png?v=3">
     <link rel="icon" type="image/png" sizes="16x16" href="fav-walnuts.png?v=3">
     <link rel="shortcut icon" type="image/x-icon" href="fav-walnuts.png?v=3">
@@ -474,29 +474,32 @@ body {
     filter: brightness(0.9);
 }
 
-/* Overlay for hover effect */
-.portfolio-item::after {
-    content: '';
+/* Title overlay for hover effect (like Maggie Carroll site) */
+.portfolio-item-title {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     right: 0;
-    bottom: 0;
-    background: rgba(42, 93, 49, 0.8);
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: white;
+    padding: 20px 15px 15px;
+    font-size: 16px;
+    font-weight: 600;
     opacity: 0;
     transition: var(--transition);
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    pointer-events: none;
 }
 
-.portfolio-item:hover::after {
+.portfolio-item:hover .portfolio-item-title {
     opacity: 1;
 }
 
-/* Remove all card-style elements */
+.portfolio-item:hover .portfolio-item-image {
+    filter: brightness(0.7);
+}
+
+/* Remove card-style elements (except title which we need for hover) */
 .portfolio-item-content,
-.portfolio-item-title,
 .portfolio-item-description,
 .portfolio-item-tags,
 .portfolio-item-actions,
@@ -789,25 +792,17 @@ footer {
     <header>
         <nav class="main-nav">
             <div class="logo-container">
-                <img src="LogoForInsta.png" alt="Hidden Walnuts" class="nav-logo">
+                <img src="${GITHUB_BASE_URL}LogoForInsta.png" alt="Hidden Walnuts" class="nav-logo">
                 <h1>Hidden Walnuts</h1>
             </div>
             <div class="nav-links">
-                <a href="#portfolio" class="nav-link active">Portfolio</a>
-                <a href="https://www.teepublic.com/user/hidden-walnuts" target="_blank" class="nav-link store-link">
-                    <i class="fas fa-external-link-alt"></i> TeePublic Store
-                </a>
+                <!-- Clean navigation - no links needed -->
             </div>
         </nav>
     </header>
 
     <main>
-        <section class="hero">
-            <div class="hero-content">
-                <h2>Welcome to Hidden Walnuts</h2>
-                <p>Discover unique artwork and designs available on quality products</p>
-            </div>
-        </section>
+        <!-- Clean design - no hero section needed -->
 
         <section id="portfolio" class="portfolio-section">
             <div class="container">
@@ -843,6 +838,10 @@ footer {
                     <h3>Shop</h3>
                     <a href="https://www.teepublic.com/user/hidden-walnuts" target="_blank" class="footer-store-link">
                         Visit our TeePublic Store
+                        <i class="fas fa-external-link-alt"></i>
+                    </a>
+                    <a href="https://www.redbubble.com/people/HiddenWalnuts/explore?page=1&sortOrder=recent" target="_blank" class="footer-store-link" style="margin-top: 10px;">
+                        Visit our Redbubble Store
                         <i class="fas fa-external-link-alt"></i>
                     </a>
                 </div>
@@ -1003,10 +1002,15 @@ function createPortfolioItemElement(item) {
     
     const imageUrl = item.imageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDI4MCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI4MCIgaGVpZ2h0PSIyNTAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSIxNDAiIHk9IjEyNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OTk5OSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2Ij5JbWFnZTwvdGV4dD48L3N2Zz4=';
     
-    portfolioItem.innerHTML = '<img src="' + imageUrl + '" alt="' + item.title + '" class="portfolio-item-image" loading="lazy">';
+    portfolioItem.innerHTML = 
+        '<img src="' + imageUrl + '" alt="' + item.title + '" class="portfolio-item-image" loading="lazy">' +
+        '<div class="portfolio-item-title">' + item.title + '</div>';
     
+    // Click directly to Redbubble (not lightbox)
     portfolioItem.addEventListener('click', () => {
-        openLightbox(item);
+        if (item.redbubbleUrl) {
+            window.open(item.redbubbleUrl, '_blank');
+        }
     });
     
     return portfolioItem;
