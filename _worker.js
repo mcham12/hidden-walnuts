@@ -1364,8 +1364,8 @@ const ADMIN_HTML = `<!DOCTYPE html>
         </header>
 
         <div class="tabs">
-            <button class="tab active" onclick="showTab('add')">Add New Item</button>
-            <button class="tab" onclick="showTab('manage')">Manage Items</button>
+            <button class="tab active" onclick="showTab('add', event)">Add New Item</button>
+            <button class="tab" onclick="showTab('manage', event)">Manage Items</button>
         </div>
 
         <!-- Add New Item Tab -->
@@ -1395,6 +1395,7 @@ const ADMIN_HTML = `<!DOCTYPE html>
                         Just add your filename! Upload images to your GitHub repo's <code>/images/</code> folder first.
                     </p>
                     <div id="image-preview" class="hidden" style="margin-top: 15px;">
+                        <div id="preview-name" style="font-size: 14px; color: #666; margin-bottom: 8px;">Current image</div>
                         <img id="preview-img" style="max-width: 200px; border-radius: 6px;">
                     </div>
                 </div>
@@ -1440,11 +1441,23 @@ const ADMIN_HTML = `<!DOCTYPE html>
         let editingId = null;
         
         // Tab switching
-        function showTab(tabName) {
+        function showTab(tabName, event) {
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
             
-            event.target.classList.add('active');
+            // If called from onclick, event.target is the clicked button
+            if (event && event.target) {
+                event.target.classList.add('active');
+            } else {
+                // If called programmatically, find the right tab by content
+                const tabs = document.querySelectorAll('.tab');
+                if (tabName === 'add') {
+                    tabs[0].classList.add('active');
+                } else if (tabName === 'manage') {
+                    tabs[1].classList.add('active');
+                }
+            }
+            
             document.getElementById(tabName + '-tab').classList.remove('hidden');
             
             if (tabName === 'manage') {
@@ -1457,6 +1470,7 @@ const ADMIN_HTML = `<!DOCTYPE html>
         const imageUrlInput = document.getElementById('imageUrl');
         const imagePreview = document.getElementById('image-preview');
         const previewImg = document.getElementById('preview-img');
+        const previewName = document.getElementById('preview-name');
         const baseGitHubUrl = '${GITHUB_BASE_URL}';
         
         let previewTimeout;
@@ -1661,8 +1675,8 @@ const ADMIN_HTML = `<!DOCTYPE html>
             previewName.textContent = 'Current image';
             imagePreview.classList.remove('hidden');
             
-            // Remove required from file input for editing
-            fileInput.removeAttribute('required');
+            // Remove required from image filename input for editing
+            imageFilenameInput.removeAttribute('required');
             
             document.getElementById('submit-text').textContent = 'Update Portfolio Item';
             showTab('add');
