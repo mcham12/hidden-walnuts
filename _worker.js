@@ -805,6 +805,7 @@ footer {
                 <h1>Hidden Walnuts</h1>
             </div>
             <div class="nav-links">
+                <a href="/" class="nav-link active">Portfolio</a>
                 <a href="/game" class="nav-link store-link">
                     <i class="fas fa-gamepad"></i> Play the Game
                 </a>
