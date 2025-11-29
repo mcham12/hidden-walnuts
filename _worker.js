@@ -806,9 +806,7 @@ footer {
             </div>
             <div class="nav-links">
                 <a href="/" class="nav-link active">Portfolio</a>
-                <a href="/game" class="nav-link store-link">
-                    <i class="fas fa-gamepad"></i> Play the Game
-                </a>
+                <a href="/game" class="nav-link store-link">Play the Game</a>
             </div>
         </nav>
     </header>
@@ -1994,9 +1992,7 @@ body {
             </a>
             <nav class="nav-links">
                 <a href="/" class="nav-link">Portfolio</a>
-                <a href="https://game.hiddenwalnuts.com" class="nav-link play-btn-nav">
-                    <i class="fas fa-play"></i> Play Now
-                </a>
+                <a href="https://game.hiddenwalnuts.com" class="nav-link play-btn-nav active">Play the Game</a>
             </nav>
         </div>
     </header>
