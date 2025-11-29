@@ -76,12 +76,19 @@ export default {
       if (path === '/admin' || path === '/admin/') {
         const authResult = requireAuth(request);
         if (authResult) return authResult;
-        
+
         return new Response(ADMIN_HTML, {
           headers: { 'Content-Type': 'text/html' }
         });
       }
-      
+
+      // Game landing page route
+      if (path === '/game' || path === '/game/') {
+        return new Response(GAME_HTML, {
+          headers: { 'Content-Type': 'text/html' }
+        });
+      }
+
       // Main portfolio site route
       if (path === '/' || path === '') {
         return new Response(MAIN_HTML, {
@@ -798,7 +805,9 @@ footer {
                 <h1>Hidden Walnuts</h1>
             </div>
             <div class="nav-links">
-                <!-- Clean navigation - no links needed -->
+                <a href="/game" class="nav-link store-link">
+                    <i class="fas fa-gamepad"></i> Play the Game
+                </a>
             </div>
         </nav>
     </header>
@@ -1083,6 +1092,1453 @@ document.addEventListener('click', function(e) {
         }
     }
 });
+    </script>
+</body>
+</html>`;
+
+// Game Landing Page HTML
+const GAME_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Walnuts - The Game</title>
+    <link rel="icon" type="image/png" href="fav-walnuts.png?v=3">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+:root {
+    --forest-green: #2d6b3a;
+    --forest-dark: #1a3d20;
+    --autumn-orange: #e67e22;
+    --autumn-gold: #f39c12;
+    --bark-brown: #8b5a2b;
+    --cream: #faf8f0;
+    --leaf-green: #4a9c5d;
+    --shadow: rgba(26, 61, 32, 0.2);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(180deg, #1a3d20 0%, #2d5a3a 50%, #3d7a4a 100%);
+    min-height: 100vh;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* Floating Leaves Animation */
+.leaves-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.leaf {
+    position: absolute;
+    top: -50px;
+    opacity: 0.6;
+    font-size: 20px;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-50px) rotate(0deg) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(100vh) rotate(360deg) translateX(100px);
+        opacity: 0;
+    }
+}
+
+/* Header */
+.game-header {
+    background: rgba(26, 61, 32, 0.95);
+    padding: 1rem 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid var(--leaf-green);
+}
+
+.header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: white;
+}
+
+.logo-icon {
+    font-size: 2rem;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--cream);
+}
+
+.nav-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.nav-link {
+    color: var(--cream);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: all 0.3s;
+}
+
+.nav-link:hover {
+    background: rgba(255,255,255,0.1);
+}
+
+.play-btn-nav {
+    background: var(--autumn-orange);
+    color: white !important;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.play-btn-nav:hover {
+    background: var(--autumn-gold);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+}
+
+/* Hero Section */
+.hero {
+    position: relative;
+    padding: 6rem 2rem;
+    text-align: center;
+    z-index: 1;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-icon {
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.hero h1 {
+    font-size: 3.5rem;
+    color: var(--cream);
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+.play-now-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: linear-gradient(135deg, var(--autumn-orange), var(--autumn-gold));
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 1.2rem 3rem;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 6px 30px rgba(230, 126, 34, 0.5);
+    transition: all 0.3s;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 6px 30px rgba(230, 126, 34, 0.5); }
+    to { box-shadow: 0 6px 40px rgba(230, 126, 34, 0.8); }
+}
+
+.play-now-btn:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 10px 40px rgba(230, 126, 34, 0.7);
+}
+
+.play-options {
+    margin-top: 1.5rem;
+    color: rgba(255,255,255,0.8);
+    font-size: 0.95rem;
+}
+
+/* Content Sections */
+.content-section {
+    position: relative;
+    z-index: 1;
+    padding: 4rem 2rem;
+}
+
+.section-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: var(--cream);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 10px 40px var(--shadow);
+}
+
+.section-title {
+    font-size: 2rem;
+    color: var(--forest-dark);
+    margin-bottom: 2rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+/* How to Play Grid */
+.objective-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.objective-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    border: 2px solid transparent;
+    transition: all 0.3s;
+    cursor: default;
+}
+
+.objective-card:hover {
+    border-color: var(--leaf-green);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px var(--shadow);
+}
+
+.objective-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.objective-card h4 {
+    color: var(--forest-dark);
+    margin-bottom: 0.5rem;
+}
+
+.objective-card p {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+/* Controls Section */
+.controls-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .controls-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.controls-panel {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.controls-panel h4 {
+    color: var(--forest-dark);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.control-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.control-item:last-child {
+    border-bottom: none;
+}
+
+.control-key {
+    background: var(--forest-dark);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.85rem;
+    min-width: 60px;
+    text-align: center;
+}
+
+.control-action {
+    color: #555;
+    font-size: 0.95rem;
+}
+
+/* Pro Tips - Carousel */
+.tips-carousel-wrapper {
+    position: relative;
+    overflow: hidden;
+    padding: 0 50px;
+}
+
+.tips-carousel {
+    display: flex;
+    transition: transform 0.4s ease;
+    gap: 1.5rem;
+}
+
+.tip-card {
+    background: linear-gradient(135deg, var(--forest-green), var(--leaf-green));
+    border-radius: 12px;
+    padding: 1.25rem;
+    color: white;
+    min-width: 200px;
+    max-width: 200px;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.tip-card::before {
+    content: '🍂';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 4rem;
+    opacity: 0.2;
+}
+
+.tip-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0.75rem;
+}
+
+.tip-icon {
+    font-size: 1.5rem;
+}
+
+.tip-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.tip-content {
+    font-size: 0.95rem;
+    opacity: 0.95;
+    line-height: 1.5;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--forest-dark);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    z-index: 10;
+}
+
+.carousel-btn:hover {
+    background: var(--autumn-orange);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn.prev {
+    left: 0;
+}
+
+.carousel-btn.next {
+    right: 0;
+}
+
+.carousel-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.carousel-btn:disabled:hover {
+    background: var(--forest-dark);
+    transform: translateY(-50%);
+}
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1.5rem;
+}
+
+.carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ccc;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.carousel-dot.active {
+    background: var(--forest-green);
+    transform: scale(1.2);
+}
+
+.carousel-dot:hover {
+    background: var(--leaf-green);
+}
+
+/* Rank Progression */
+.rank-journey {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 2rem 0;
+    position: relative;
+}
+
+.rank-journey::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    right: 5%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--leaf-green), var(--autumn-orange));
+    border-radius: 2px;
+    z-index: 0;
+}
+
+.rank-badge {
+    background: white;
+    padding: 0.75rem 1rem;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--forest-dark);
+    box-shadow: 0 3px 10px var(--shadow);
+    position: relative;
+    z-index: 1;
+    transition: all 0.3s;
+}
+
+.rank-badge:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px var(--shadow);
+}
+
+.rank-badge.legend {
+    background: linear-gradient(135deg, var(--autumn-gold), var(--autumn-orange));
+    color: white;
+}
+
+/* Benefits Comparison */
+.benefits-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+}
+
+.benefits-table th,
+.benefits-table td {
+    padding: 1rem;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+
+.benefits-table th {
+    background: var(--forest-dark);
+    color: white;
+    font-weight: 600;
+}
+
+.benefits-table th:first-child {
+    border-radius: 8px 0 0 0;
+    text-align: left;
+}
+
+.benefits-table th:last-child {
+    border-radius: 0 8px 0 0;
+}
+
+.benefits-table td:first-child {
+    text-align: left;
+    color: #555;
+}
+
+.benefits-table tr:hover {
+    background: rgba(74, 156, 93, 0.05);
+}
+
+.check {
+    color: var(--leaf-green);
+    font-size: 1.2rem;
+}
+
+.cross {
+    color: #ccc;
+    font-size: 1.2rem;
+}
+
+/* Final CTA */
+.final-cta {
+    text-align: center;
+    padding: 4rem 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.final-cta h2 {
+    color: var(--cream);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.final-cta p {
+    color: rgba(255,255,255,0.85);
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+/* Footer */
+.game-footer {
+    background: var(--forest-dark);
+    color: var(--cream);
+    padding: 2rem;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: var(--autumn-orange);
+}
+
+.copyright {
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+/* Responsive - Tablet Landscape */
+@media (max-width: 1024px) {
+    .tips-carousel-wrapper {
+        padding: 0 45px;
+    }
+
+    .tip-card {
+        min-width: 180px;
+        max-width: 180px;
+    }
+}
+
+/* Responsive - Tablet Portrait & Large Phones */
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .play-now-btn {
+        font-size: 1.2rem;
+        padding: 1rem 2rem;
+    }
+
+    .section-container {
+        padding: 2rem 1.5rem;
+    }
+
+    .rank-journey {
+        justify-content: center;
+        gap: 0.75rem;
+    }
+
+    .rank-journey::before {
+        display: none;
+    }
+
+    .rank-badge {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.75rem;
+    }
+
+    .benefits-table {
+        font-size: 0.85rem;
+    }
+
+    .benefits-table th,
+    .benefits-table td {
+        padding: 0.75rem 0.5rem;
+    }
+
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .tips-carousel-wrapper {
+        padding: 0 40px;
+    }
+
+    .tip-card {
+        min-width: 170px;
+        max-width: 170px;
+    }
+
+    .carousel-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+    }
+
+    .objective-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Responsive - Phone Landscape */
+@media (max-width: 667px) and (orientation: landscape) {
+    .hero {
+        padding: 3rem 2rem;
+    }
+
+    .hero-icon {
+        font-size: 3rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .content-section {
+        padding: 2rem 1rem;
+    }
+
+    .section-container {
+        padding: 1.5rem;
+    }
+
+    .controls-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Responsive - Phone Portrait */
+@media (max-width: 480px) {
+    .hero {
+        padding: 4rem 1.5rem;
+    }
+
+    .hero-icon {
+        font-size: 4rem;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .play-now-btn {
+        font-size: 1.1rem;
+        padding: 0.9rem 1.8rem;
+        gap: 8px;
+    }
+
+    .play-options {
+        font-size: 0.85rem;
+    }
+
+    .content-section {
+        padding: 2rem 1rem;
+    }
+
+    .section-container {
+        padding: 1.5rem 1rem;
+        border-radius: 12px;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .objective-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+
+    .objective-card {
+        padding: 1rem;
+    }
+
+    .objective-icon {
+        font-size: 2rem;
+    }
+
+    .objective-card h4 {
+        font-size: 0.95rem;
+    }
+
+    .objective-card p {
+        font-size: 0.8rem;
+    }
+
+    .controls-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .controls-panel {
+        padding: 1rem;
+    }
+
+    .control-key {
+        min-width: 50px;
+        font-size: 0.75rem;
+        padding: 0.25rem 0.4rem;
+    }
+
+    .control-action {
+        font-size: 0.85rem;
+    }
+
+    .tips-carousel-wrapper {
+        padding: 0 35px;
+    }
+
+    .tip-card {
+        min-width: 160px;
+        max-width: 160px;
+        padding: 1rem;
+    }
+
+    .tip-title {
+        font-size: 1rem;
+    }
+
+    .tip-content {
+        font-size: 0.9rem;
+    }
+
+    .carousel-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 0.9rem;
+    }
+
+    .carousel-dots {
+        gap: 6px;
+    }
+
+    .carousel-dot {
+        width: 8px;
+        height: 8px;
+    }
+
+    .rank-journey {
+        gap: 0.5rem;
+    }
+
+    .rank-badge {
+        padding: 0.4rem 0.6rem;
+        font-size: 0.7rem;
+    }
+
+    .benefits-table {
+        font-size: 0.75rem;
+    }
+
+    .benefits-table th,
+    .benefits-table td {
+        padding: 0.6rem 0.3rem;
+    }
+
+    .final-cta h2 {
+        font-size: 1.8rem;
+    }
+
+    .final-cta p {
+        font-size: 1rem;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .game-footer {
+        padding: 1.5rem 1rem;
+    }
+}
+
+/* Small phones */
+@media (max-width: 375px) {
+    .hero h1 {
+        font-size: 1.75rem;
+    }
+
+    .objective-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tip-card {
+        min-width: 150px;
+        max-width: 150px;
+    }
+
+    .rank-badge {
+        padding: 0.35rem 0.5rem;
+        font-size: 0.65rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <!-- Floating Leaves -->
+    <div class="leaves-container" id="leavesContainer"></div>
+
+    <!-- Header -->
+    <header class="game-header">
+        <div class="header-content">
+            <a href="/" class="logo">
+                <span class="logo-icon">🐿️</span>
+                <span class="logo-text">Hidden Walnuts</span>
+            </a>
+            <nav class="nav-links">
+                <a href="/" class="nav-link">Portfolio</a>
+                <a href="https://game.hiddenwalnuts.com" class="nav-link play-btn-nav">
+                    <i class="fas fa-play"></i> Play Now
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-icon">🐿️</div>
+            <h1>Hidden Walnuts</h1>
+            <p class="hero-subtitle">
+                A casual real-time multiplayer game where you play as a squirrel competing to find hidden walnuts,
+                grow trees for bonus points, and survive in a dynamic forest ecosystem!
+            </p>
+            <a href="https://game.hiddenwalnuts.com" class="play-now-btn">
+                <i class="fas fa-play"></i> Play Now
+            </a>
+            <p class="play-options">
+                Free to play • No download required • Desktop & Mobile
+            </p>
+        </div>
+    </section>
+
+    <!-- How to Play -->
+    <section class="content-section">
+        <div class="section-container">
+            <h2 class="section-title"><i class="fas fa-gamepad"></i> How to Play</h2>
+
+            <div class="objective-grid">
+                <div class="objective-card">
+                    <div class="objective-icon">🔍</div>
+                    <h4>Find</h4>
+                    <p>Search for walnuts scattered throughout the forest</p>
+                </div>
+                <div class="objective-card">
+                    <div class="objective-icon">🌱</div>
+                    <h4>Hide & Grow</h4>
+                    <p>Bury walnuts - if unfound for 60s, they grow into trees for 20 bonus points!</p>
+                </div>
+                <div class="objective-card">
+                    <div class="objective-icon">⚔️</div>
+                    <h4>Survive</h4>
+                    <p>Battle AI predators and compete with other players</p>
+                </div>
+                <div class="objective-card">
+                    <div class="objective-icon">🏆</div>
+                    <h4>Rank Up</h4>
+                    <p>Climb from Rookie to Legend on the leaderboard</p>
+                </div>
+            </div>
+
+            <!-- Rank Journey -->
+            <h3 style="text-align: center; color: var(--forest-dark); margin: 2rem 0 1rem;">Your Journey to Legend</h3>
+            <div class="rank-journey">
+                <span class="rank-badge">Rookie</span>
+                <span class="rank-badge">Apprentice</span>
+                <span class="rank-badge">Dabbler</span>
+                <span class="rank-badge">Slick</span>
+                <span class="rank-badge">Maestro</span>
+                <span class="rank-badge">Ninja</span>
+                <span class="rank-badge legend">Legend</span>
+            </div>
+
+            <!-- Controls -->
+            <div class="controls-grid">
+                <div class="controls-panel">
+                    <h4><i class="fas fa-desktop"></i> Desktop Controls</h4>
+                    <div class="control-item">
+                        <span class="control-key">WASD</span>
+                        <span class="control-action">Move your character <span style="opacity: 0.7; font-size: 0.85em;">(or Arrow Keys)</span></span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">Mouse</span>
+                        <span class="control-action">Look around and aim</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">Click</span>
+                        <span class="control-action">Pick up walnuts</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">H</span>
+                        <span class="control-action">Hide a walnut</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">Space</span>
+                        <span class="control-action">Throw walnut <span style="opacity: 0.7; font-size: 0.85em;">(or T)</span></span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">E</span>
+                        <span class="control-action">Eat walnut (+10 HP)</span>
+                    </div>
+                </div>
+                <div class="controls-panel">
+                    <h4><i class="fas fa-mobile-alt"></i> Mobile Controls</h4>
+                    <div class="control-item">
+                        <span class="control-key">Drag</span>
+                        <span class="control-action">Virtual joystick to move</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">Tap</span>
+                        <span class="control-action">Pick up walnuts</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">Hide Btn</span>
+                        <span class="control-action">Hide a walnut</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">Throw Btn</span>
+                        <span class="control-action">Throw walnut</span>
+                    </div>
+                    <div class="control-item">
+                        <span class="control-key">Eat Btn</span>
+                        <span class="control-action">Eat walnut to heal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pro Tips -->
+    <section class="content-section">
+        <div class="section-container">
+            <h2 class="section-title"><i class="fas fa-lightbulb"></i> Pro Tips</h2>
+
+            <div class="tips-carousel-wrapper">
+                <button class="carousel-btn prev" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+                <div class="tips-carousel" id="tipsCarousel">
+                    <!-- Combat & Survival -->
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">⚠️</span>
+                            <span class="tip-title">Danger Scales</span>
+                        </div>
+                        <p class="tip-content">NPCs and predators get more aggressive as your score increases - stay alert!</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">🦅</span>
+                            <span class="tip-title">Distract Birds</span>
+                        </div>
+                        <p class="tip-content">Throw a walnut at bird predators (cardinals, toucans) to distract them and avoid an attack!</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">🦌</span>
+                            <span class="tip-title">Wildebeest</span>
+                        </div>
+                        <p class="tip-content">Hit a Wildebeest with 4 walnuts to annoy it and make it flee. Don't waste more!</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">❤️</span>
+                            <span class="tip-title">Heal Up</span>
+                        </div>
+                        <p class="tip-content">Eat walnuts to restore 10 HP each. You can carry up to 10 walnuts - save some for healing!</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">💀</span>
+                            <span class="tip-title">Death Penalty</span>
+                        </div>
+                        <p class="tip-content">If you die, you drop ALL your walnuts and lose 5 points. Respawn is instant though!</p>
+                    </div>
+                    <!-- Tree Growing -->
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">🌱</span>
+                            <span class="tip-title">Grow Trees</span>
+                        </div>
+                        <p class="tip-content">Hide a walnut and protect it for 60 seconds - it grows into a tree for 20 bonus points!</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">🌳</span>
+                            <span class="tip-title">Tree Bonus</span>
+                        </div>
+                        <p class="tip-content">Growing trees is efficient: earn 20 points AND the new tree immediately drops walnuts to collect!</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">🗺️</span>
+                            <span class="tip-title">Minimap Trees</span>
+                        </div>
+                        <p class="tip-content">After growing a tree, a tree icon appears on the minimap for 30 seconds showing its location!</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">🏆</span>
+                            <span class="tip-title">Tree Master</span>
+                        </div>
+                        <p class="tip-content">Grow 20 trees total to earn a special tree growing bonus! Track your progress.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">👀</span>
+                            <span class="tip-title">Protect Your Stash</span>
+                        </div>
+                        <p class="tip-content">Other players can steal your hidden walnuts before they grow - choose hiding spots wisely!</p>
+                    </div>
+                    <!-- Strategy & Resources -->
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">⭐</span>
+                            <span class="tip-title">Point Values</span>
+                        </div>
+                        <p class="tip-content">Regular walnuts = 1pt, Buried walnuts = 3pts, Golden walnuts = 5pts! Prioritize buried ones.</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">✨</span>
+                            <span class="tip-title">Golden Walnuts</span>
+                        </div>
+                        <p class="tip-content">Golden walnuts are rare bonuses worth 5 points - grab them quickly before others do!</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">🍂</span>
+                            <span class="tip-title">Falling Walnuts</span>
+                        </div>
+                        <p class="tip-content">Trees drop walnuts periodically - watch for falling walnuts in the forest and catch them!</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">🐿️</span>
+                            <span class="tip-title">NPC Competition</span>
+                        </div>
+                        <p class="tip-content">NPCs collect and hide walnuts too - compete to find them first or steal their hidden stashes!</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">📊</span>
+                            <span class="tip-title">Leaderboard</span>
+                        </div>
+                        <p class="tip-content">Check the leaderboard to see how you rank against others - it resets weekly for fresh competition!</p>
+                    </div>
+                    <!-- Basics -->
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">⚙️</span>
+                            <span class="tip-title">Settings</span>
+                        </div>
+                        <p class="tip-content">Adjust volume, graphics quality, and control settings in the settings menu (gear icon).</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
+                            <span class="tip-icon">💬</span>
+                            <span class="tip-title">Quick Chat</span>
+                        </div>
+                        <p class="tip-content">Use quick chat to communicate with other players - tap the chat bubble icon to send messages!</p>
+                    </div>
+                </div>
+                <button class="carousel-btn next" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <div class="carousel-dots" id="carouselDots"></div>
+        </div>
+    </section>
+
+    <!-- Why Sign In -->
+    <section class="content-section">
+        <div class="section-container">
+            <h2 class="section-title"><i class="fas fa-user-plus"></i> Why Sign In?</h2>
+
+            <p style="text-align: center; color: #666; margin-bottom: 1.5rem;">
+                Playing as a guest is fun, but signing in unlocks the full experience!
+            </p>
+
+            <table class="benefits-table">
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Guest</th>
+                        <th>Signed In</th>
+                        <th>Verified Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Play the Game</td>
+                        <td><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Squirrel Character</td>
+                        <td><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>5 More Characters</td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Goat Character</td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Cross-Device Progress</td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Weekly Leaderboard</td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>All-Time Hall of Fame</td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="check">✓</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                    <tr>
+                        <td>Verified Badge</td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="cross">✗</span></td>
+                        <td><span class="check">✓</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Final CTA -->
+    <section class="final-cta">
+        <h2>Ready to Play? 🐿️</h2>
+        <p>Jump into the forest and start your journey from Rookie to Legend!</p>
+        <a href="https://game.hiddenwalnuts.com" class="play-now-btn">
+            <i class="fas fa-play"></i> Play Now - It's Free!
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="game-footer">
+        <div class="footer-links">
+            <a href="/">Portfolio</a>
+            <a href="https://www.redbubble.com/people/HiddenWalnuts/explore" target="_blank">Redbubble Store</a>
+            <a href="https://www.teepublic.com/user/hidden-walnuts" target="_blank">TeePublic Store</a>
+            <a href="https://instagram.com/hiddenwalnuts" target="_blank">Instagram</a>
+        </div>
+        <p class="copyright">&copy; <span id="currentYear"></span> Hidden Walnuts. All rights reserved.</p>
+    </footer>
+
+    <script>
+    // Floating leaves animation
+    function createLeaves() {
+        const container = document.getElementById('leavesContainer');
+        const leafEmojis = ['🍂', '🍃', '🌿'];
+        const leafCount = 15;
+
+        for (let i = 0; i < leafCount; i++) {
+            setTimeout(() => {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.textContent = leafEmojis[Math.floor(Math.random() * leafEmojis.length)];
+                leaf.style.left = Math.random() * 100 + '%';
+                leaf.style.animationDuration = (8 + Math.random() * 7) + 's';
+                leaf.style.animationDelay = Math.random() * 5 + 's';
+                leaf.style.fontSize = (16 + Math.random() * 12) + 'px';
+                container.appendChild(leaf);
+
+                setTimeout(() => {
+                    leaf.remove();
+                }, 20000);
+            }, i * 1000);
+        }
+
+        setInterval(() => {
+            const leaf = document.createElement('div');
+            leaf.className = 'leaf';
+            leaf.textContent = leafEmojis[Math.floor(Math.random() * leafEmojis.length)];
+            leaf.style.left = Math.random() * 100 + '%';
+            leaf.style.animationDuration = (8 + Math.random() * 7) + 's';
+            leaf.style.fontSize = (16 + Math.random() * 12) + 'px';
+            container.appendChild(leaf);
+
+            setTimeout(() => {
+                leaf.remove();
+            }, 20000);
+        }, 2000);
+    }
+
+    // Tips Carousel
+    function initCarousel() {
+        const carousel = document.getElementById('tipsCarousel');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const dotsContainer = document.getElementById('carouselDots');
+        const cards = carousel.querySelectorAll('.tip-card');
+
+        let currentIndex = 0;
+        let cardsPerView = getCardsPerView();
+        const totalCards = cards.length;
+        const maxIndex = Math.max(0, totalCards - cardsPerView);
+
+        function getCardsPerView() {
+            const width = window.innerWidth;
+            if (width <= 375) return 2;
+            if (width <= 480) return 2;
+            if (width <= 768) return 3;
+            if (width <= 1024) return 4;
+            return 4;
+        }
+
+        function getCardWidth() {
+            const card = cards[0];
+            const style = window.getComputedStyle(card);
+            const width = card.offsetWidth;
+            const gap = parseInt(style.marginRight) || 24;
+            return width + gap;
+        }
+
+        function updateCarousel() {
+            const cardWidth = getCardWidth();
+            carousel.style.transform = 'translateX(-' + (currentIndex * cardWidth) + 'px)';
+            updateButtons();
+            updateDots();
+        }
+
+        function updateButtons() {
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = currentIndex >= maxIndex;
+        }
+
+        function createDots() {
+            dotsContainer.innerHTML = '';
+            const numDots = Math.ceil(totalCards / cardsPerView);
+            for (let i = 0; i < numDots; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+                dot.addEventListener('click', () => {
+                    currentIndex = Math.min(i * cardsPerView, maxIndex);
+                    updateCarousel();
+                });
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function updateDots() {
+            const dots = dotsContainer.querySelectorAll('.carousel-dot');
+            const activeDotIndex = Math.floor(currentIndex / cardsPerView);
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === activeDotIndex);
+            });
+        }
+
+        prevBtn.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex = Math.max(0, currentIndex - cardsPerView);
+                updateCarousel();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentIndex < maxIndex) {
+                currentIndex = Math.min(maxIndex, currentIndex + cardsPerView);
+                updateCarousel();
+            }
+        });
+
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carousel.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        carousel.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0 && currentIndex < maxIndex) {
+                    currentIndex = Math.min(maxIndex, currentIndex + 1);
+                } else if (diff < 0 && currentIndex > 0) {
+                    currentIndex = Math.max(0, currentIndex - 1);
+                }
+                updateCarousel();
+            }
+        }
+
+        // Handle resize
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                cardsPerView = getCardsPerView();
+                currentIndex = Math.min(currentIndex, Math.max(0, totalCards - cardsPerView));
+                createDots();
+                updateCarousel();
+            }, 150);
+        });
+
+        // Auto-rotate
+        let autoRotateInterval;
+        const autoRotateDelay = 4000;
+
+        function startAutoRotate() {
+            autoRotateInterval = setInterval(() => {
+                if (currentIndex >= maxIndex) {
+                    currentIndex = 0;
+                } else {
+                    currentIndex++;
+                }
+                updateCarousel();
+            }, autoRotateDelay);
+        }
+
+        function stopAutoRotate() {
+            clearInterval(autoRotateInterval);
+        }
+
+        // Pause on hover/touch
+        const wrapper = document.querySelector('.tips-carousel-wrapper');
+        wrapper.addEventListener('mouseenter', stopAutoRotate);
+        wrapper.addEventListener('mouseleave', startAutoRotate);
+        wrapper.addEventListener('touchstart', stopAutoRotate, { passive: true });
+        wrapper.addEventListener('touchend', () => {
+            setTimeout(startAutoRotate, 2000);
+        }, { passive: true });
+
+        createDots();
+        updateCarousel();
+        startAutoRotate();
+    }
+
+    // Update copyright year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Start animations and carousel
+    createLeaves();
+    initCarousel();
     </script>
 </body>
 </html>`;
