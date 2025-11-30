@@ -1308,6 +1308,31 @@ body {
     font-size: 0.95rem;
 }
 
+.hero-screenshot {
+    margin-top: 3rem;
+    position: relative;
+}
+
+.hero-screenshot img {
+    max-width: 100%;
+    width: 700px;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.hero-screenshot::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 6px;
+    background: var(--autumn-orange);
+    border-radius: 3px;
+}
+
 /* Content Sections */
 .content-section {
     position: relative;
@@ -1835,6 +1860,15 @@ body {
         font-size: 0.85rem;
     }
 
+    .hero-screenshot {
+        margin-top: 2rem;
+    }
+
+    .hero-screenshot img {
+        width: 100%;
+        border-radius: 8px;
+    }
+
     .content-section {
         padding: 2rem 1rem;
     }
@@ -2012,6 +2046,9 @@ body {
             <p class="play-options">
                 Free to play • No download required • Desktop & Mobile
             </p>
+            <div class="hero-screenshot">
+                <img src="${GITHUB_BASE_URL}screengrab1.png" alt="Hidden Walnuts gameplay screenshot">
+            </div>
         </div>
     </section>
 
@@ -2062,10 +2099,6 @@ body {
                     <div class="control-item">
                         <span class="control-key">WASD</span>
                         <span class="control-action">Move your character <span style="opacity: 0.7; font-size: 0.85em;">(or Arrow Keys)</span></span>
-                    </div>
-                    <div class="control-item">
-                        <span class="control-key">Mouse</span>
-                        <span class="control-action">Look around and aim</span>
                     </div>
                     <div class="control-item">
                         <span class="control-key">Click</span>
