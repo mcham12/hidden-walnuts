@@ -2037,7 +2037,7 @@ body {
             <div class="hero-icon">🐿️</div>
             <h1>Hidden Walnuts</h1>
             <p class="hero-subtitle">
-                A casual real-time multiplayer game where you play as a squirrel competing to find hidden walnuts,
+                A casual real-time multiplayer game where you play as a cute animal competing to find hidden walnuts,
                 grow trees for bonus points, and survive in a dynamic forest ecosystem!
             </p>
             <a href="https://game.hiddenwalnuts.com" class="play-now-btn">
