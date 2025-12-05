@@ -3075,11 +3075,12 @@ const ADMIN_HTML = `<!DOCTYPE html>
                 const result = await response.json();
                 
                 if (response.ok) {
+                    const wasEditing = editingId;
                     showAlert(\`Portfolio item \${editingId ? 'updated' : 'added'} successfully!\`, 'success');
                     resetForm();
-                    if (editingId) {
-                        editingId = null;
-                        submitText.textContent = 'Add Portfolio Item';
+                    if (wasEditing) {
+                        // Go back to manage tab after editing
+                        showTab('manage');
                     }
                 } else {
                     throw new Error(result.error || 'Failed to save item');
