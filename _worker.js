@@ -3162,11 +3162,14 @@ const ADMIN_HTML = `<!DOCTYPE html>
             currentTags = item.tags || [];
             renderTags();
             
+            // Set the hidden imageUrl field with existing URL
+            imageUrlInput.value = item.imageUrl;
+
             // Show preview of existing image
             previewImg.src = item.imageUrl;
             previewName.textContent = 'Current image';
             imagePreview.classList.remove('hidden');
-            
+
             // Remove required from image filename input for editing
             imageFilenameInput.removeAttribute('required');
             
