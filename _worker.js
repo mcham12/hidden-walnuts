@@ -154,10 +154,10 @@ async function getPortfolioItems(env) {
       if (item) items.push(item);
     }
     
-    // Sort: "featured" tag first, then by dateAdded (newest first)
+    // Sort: featured checkbox items first, then by dateAdded (newest first)
     return items.sort((a, b) => {
-      const aFeatured = a.tags?.includes('featured') ? 1 : 0;
-      const bFeatured = b.tags?.includes('featured') ? 1 : 0;
+      const aFeatured = a.featured ? 1 : 0;
+      const bFeatured = b.featured ? 1 : 0;
       if (bFeatured !== aFeatured) return bFeatured - aFeatured;
       return new Date(b.dateAdded) - new Date(a.dateAdded);
     });
