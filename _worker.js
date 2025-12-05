@@ -154,7 +154,13 @@ async function getPortfolioItems(env) {
       if (item) items.push(item);
     }
     
-    return items.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+    // Sort: "featured" tag first, then by dateAdded (newest first)
+    return items.sort((a, b) => {
+      const aFeatured = a.tags?.includes('featured') ? 1 : 0;
+      const bFeatured = b.tags?.includes('featured') ? 1 : 0;
+      if (bFeatured !== aFeatured) return bFeatured - aFeatured;
+      return new Date(b.dateAdded) - new Date(a.dateAdded);
+    });
   } catch (error) {
     console.error('Error getting portfolio items:', error);
     return [];
