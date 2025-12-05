@@ -3165,9 +3165,13 @@ const ADMIN_HTML = `<!DOCTYPE html>
             // Set the hidden imageUrl field with existing URL
             imageUrlInput.value = item.imageUrl;
 
+            // Extract and show the filename from the URL
+            const filename = item.imageUrl.split('/').pop();
+            imageFilenameInput.value = filename;
+
             // Show preview of existing image
             previewImg.src = item.imageUrl;
-            previewName.textContent = 'Current image';
+            previewName.textContent = 'Current image: ' + filename;
             imagePreview.classList.remove('hidden');
 
             // Remove required from image filename input for editing
