@@ -1,5 +1,7 @@
 /**
  * Cloudflare Worker for Hidden Walnuts Portfolio Admin
+ * Last Deployed: 2025-12-15
+ * Cloudflare Worker for Hidden Walnuts Portfolio Admin
  * Handles CRUD operations for portfolio items using KV storage and GitHub image hosting
  */
 
@@ -10,305 +12,305 @@ const ADMIN_PASSWORD = 'hidden2024!';
 
 // Authentication middleware
 function requireAuth(request) {
-  const authorization = request.headers.get('authorization');
-  if (!authorization) {
-    return new Response('Authentication required', {
-      status: 401,
-      headers: {
-        'WWW-Authenticate': 'Basic realm="Admin Interface"',
-        'Content-Type': 'text/plain'
-      }
-    });
-  }
-  
-  const [scheme, encoded] = authorization.split(' ');
-  if (scheme !== 'Basic') {
-    return new Response('Invalid authentication scheme', { 
-      status: 401,
-      headers: { 'Content-Type': 'text/plain' }
-    });
-  }
-  
-  const credentials = atob(encoded);
-  const [username, password] = credentials.split(':');
-  
-  if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
-    return new Response('Invalid credentials', { 
-      status: 401,
-      headers: {
-        'WWW-Authenticate': 'Basic realm="Admin Interface"',
-        'Content-Type': 'text/plain'
-      }
-    });
-  }
-  
-  return null; // Authentication successful
+    const authorization = request.headers.get('authorization');
+    if (!authorization) {
+        return new Response('Authentication required', {
+            status: 401,
+            headers: {
+                'WWW-Authenticate': 'Basic realm="Admin Interface"',
+                'Content-Type': 'text/plain'
+            }
+        });
+    }
+
+    const [scheme, encoded] = authorization.split(' ');
+    if (scheme !== 'Basic') {
+        return new Response('Invalid authentication scheme', {
+            status: 401,
+            headers: { 'Content-Type': 'text/plain' }
+        });
+    }
+
+    const credentials = atob(encoded);
+    const [username, password] = credentials.split(':');
+
+    if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+        return new Response('Invalid credentials', {
+            status: 401,
+            headers: {
+                'WWW-Authenticate': 'Basic realm="Admin Interface"',
+                'Content-Type': 'text/plain'
+            }
+        });
+    }
+
+    return null; // Authentication successful
 }
 
 export default {
-  async fetch(request, env) {
-    const url = new URL(request.url);
-    const path = url.pathname;
-    
-    // CORS headers for admin interface
-    const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    };
-    
-    // Handle preflight requests
-    if (request.method === 'OPTIONS') {
-      return new Response(null, { headers: corsHeaders });
+    async fetch(request, env) {
+        const url = new URL(request.url);
+        const path = url.pathname;
+
+        // CORS headers for admin interface
+        const corsHeaders = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        };
+
+        // Handle preflight requests
+        if (request.method === 'OPTIONS') {
+            return new Response(null, { headers: corsHeaders });
+        }
+
+        try {
+            // API Routes
+            if (path.startsWith('/api/')) {
+                const response = await handleAPI(request, env, path);
+                return new Response(response.body, {
+                    status: response.status,
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+                });
+            }
+
+            // Admin interface route (protected)
+            if (path === '/admin' || path === '/admin/') {
+                const authResult = requireAuth(request);
+                if (authResult) return authResult;
+
+                return new Response(ADMIN_HTML, {
+                    headers: { 'Content-Type': 'text/html' }
+                });
+            }
+
+            // Game landing page route
+            if (path === '/game' || path === '/game/') {
+                return new Response(GAME_HTML, {
+                    headers: { 'Content-Type': 'text/html' }
+                });
+            }
+
+            // Main portfolio site route
+            if (path === '/' || path === '') {
+                return new Response(MAIN_HTML, {
+                    headers: { 'Content-Type': 'text/html' }
+                });
+            }
+
+            // Portfolio API route (this was duplicated, moved to handleAPI)
+            return new Response('Not Found', { status: 404 });
+
+        } catch (error) {
+            return new Response(JSON.stringify({ error: error.message }), {
+                status: 500,
+                headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+            });
+        }
     }
-    
-    try {
-      // API Routes
-      if (path.startsWith('/api/')) {
-        const response = await handleAPI(request, env, path);
-        return new Response(response.body, {
-          status: response.status,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-        });
-      }
-      
-      // Admin interface route (protected)
-      if (path === '/admin' || path === '/admin/') {
-        const authResult = requireAuth(request);
-        if (authResult) return authResult;
-
-        return new Response(ADMIN_HTML, {
-          headers: { 'Content-Type': 'text/html' }
-        });
-      }
-
-      // Game landing page route
-      if (path === '/game' || path === '/game/') {
-        return new Response(GAME_HTML, {
-          headers: { 'Content-Type': 'text/html' }
-        });
-      }
-
-      // Main portfolio site route
-      if (path === '/' || path === '') {
-        return new Response(MAIN_HTML, {
-          headers: { 'Content-Type': 'text/html' }
-        });
-      }
-      
-      // Portfolio API route (this was duplicated, moved to handleAPI)
-      return new Response('Not Found', { status: 404 });
-      
-    } catch (error) {
-      return new Response(JSON.stringify({ error: error.message }), {
-        status: 500,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' }
-      });
-    }
-  }
 };
 
 async function handleAPI(request, env, path) {
-  const method = request.method;
-  
-  if (path === '/api/portfolio') {
-    if (method === 'GET') {
-      const items = await getPortfolioItems(env);
-      return { status: 200, body: JSON.stringify(items) };
+    const method = request.method;
+
+    if (path === '/api/portfolio') {
+        if (method === 'GET') {
+            const items = await getPortfolioItems(env);
+            return { status: 200, body: JSON.stringify(items) };
+        }
+        if (method === 'POST') {
+            return await createPortfolioItem(request, env);
+        }
     }
-    if (method === 'POST') {
-      return await createPortfolioItem(request, env);
+
+    if (path.startsWith('/api/portfolio/')) {
+        const id = path.split('/').pop();
+
+        if (method === 'GET') {
+            return await getPortfolioItem(env, id);
+        }
+        if (method === 'PUT') {
+            return await updatePortfolioItem(request, env, id);
+        }
+        if (method === 'DELETE') {
+            return await deletePortfolioItem(env, id);
+        }
     }
-  }
-  
-  if (path.startsWith('/api/portfolio/')) {
-    const id = path.split('/').pop();
-    
-    if (method === 'GET') {
-      return await getPortfolioItem(env, id);
-    }
-    if (method === 'PUT') {
-      return await updatePortfolioItem(request, env, id);
-    }
-    if (method === 'DELETE') {
-      return await deletePortfolioItem(env, id);
-    }
-  }
-  
-  // Image upload disabled - use external URLs instead
-  // if (path === '/api/upload' && method === 'POST') {
-  //   return await handleImageUpload(request, env);
-  // }
-  
-  return { status: 404, body: JSON.stringify({ error: 'Not found' }) };
+
+    // Image upload disabled - use external URLs instead
+    // if (path === '/api/upload' && method === 'POST') {
+    //   return await handleImageUpload(request, env);
+    // }
+
+    return { status: 404, body: JSON.stringify({ error: 'Not found' }) };
 }
 
 // CRUD Operations
 async function getPortfolioItems(env) {
-  try {
-    const { keys } = await env.PORTFOLIO_KV.list({ prefix: 'item:' });
-    const items = [];
-    
-    for (const key of keys) {
-      const item = await env.PORTFOLIO_KV.get(key.name, { type: 'json' });
-      if (item) items.push(item);
+    try {
+        const { keys } = await env.PORTFOLIO_KV.list({ prefix: 'item:' });
+        const items = [];
+
+        for (const key of keys) {
+            const item = await env.PORTFOLIO_KV.get(key.name, { type: 'json' });
+            if (item) items.push(item);
+        }
+
+        // Sort: featured checkbox items first, then by dateAdded (newest first)
+        return items.sort((a, b) => {
+            const aFeatured = a.featured ? 1 : 0;
+            const bFeatured = b.featured ? 1 : 0;
+            if (bFeatured !== aFeatured) return bFeatured - aFeatured;
+            return new Date(b.dateAdded) - new Date(a.dateAdded);
+        });
+    } catch (error) {
+        console.error('Error getting portfolio items:', error);
+        return [];
     }
-    
-    // Sort: featured checkbox items first, then by dateAdded (newest first)
-    return items.sort((a, b) => {
-      const aFeatured = a.featured ? 1 : 0;
-      const bFeatured = b.featured ? 1 : 0;
-      if (bFeatured !== aFeatured) return bFeatured - aFeatured;
-      return new Date(b.dateAdded) - new Date(a.dateAdded);
-    });
-  } catch (error) {
-    console.error('Error getting portfolio items:', error);
-    return [];
-  }
 }
 
 async function getPortfolioItem(env, id) {
-  try {
-    const item = await env.PORTFOLIO_KV.get(`item:${id}`, { type: 'json' });
-    if (!item) {
-      return { status: 404, body: JSON.stringify({ error: 'Item not found' }) };
+    try {
+        const item = await env.PORTFOLIO_KV.get(`item:${id}`, { type: 'json' });
+        if (!item) {
+            return { status: 404, body: JSON.stringify({ error: 'Item not found' }) };
+        }
+        return { status: 200, body: JSON.stringify(item) };
+    } catch (error) {
+        return { status: 500, body: JSON.stringify({ error: error.message }) };
     }
-    return { status: 200, body: JSON.stringify(item) };
-  } catch (error) {
-    return { status: 500, body: JSON.stringify({ error: error.message }) };
-  }
 }
 
 async function createPortfolioItem(request, env) {
-  try {
-    const data = await request.json();
-    const id = generateId();
-    const item = {
-      id,
-      title: data.title,
-      description: data.description || '',
-      imageUrl: data.imageUrl,
-      redbubbleUrl: data.redbubbleUrl,
-      tags: data.tags || [],
-      featured: data.featured || false,
-      dateAdded: new Date().toISOString()
-    };
-    
-    await env.PORTFOLIO_KV.put(`item:${id}`, JSON.stringify(item));
-    return { status: 201, body: JSON.stringify(item) };
-  } catch (error) {
-    return { status: 500, body: JSON.stringify({ error: error.message }) };
-  }
+    try {
+        const data = await request.json();
+        const id = generateId();
+        const item = {
+            id,
+            title: data.title,
+            description: data.description || '',
+            imageUrl: data.imageUrl,
+            redbubbleUrl: data.redbubbleUrl,
+            tags: data.tags || [],
+            featured: data.featured || false,
+            dateAdded: new Date().toISOString()
+        };
+
+        await env.PORTFOLIO_KV.put(`item:${id}`, JSON.stringify(item));
+        return { status: 201, body: JSON.stringify(item) };
+    } catch (error) {
+        return { status: 500, body: JSON.stringify({ error: error.message }) };
+    }
 }
 
 async function updatePortfolioItem(request, env, id) {
-  try {
-    const existingItem = await env.PORTFOLIO_KV.get(`item:${id}`, { type: 'json' });
-    if (!existingItem) {
-      return { status: 404, body: JSON.stringify({ error: 'Item not found' }) };
+    try {
+        const existingItem = await env.PORTFOLIO_KV.get(`item:${id}`, { type: 'json' });
+        if (!existingItem) {
+            return { status: 404, body: JSON.stringify({ error: 'Item not found' }) };
+        }
+
+        const data = await request.json();
+        const updatedItem = {
+            ...existingItem,
+            ...data,
+            id, // Ensure ID doesn't change
+            dateAdded: existingItem.dateAdded // Preserve creation date
+        };
+
+        await env.PORTFOLIO_KV.put(`item:${id}`, JSON.stringify(updatedItem));
+        return { status: 200, body: JSON.stringify(updatedItem) };
+    } catch (error) {
+        return { status: 500, body: JSON.stringify({ error: error.message }) };
     }
-    
-    const data = await request.json();
-    const updatedItem = {
-      ...existingItem,
-      ...data,
-      id, // Ensure ID doesn't change
-      dateAdded: existingItem.dateAdded // Preserve creation date
-    };
-    
-    await env.PORTFOLIO_KV.put(`item:${id}`, JSON.stringify(updatedItem));
-    return { status: 200, body: JSON.stringify(updatedItem) };
-  } catch (error) {
-    return { status: 500, body: JSON.stringify({ error: error.message }) };
-  }
 }
 
 async function deletePortfolioItem(env, id) {
-  try {
-    const item = await env.PORTFOLIO_KV.get(`item:${id}`, { type: 'json' });
-    if (!item) {
-      return { status: 404, body: JSON.stringify({ error: 'Item not found' }) };
+    try {
+        const item = await env.PORTFOLIO_KV.get(`item:${id}`, { type: 'json' });
+        if (!item) {
+            return { status: 404, body: JSON.stringify({ error: 'Item not found' }) };
+        }
+
+        await env.PORTFOLIO_KV.delete(`item:${id}`);
+        return { status: 200, body: JSON.stringify({ message: 'Item deleted successfully' }) };
+    } catch (error) {
+        return { status: 500, body: JSON.stringify({ error: error.message }) };
     }
-    
-    await env.PORTFOLIO_KV.delete(`item:${id}`);
-    return { status: 200, body: JSON.stringify({ message: 'Item deleted successfully' }) };
-  } catch (error) {
-    return { status: 500, body: JSON.stringify({ error: error.message }) };
-  }
 }
 
 async function handleImageUpload(request, env) {
-  try {
-    console.log('Upload request received');
-    
-    // Check if we have the required environment variables
-    if (!env.CLOUDFLARE_ACCOUNT_ID) {
-      console.error('Missing CLOUDFLARE_ACCOUNT_ID');
-      return { status: 500, body: JSON.stringify({ error: 'Server configuration error: Missing account ID' }) };
+    try {
+        console.log('Upload request received');
+
+        // Check if we have the required environment variables
+        if (!env.CLOUDFLARE_ACCOUNT_ID) {
+            console.error('Missing CLOUDFLARE_ACCOUNT_ID');
+            return { status: 500, body: JSON.stringify({ error: 'Server configuration error: Missing account ID' }) };
+        }
+
+        if (!env.CLOUDFLARE_API_TOKEN) {
+            console.error('Missing CLOUDFLARE_API_TOKEN');
+            return { status: 500, body: JSON.stringify({ error: 'Server configuration error: Missing API token' }) };
+        }
+
+        const formData = await request.formData();
+        const file = formData.get('file');
+
+        if (!file) {
+            console.error('No file provided in request');
+            return { status: 400, body: JSON.stringify({ error: 'No file provided' }) };
+        }
+
+        console.log('File received:', file.name, 'Size:', file.size, 'Type:', file.type);
+
+        // Upload to Cloudflare Images
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', file);
+
+        const apiUrl = `https://api.cloudflare.com/client/v4/accounts/${env.CLOUDFLARE_ACCOUNT_ID}/images/v1`;
+        console.log('Uploading to:', apiUrl);
+
+        const uploadResponse = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${env.CLOUDFLARE_API_TOKEN}`
+            },
+            body: uploadFormData
+        });
+
+        console.log('Upload response status:', uploadResponse.status);
+
+        const uploadResult = await uploadResponse.json();
+        console.log('Upload result:', JSON.stringify(uploadResult));
+
+        if (uploadResult.success) {
+            return {
+                status: 200,
+                body: JSON.stringify({
+                    imageUrl: uploadResult.result.variants[0],
+                    imageId: uploadResult.result.id
+                })
+            };
+        } else {
+            console.error('Upload failed:', uploadResult);
+            return {
+                status: 400,
+                body: JSON.stringify({
+                    error: 'Upload failed',
+                    details: uploadResult.errors || uploadResult.messages || 'Unknown error',
+                    cloudflareResponse: uploadResult
+                })
+            };
+        }
+    } catch (error) {
+        console.error('Upload error:', error);
+        return { status: 500, body: JSON.stringify({ error: error.message, stack: error.stack }) };
     }
-    
-    if (!env.CLOUDFLARE_API_TOKEN) {
-      console.error('Missing CLOUDFLARE_API_TOKEN');
-      return { status: 500, body: JSON.stringify({ error: 'Server configuration error: Missing API token' }) };
-    }
-    
-    const formData = await request.formData();
-    const file = formData.get('file');
-    
-    if (!file) {
-      console.error('No file provided in request');
-      return { status: 400, body: JSON.stringify({ error: 'No file provided' }) };
-    }
-    
-    console.log('File received:', file.name, 'Size:', file.size, 'Type:', file.type);
-    
-    // Upload to Cloudflare Images
-    const uploadFormData = new FormData();
-    uploadFormData.append('file', file);
-    
-    const apiUrl = `https://api.cloudflare.com/client/v4/accounts/${env.CLOUDFLARE_ACCOUNT_ID}/images/v1`;
-    console.log('Uploading to:', apiUrl);
-    
-    const uploadResponse = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${env.CLOUDFLARE_API_TOKEN}`
-      },
-      body: uploadFormData
-    });
-    
-    console.log('Upload response status:', uploadResponse.status);
-    
-    const uploadResult = await uploadResponse.json();
-    console.log('Upload result:', JSON.stringify(uploadResult));
-    
-    if (uploadResult.success) {
-      return {
-        status: 200,
-        body: JSON.stringify({
-          imageUrl: uploadResult.result.variants[0],
-          imageId: uploadResult.result.id
-        })
-      };
-    } else {
-      console.error('Upload failed:', uploadResult);
-      return {
-        status: 400,
-        body: JSON.stringify({ 
-          error: 'Upload failed', 
-          details: uploadResult.errors || uploadResult.messages || 'Unknown error',
-          cloudflareResponse: uploadResult
-        })
-      };
-    }
-  } catch (error) {
-    console.error('Upload error:', error);
-    return { status: 500, body: JSON.stringify({ error: error.message, stack: error.stack }) };
-  }
 }
 
 function generateId() {
-  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
 
 // Main Website HTML
