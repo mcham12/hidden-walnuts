@@ -1,7 +1,6 @@
 /**
  * Cloudflare Worker for Hidden Walnuts Portfolio Admin
  * Last Deployed: 2025-12-15
- * Cloudflare Worker for Hidden Walnuts Portfolio Admin
  * Handles CRUD operations for portfolio items using KV storage and GitHub image hosting
  */
 
@@ -80,21 +79,30 @@ export default {
                 if (authResult) return authResult;
 
                 return new Response(ADMIN_HTML, {
-                    headers: { 'Content-Type': 'text/html' }
+                    headers: {
+                        'Content-Type': 'text/html',
+                        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0'
+                    }
                 });
             }
 
             // Game landing page route
             if (path === '/game' || path === '/game/') {
                 return new Response(GAME_HTML, {
-                    headers: { 'Content-Type': 'text/html' }
+                    headers: {
+                        'Content-Type': 'text/html',
+                        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0'
+                    }
                 });
             }
 
             // Main portfolio site route
             if (path === '/' || path === '') {
                 return new Response(MAIN_HTML, {
-                    headers: { 'Content-Type': 'text/html' }
+                    headers: {
+                        'Content-Type': 'text/html',
+                        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0'
+                    }
                 });
             }
 
