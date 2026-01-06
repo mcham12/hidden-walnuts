@@ -2039,8 +2039,7 @@ body {
             <div class="hero-icon">🐿️</div>
             <h1>Hidden Walnuts</h1>
             <p class="hero-subtitle">
-                A casual real-time multiplayer game where you play as a cute animal competing to find hidden walnuts,
-                grow trees for bonus points, and survive in a dynamic forest ecosystem!
+                Hidden Walnuts is a casual real-time multiplayer game where you play as a squirrel (or other forest creatures) competing to find hidden walnuts, hide your own for bonus points, and survive in a dynamic forest ecosystem.
             </p>
             <a href="https://game.hiddenwalnuts.com" class="play-now-btn">
                 <i class="fas fa-play"></i> Play Now
@@ -2063,22 +2062,22 @@ body {
                 <div class="objective-card">
                     <div class="objective-icon">🔍</div>
                     <h4>Find</h4>
-                    <p>Search for walnuts scattered throughout the forest</p>
+                    <p>Find walnuts scattered throughout the forest</p>
                 </div>
                 <div class="objective-card">
                     <div class="objective-icon">🌱</div>
                     <h4>Hide & Grow</h4>
-                    <p>Bury walnuts - if unfound for 60s, they grow into trees for 20 bonus points!</p>
+                    <p>Hide walnuts strategically - if they remain unfound for 60+ seconds, they grow into trees for 20 bonus points!</p>
                 </div>
                 <div class="objective-card">
                     <div class="objective-icon">⚔️</div>
                     <h4>Survive</h4>
-                    <p>Battle AI predators and compete with other players</p>
+                    <p>Battle other players and AI predators (wildebeest, cardinals, toucans)</p>
                 </div>
                 <div class="objective-card">
                     <div class="objective-icon">🏆</div>
                     <h4>Rank Up</h4>
-                    <p>Climb from Rookie to Legend on the leaderboard</p>
+                    <p>Climb the ranks from Rookie → Apprentice → Dabbler → Slick → Maestro → Ninja → Legend</p>
                 </div>
             </div>
 
@@ -2126,7 +2125,7 @@ body {
                         <span class="control-action">Virtual joystick to move</span>
                     </div>
                     <div class="control-item">
-                        <span class="control-key">Tap</span>
+                        <span class="control-key">Tap/Walk</span>
                         <span class="control-action">Pick up walnuts</span>
                     </div>
                     <div class="control-item">
@@ -2167,28 +2166,28 @@ body {
                             <span class="tip-icon">🦅</span>
                             <span class="tip-title">Distract Birds</span>
                         </div>
-                        <p class="tip-content">Throw a walnut at bird predators (cardinals, toucans) to distract them and avoid an attack!</p>
+                        <p class="tip-content">Throw a walnut at a bird predator to distract it and avoid an attack</p>
                     </div>
                     <div class="tip-card">
                         <div class="tip-header">
                             <span class="tip-icon">🦌</span>
                             <span class="tip-title">Wildebeest</span>
                         </div>
-                        <p class="tip-content">Hit a Wildebeest with 4 walnuts to annoy it and make it flee. Don't waste more!</p>
+                        <p class="tip-content">Hit a Wildebeest with 4 walnuts to annoy it and make it flee</p>
                     </div>
                     <div class="tip-card">
                         <div class="tip-header">
                             <span class="tip-icon">❤️</span>
                             <span class="tip-title">Heal Up</span>
                         </div>
-                        <p class="tip-content">Eat walnuts to restore 10 HP each. You can carry up to 10 walnuts - save some for healing!</p>
+                        <p class="tip-content">Eat walnuts to restore health (+25 HP per walnut)</p>
                     </div>
                     <div class="tip-card">
                         <div class="tip-header">
                             <span class="tip-icon">💀</span>
                             <span class="tip-title">Death Penalty</span>
                         </div>
-                        <p class="tip-content">If you die, you drop ALL your walnuts and lose 5 points. Respawn is instant though!</p>
+                        <p class="tip-content">If you die, you drop all your walnuts - respawn is instant but you lose 5 points!</p>
                     </div>
                     <!-- Tree Growing -->
                     <div class="tip-card">
@@ -2196,14 +2195,14 @@ body {
                             <span class="tip-icon">🌱</span>
                             <span class="tip-title">Grow Trees</span>
                         </div>
-                        <p class="tip-content">Hide a walnut and protect it for 60 seconds - it grows into a tree for 20 bonus points!</p>
+                        <p class="tip-content">Hide a walnut and protect it for 1 minute - it will grow into a tree for bonus points!</p>
                     </div>
                     <div class="tip-card">
                         <div class="tip-header">
                             <span class="tip-icon">🌳</span>
                             <span class="tip-title">Tree Bonus</span>
                         </div>
-                        <p class="tip-content">Growing trees is efficient: earn 20 points AND the new tree immediately drops walnuts to collect!</p>
+                        <p class="tip-content">Growing trees is efficient: earn points AND the tree drops walnuts immediately</p>
                     </div>
                     <div class="tip-card">
                         <div class="tip-header">
@@ -2217,7 +2216,7 @@ body {
                             <span class="tip-icon">🏆</span>
                             <span class="tip-title">Tree Master</span>
                         </div>
-                        <p class="tip-content">Grow 20 trees total to earn a special tree growing bonus! Track your progress.</p>
+                        <p class="tip-content">Grow 20 trees total to earn a special tree growing bonus!</p>
                     </div>
                     <div class="tip-card">
                         <div class="tip-header">
@@ -2232,14 +2231,14 @@ body {
                             <span class="tip-icon">⭐</span>
                             <span class="tip-title">Point Values</span>
                         </div>
-                        <p class="tip-content">Regular walnuts = 1pt, Buried walnuts = 3pts, Golden walnuts = 5pts! Prioritize buried ones.</p>
+                        <p class="tip-content">Buried walnuts are worth 3 points, regular walnuts are worth 1 point</p>
                     </div>
                     <div class="tip-card">
                         <div class="tip-header">
                             <span class="tip-icon">✨</span>
                             <span class="tip-title">Golden Walnuts</span>
                         </div>
-                        <p class="tip-content">Golden walnuts are rare bonuses worth 5 points - grab them quickly before others do!</p>
+                        <p class="tip-content">Golden walnuts are rare bonuses worth 5 points - grab them quickly!</p>
                     </div>
                     <div class="tip-card">
                         <div class="tip-header">
@@ -2299,7 +2298,6 @@ body {
                         <th>Feature</th>
                         <th>Guest</th>
                         <th>Signed In</th>
-                        <th>Verified Email</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -2307,23 +2305,14 @@ body {
                         <td>Play the Game</td>
                         <td><span class="check">✓</span></td>
                         <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
                     </tr>
                     <tr>
                         <td>Squirrel Character</td>
                         <td><span class="check">✓</span></td>
                         <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
                     </tr>
                     <tr>
-                        <td>5 More Characters</td>
-                        <td><span class="cross">✗</span></td>
-                        <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
-                    </tr>
-                    <tr>
-                        <td>Goat Character</td>
-                        <td><span class="cross">✗</span></td>
+                        <td>Additional Characters</td>
                         <td><span class="cross">✗</span></td>
                         <td><span class="check">✓</span></td>
                     </tr>
@@ -2331,23 +2320,14 @@ body {
                         <td>Cross-Device Progress</td>
                         <td><span class="cross">✗</span></td>
                         <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
                     </tr>
                     <tr>
                         <td>Weekly Leaderboard</td>
                         <td><span class="cross">✗</span></td>
                         <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
                     </tr>
                     <tr>
                         <td>All-Time Hall of Fame</td>
-                        <td><span class="cross">✗</span></td>
-                        <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
-                    </tr>
-                    <tr>
-                        <td>Verified Badge</td>
-                        <td><span class="cross">✗</span></td>
                         <td><span class="cross">✗</span></td>
                         <td><span class="check">✓</span></td>
                     </tr>

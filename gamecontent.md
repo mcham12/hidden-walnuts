@@ -25,7 +25,7 @@ Hidden Walnuts is a casual real-time multiplayer game where you play as a squirr
 
 ### Mobile Controls
 - **Virtual Joystick** Drag on the screen to move
-- **Tap or walk over walnuuts"" Pick up walnuts
+- **Tap or walk over walnuts**: Pick up walnuts
 - **Hide Button** Hide a walnut
 - **Throw Button** Throw walnut
 - **Eat Button** Eat walnut to heal
@@ -39,7 +39,7 @@ Hidden Walnuts is a casual real-time multiplayer game where you play as a squirr
 - **NPCs and predators get more aggressive as your score increases** - stay alert! ⚔️
 - **Throw a walnut at a bird predator to distract it** and avoid an attack 🦅
 - **Hit a Wildebeest with 4 walnuts** to annoy it and make it flee 🦌
-- **Eat walnuts to restore health** (+10 HP per walnut) ❤️
+- **Eat walnuts to restore health** (+25 HP per walnut) ❤️
 - **You can carry up to 10 walnuts** - use them wisely for combat and healing 🎒
 - **If you die, you drop all your walnuts** - respawn is instant but you lose 5 points! 💀
 
@@ -80,24 +80,14 @@ Playing as a **guest** is fun, but **signing in** unlocks:
 
 ### 🎨 More Characters
 - **Guests**: Limited to Squirrel only
-- **Free Sign-In**: Unlock 6 characters (Squirrel, Hare, Goat, Chipmunk, Turkey, Mallard).  Goat requires you to also verify your email address after signing up.
-- **Premium**: Coming soon! Purchase additional characters (Lynx, Bear, Moose, Badger)
+- **Free Sign-In**: Unlock additional characters (Hare, Goat, Chipmunk, Turkey, Mallard) and cross-device sync!
 
 ### 📈 Persistent Progression
 - **Your score and rank is saved** across all sessions
 
 ---
 
-## 🔒 Why Verify Your Email?
 
-After signing up, **verify your email** to unlock additional benefits:
-
-### Access to the Goat character
-
-### ✅ Verified Badge
-- **Stand out on the leaderboard** with a verified status
-- **Build trust** with other players in the community
----
 
 ## 🚀 Ready to Play?
 
