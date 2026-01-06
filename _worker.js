@@ -2048,7 +2048,7 @@ body {
                 Free to play • No download required • Desktop & Mobile
             </p>
             <div class="hero-screenshot">
-                <img src="${GITHUB_BASE_URL}screengrab1.png" alt="Hidden Walnuts gameplay screenshot">
+                <img src="${GITHUB_BASE_URL}Jan6HiddenWalnuts.jpg" alt="Hidden Walnuts gameplay screenshot">
             </div>
         </div>
     </section>
