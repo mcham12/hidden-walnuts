@@ -2283,58 +2283,7 @@ body {
         </div>
     </section>
 
-    <!-- Why Sign In -->
-    <section class="content-section">
-        <div class="section-container">
-            <h2 class="section-title"><i class="fas fa-user-plus"></i> Why Sign In?</h2>
 
-            <p style="text-align: center; color: #666; margin-bottom: 1.5rem;">
-                Playing as a guest is fun, but signing in unlocks the full experience!
-            </p>
-
-            <table class="benefits-table">
-                <thead>
-                    <tr>
-                        <th>Feature</th>
-                        <th>Guest</th>
-                        <th>Signed In</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Play the Game</td>
-                        <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
-                    </tr>
-                    <tr>
-                        <td>Squirrel Character</td>
-                        <td><span class="check">✓</span></td>
-                        <td><span class="check">✓</span></td>
-                    </tr>
-                    <tr>
-                        <td>Additional Characters</td>
-                        <td><span class="cross">✗</span></td>
-                        <td><span class="check">✓</span></td>
-                    </tr>
-                    <tr>
-                        <td>Cross-Device Progress</td>
-                        <td><span class="cross">✗</span></td>
-                        <td><span class="check">✓</span></td>
-                    </tr>
-                    <tr>
-                        <td>Weekly Leaderboard</td>
-                        <td><span class="cross">✗</span></td>
-                        <td><span class="check">✓</span></td>
-                    </tr>
-                    <tr>
-                        <td>All-Time Hall of Fame</td>
-                        <td><span class="cross">✗</span></td>
-                        <td><span class="check">✓</span></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
 
     <!-- Final CTA -->
     <section class="final-cta">
