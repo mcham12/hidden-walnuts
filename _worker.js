@@ -2072,25 +2072,13 @@ body {
                 <div class="objective-card">
                     <div class="objective-icon">⚔️</div>
                     <h4>Survive</h4>
-                    <p>Battle other players and AI predators (wildebeest, cardinals, toucans)</p>
+                    <p>Battle other players and predators by throwing walnuts. Eat walnuts to regain health!</p>
                 </div>
                 <div class="objective-card">
                     <div class="objective-icon">🏆</div>
                     <h4>Rank Up</h4>
                     <p>Climb the ranks from Rookie → Apprentice → Dabbler → Slick → Maestro → Ninja → Legend</p>
                 </div>
-            </div>
-
-            <!-- Rank Journey -->
-            <h3 style="text-align: center; color: var(--forest-dark); margin: 2rem 0 1rem;">Your Journey to Legend</h3>
-            <div class="rank-journey">
-                <span class="rank-badge">Rookie</span>
-                <span class="rank-badge">Apprentice</span>
-                <span class="rank-badge">Dabbler</span>
-                <span class="rank-badge">Slick</span>
-                <span class="rank-badge">Maestro</span>
-                <span class="rank-badge">Ninja</span>
-                <span class="rank-badge legend">Legend</span>
             </div>
 
             <!-- Controls -->
