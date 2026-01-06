@@ -2276,7 +2276,7 @@ body {
     <!-- Final CTA -->
     <section class="final-cta">
         <h2>Ready to Play? 🐿️</h2>
-        <p>Jump into the forest and start your journey from Rookie to Legend!</p>
+
         <a href="https://game.hiddenwalnuts.com" class="play-now-btn">
             <i class="fas fa-play"></i> Play Now - It's Free!
         </a>
