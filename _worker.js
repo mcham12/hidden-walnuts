@@ -2151,6 +2151,13 @@ body {
                     </div>
                     <div class="tip-card">
                         <div class="tip-header">
+                            <span class="tip-icon">👕</span>
+                            <span class="tip-title">Style</span>
+                        </div>
+                        <p class="tip-content">Don't forget to use Wardrobe to add some style to your character!</p>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-header">
                             <span class="tip-icon">🦅</span>
                             <span class="tip-title">Distract Birds</span>
                         </div>
