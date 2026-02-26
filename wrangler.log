@@ -30,3 +30,18 @@ env.PORTFOLIO_KV (9da2c6a1d97543c9b5edfbc084e68203)      KV Namespace      local
 ⎔ Reloading local server...
 ⎔ Local server updated and ready
 [wrangler:info] GET / 200 OK (15ms)
+[33m▲ [43;33m[[43;30mWARNING[43;33m][0m [1mProcessing wrangler.toml configuration:[0m
+
+  
+    - "env.preview" environment configuration
+      - "vars" exists at the top level, but not on "env.preview".
+        This is not what you probably want, since "vars" is not inherited by environments.
+        Please add "vars" to "env.preview".
+
+
+Your Worker has access to the following bindings:
+Binding                                                  Resource          Mode
+env.PORTFOLIO_KV (9da2c6a1d97543c9b5edfbc084e68203)      KV Namespace      local
+
+⎔ Reloading local server...
+⎔ Local server updated and ready
