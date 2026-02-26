@@ -41,4 +41,45 @@ zone_name = "hiddenwalnuts.com"
 pattern = "www.hiddenwalnuts.com/*"
 zone_name = "hiddenwalnuts.com"
 
+[[routes]]
+pattern = "hiddenwalnuts.com/about"
+zone_name = "hiddenwalnuts.com"
+
+[[routes]]
+pattern = "hiddenwalnuts.com/about/*"
+zone_name = "hiddenwalnuts.com"
+
+[[routes]]
+pattern = "hiddenwalnuts.com/support"
+zone_name = "hiddenwalnuts.com"
+
+[[routes]]
+pattern = "hiddenwalnuts.com/support/*"
+zone_name = "hiddenwalnuts.com"
+
+[[routes]]
+pattern = "hiddenwalnuts.com/privacy"
+zone_name = "hiddenwalnuts.com"
+
+[[routes]]
+pattern = "hiddenwalnuts.com/privacy/*"
+zone_name = "hiddenwalnuts.com"
+
+[[routes]]
+pattern = "hiddenwalnuts.com/portfolio"
+zone_name = "hiddenwalnuts.com"
+
+[[routes]]
+pattern = "hiddenwalnuts.com/portfolio/*"
+zone_name = "hiddenwalnuts.com"
+
 # No build configuration needed for worker-only architecture
+
+[env.preview]
+name = "hidden-walnuts-portfolio-preview"
+# Unset routes for preview so it uses the workers.dev subdomain instead of custom domain
+routes = []
+
+[[env.preview.kv_namespaces]]
+binding = "PORTFOLIO_KV"
+id = "9da2c6a1d97543c9b5edfbc084e68203"
