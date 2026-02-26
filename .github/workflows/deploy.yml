@@ -20,5 +20,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CF_API_TOKEN }}
           accountId: ${{ secrets.CF_ACCOUNT_ID }}
-          workingDirectory: 'Website'
           command: deploy ${{ github.event_name == 'pull_request' && '--env preview' || '' }}
