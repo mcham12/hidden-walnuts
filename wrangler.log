@@ -27,3 +27,5 @@ env.PORTFOLIO_KV (9da2c6a1d97543c9b5edfbc084e68203)      KV Namespace      local
 [wrangler:info] GET /support 200 OK (2ms)
 [wrangler:info] GET /privacy 200 OK (2ms)
 [wrangler:info] GET / 200 OK (1ms)
+⎔ Reloading local server...
+⎔ Local server updated and ready

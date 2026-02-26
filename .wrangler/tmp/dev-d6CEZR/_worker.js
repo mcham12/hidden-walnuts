@@ -3592,21 +3592,21 @@ footer {
 
     
     <div class="hero-banner-container">
-        <img src="https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/Twitter%20banner%20Hidden%20Walnuts.png" onerror="this.src='https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/Jan6HiddenWalnuts.jpg'" alt="Hidden Walnuts Banner" class="hero-banner">
+        <img src="https://raw.githubusercontent.com/mcham12/hidden-walnuts/feature/apple-preview-deployment/Website/Twitter%20banner%20Hidden%20Walnuts.png" onerror="this.src='https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/Jan6HiddenWalnuts.jpg'" alt="Hidden Walnuts Banner" class="hero-banner">
     </div>
     <main class="content-page">
         <h2>About Hidden Walnuts</h2>
         <p style="font-size: 1.3rem; color: var(--text-light); margin-bottom: 3rem;">Creating Fun, Educational, and Beautiful Experiences</p>
 
-        <p><strong>Hidden Walnuts</strong> is an independent creative studio dedicated to crafting engaging digital and physical experiences. Founded with a passion for art and interactive media, we specialize in three core areas:</p>
+        <p><strong>Hidden Walnuts</strong> is an independent creative studio dedicated to creating beautiful and fun experiences. Founded with a passion for art and interactive media, we specialize in:</p>
 
         <ul>
-            <li><strong>Print-on-Demand Merchandise:</strong> We design high-quality, whimsical artwork available on apparel, accessories, and home goods through our online storefronts.</li>
+            <li><strong>Print-on-Demand Merchandise:</strong> We design high-quality and sometimes whimsical artwork available on apparel, accessories, and home goods through our online storefronts.</li>
             <li><strong>Web-Based Games:</strong> We develop casual, real-time multiplayer games that are easy to pick up and fun to play directly in your browser.</li>
-            <li><strong>Educational & Fun Apps:</strong> We are currently expanding into the Apple ecosystem to bring our unique blend of fun and educational experiences to iOS, iPadOS, and macOS devices.</li>
+            <li><strong>Educational & Fun Apps:</strong> We are currently expanding and will bring our unique blend of fun and educational experiences to iOS, iPadOS, and macOS devices.</li>
         </ul>
 
-        <p>Our mission is to build products that bring joy, spark curiosity, and add a touch of nature-inspired whimsy to our users' daily lives.</p>
+        <p>Our mission is to build products that bring joy, spark curiosity, and add a touch of whimsey to our daily lives.</p>
     </main>
 
 
