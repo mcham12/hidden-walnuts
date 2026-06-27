@@ -9,6 +9,337 @@ const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/mcham12/hidden-walnut
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = 'hidden2024!';
 
+const APP_PRIVACY_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Walnuts Privacy Policy</title>
+    <meta name="description" content="Privacy policy for Hidden Walnuts on iPhone and iPad.">
+    <link rel="icon" type="image/png" sizes="32x32" href="fav-walnuts.png?v=3">
+    <link rel="icon" type="image/png" sizes="16x16" href="fav-walnuts.png?v=3">
+    <link rel="shortcut icon" type="image/x-icon" href="fav-walnuts.png?v=3">
+    <style>
+        :root {
+            --primary-color: #2a5d31;
+            --primary-dark: #1e4022;
+            --accent-color: #f8faf6;
+            --accent-warm: #f5f7f1;
+            --text-light: #5f6f63;
+            --border-color: rgba(42, 93, 49, 0.18);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.65;
+            color: #243026;
+            background: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .main-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1rem 2rem;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container a {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .logo-container h1 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #56635a;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.55rem 0.85rem;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color);
+            background: var(--accent-color);
+        }
+
+        .store-link {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .store-link:hover {
+            color: white;
+            background: var(--primary-dark);
+        }
+
+        .policy-hero {
+            background: linear-gradient(135deg, var(--accent-color), #ffffff);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .policy-hero-inner,
+        .content-page,
+        .footer-inner {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .policy-hero-inner {
+            padding-top: 4rem;
+            padding-bottom: 3rem;
+        }
+
+        .eyebrow {
+            color: var(--primary-color);
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            font-size: clamp(2.1rem, 4vw, 3.4rem);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .summary {
+            color: #3f4d43;
+            font-size: 1.2rem;
+            max-width: 720px;
+        }
+
+        .content-page {
+            padding-top: 3rem;
+            padding-bottom: 4rem;
+        }
+
+        .last-updated {
+            color: var(--text-light);
+            font-size: 0.96rem;
+            margin-bottom: 2rem;
+        }
+
+        .quick-summary {
+            background: var(--accent-warm);
+            border: 1px solid var(--border-color);
+            border-left: 5px solid var(--primary-color);
+            border-radius: 12px;
+            padding: 1.4rem;
+            margin-bottom: 2.5rem;
+        }
+
+        h3 {
+            color: var(--primary-dark);
+            font-size: 1.35rem;
+            margin: 2.2rem 0 0.75rem;
+        }
+
+        p,
+        li {
+            font-size: 1.05rem;
+            color: #344039;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        ul {
+            padding-left: 1.4rem;
+            margin: 0.8rem 0 1.3rem;
+        }
+
+        li {
+            margin-bottom: 0.55rem;
+        }
+
+        a {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            color: white;
+            padding: 2.5rem 0;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            color: rgba(255, 255, 255, 0.86);
+        }
+
+        .footer-inner a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.9;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 720px) {
+            .main-nav {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .logo-container h1 {
+                font-size: 1.45rem;
+            }
+
+            .nav-links {
+                gap: 0.5rem;
+            }
+
+            .policy-hero-inner,
+            .content-page,
+            .footer-inner {
+                padding-left: 1.25rem;
+                padding-right: 1.25rem;
+            }
+
+            .policy-hero-inner {
+                padding-top: 3rem;
+                padding-bottom: 2.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="main-nav" aria-label="Primary navigation">
+            <div class="logo-container">
+                <a href="/">
+                    <img src="https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/LogoForInsta.png" alt="Hidden Walnuts" class="nav-logo">
+                    <h1>Hidden Walnuts</h1>
+                </a>
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">About</a>
+                <a href="/portfolio" class="nav-link">Portfolio</a>
+                <a href="/support" class="nav-link">Support</a>
+                <a href="/privacy" class="nav-link active">Privacy</a>
+                <a href="/game" class="nav-link store-link">Play the Game</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="policy-hero">
+        <div class="policy-hero-inner">
+            <p class="eyebrow">Privacy Policy</p>
+            <h2>Simple privacy for Hidden Walnuts.</h2>
+            <p class="summary">Hidden Walnuts does not require an account, email address, phone number, payment information, ads, or tracking. The game only uses the information needed to let you play and to keep the game working.</p>
+        </div>
+    </section>
+
+    <main class="content-page">
+        <p class="last-updated">Last updated: June 27, 2026</p>
+
+        <div class="quick-summary">
+            <p><strong>Short version:</strong> choose a player name, play the game, and keep your progress on your device and in the game service. We do not sell personal information, show ads, track you across apps or websites, or use third-party advertising or attribution SDKs.</p>
+        </div>
+
+        <h3>Information Hidden Walnuts Uses</h3>
+        <p>Hidden Walnuts creates a game player record so the app can run multiplayer rooms, remember progress, show leaderboards, support friends and private rooms, and recover your game state when you reconnect. This can include:</p>
+        <ul>
+            <li>the player name you type in the app;</li>
+            <li>a generated player code and internal player identifiers;</li>
+            <li>gameplay state such as room membership, walnut counts, scores, progress, loadout choices, friends, and private-room invites;</li>
+            <li>safety or support information if you use report, block, delete-data, or support features;</li>
+            <li>basic performance and reliability information used to keep the game service running.</li>
+        </ul>
+
+        <h3>Information Hidden Walnuts Does Not Ask For</h3>
+        <p>Hidden Walnuts does not ask for an account, email address, password, phone number, real name, payment information, location, contacts, photos, microphone access, or camera access.</p>
+
+        <h3>How Information Is Used</h3>
+        <p>We use game information only for app functionality: running rooms, saving progress, supporting leaderboards, helping friends connect, handling safety features, responding to support requests, and improving reliability.</p>
+
+        <h3>No Ads Or Tracking</h3>
+        <p>Hidden Walnuts does not contain ads, does not use data brokers, does not use third-party advertising SDKs, and does not track you across other companies' apps or websites.</p>
+
+        <h3>Sharing</h3>
+        <p>We do not sell personal information. Some game information is visible to other players as part of normal play, such as your chosen player name, leaderboard standing, character presence in a room, and friend/private-room interactions. Service providers such as Cloudflare help host the game and website.</p>
+
+        <h3>Player Data Controls</h3>
+        <p>The app includes player-data controls in Settings. You can reset local game data on your device or request deletion of your player data from the game service using the in-app delete-data flow.</p>
+
+        <h3>Website, Storefronts, And Support</h3>
+        <p>If you email support, we use your message and email address to respond. Merchandise links may take you to third-party storefronts such as TeePublic or Redbubble; their privacy policies apply to purchases made there.</p>
+
+        <h3>Children</h3>
+        <p>Hidden Walnuts is not intended to collect personal information from children beyond the limited game information needed to play. If you believe a child provided information that should be deleted, contact us.</p>
+
+        <h3>Changes</h3>
+        <p>We may update this policy when the game or website changes. The latest version will remain available at <a href="https://hiddenwalnuts.com/privacy">https://hiddenwalnuts.com/privacy</a>.</p>
+
+        <h3>Contact</h3>
+        <p>Questions or privacy requests can be sent to <a href="mailto:support@hiddenwalnuts.com">support@hiddenwalnuts.com</a>.</p>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div>&copy; <span id="currentYear"></span> Hidden Walnuts. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="/">About</a>
+                <a href="/support">Support</a>
+                <a href="/privacy">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+    <script>document.getElementById("currentYear").textContent = new Date().getFullYear();</script>
+</body>
+</html>`;
+
 // Authentication middleware
 function requireAuth(request) {
     const authorization = request.headers.get('authorization');
@@ -93,7 +424,7 @@ export default {
                 });
             }
             if (path === '/privacy' || path === '/privacy/') {
-                return new Response(PRIVACY_HTML, {
+                return new Response(APP_PRIVACY_HTML, {
                     headers: { 'Content-Type': 'text/html', 'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0' }
                 });
             }
@@ -3179,4 +3510,4 @@ const ABOUT_HTML = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta chars
 
 const SUPPORT_HTML = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>SUPPORT</title>\n    <link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"fav-walnuts.png?v=3\">\n    <link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"fav-walnuts.png?v=3\">\n    <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"fav-walnuts.png?v=3\">\n    <style>\n:root {\n    --primary-color: #2a5d31;\n    --primary-light: #4a7c55;\n    --primary-dark: #1e4022;\n    --secondary-color: #7fad69;\n    --accent-color: #f8faf6;\n    --accent-warm: #f5f7f1;\n    --text-light: #6c757d;\n    --background-color: #ffffff;\n    --card-shadow: 0 4px 20px rgba(42, 93, 49, 0.08);\n    --card-shadow-hover: 0 8px 30px rgba(42, 93, 49, 0.15);\n    --border-radius: 12px;\n    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n* {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n}\n\nbody {\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;\n    line-height: 1.6;\n    color: #333;\n    background: #ffffff;\n    font-weight: 400;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n}\n\n.container {\n    max-width: 1200px;\n    margin: 0 auto;\n    padding: 0 20px;\n}\n\n/* Navigation Styles */\n.main-nav {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 1rem 2rem;\n    background: white;\n    box-shadow: 0 2px 10px rgba(0,0,0,0.1);\n    position: sticky;\n    top: 0;\n    z-index: 100;\n}\n\n.logo-container {\n    display: flex;\n    align-items: center;\n    gap: 15px;\n}\n\n.nav-logo {\n    width: 50px;\n    height: 50px;\n    border-radius: 50%;\n    object-fit: cover;\n}\n\n.logo-container h1 {\n    font-size: 1.8rem;\n    color: var(--primary-color);\n    font-weight: 700;\n}\n\n.nav-links {\n    display: flex;\n    align-items: center;\n    gap: 2rem;\n}\n\n.nav-link {\n    text-decoration: none;\n    color: #666;\n    font-weight: 500;\n    padding: 0.5rem 1rem;\n    border-radius: 6px;\n    transition: var(--transition);\n}\n\n.nav-link:hover,\n.nav-link.active {\n    color: var(--primary-color);\n    background: var(--accent-color);\n}\n\n.store-link {\n    background: var(--primary-color);\n    color: white !important;\n    font-weight: 600;\n    display: flex;\n    align-items: center;\n    gap: 8px;\n}\n\n.store-link:hover {\n    background: var(--primary-dark) !important;\n    transform: translateY(-2px);\n}\n\n/* Hero Section */\n.hero {\n    background: linear-gradient(135deg, var(--accent-color) 0%, #ffffff 100%);\n    padding: 4rem 0;\n    text-align: center;\n}\n\n.hero-content h2 {\n    font-size: 3rem;\n    color: var(--primary-color);\n    margin-bottom: 1rem;\n    font-weight: 700;\n}\n\n.hero-content p {\n    font-size: 1.2rem;\n    color: var(--text-light);\n    max-width: 600px;\n    margin: 0 auto;\n}\n\n/* Portfolio Section */\n.portfolio-section {\n    padding: 2rem 0;\n}\n\n/* Portfolio Grid - Grid Style (Row-Major) */\n.portfolio-grid {\n    display: grid;\n    grid-template-columns: repeat(4, 1fr);\n    gap: 15px;\n    margin: 0;\n}\n\n.portfolio-item {\n    width: 100%;\n    cursor: pointer;\n    transition: var(--transition);\n    position: relative;\n    overflow: hidden;\n}\n\n.portfolio-item:hover {\n    transform: scale(1.02);\n}\n\n.portfolio-item-image {\n    width: 100%;\n    height: auto;\n    display: block;\n    transition: var(--transition);\n}\n\n\n/* Title overlay for hover effect (exactly like Maggie Carroll site) */\n.portfolio-item-title {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    background: rgba(255, 255, 255, 0.9);\n    color: #333;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 16px;\n    font-weight: 500;\n    opacity: 0;\n    transition: var(--transition);\n    pointer-events: none;\n    text-align: center;\n    padding: 20px;\n}\n\n.portfolio-item:hover .portfolio-item-title {\n    opacity: 1;\n}\n\n.portfolio-item:hover .portfolio-item-image {\n    filter: brightness(1.1) contrast(0.8);\n}\n\n/* Remove card-style elements (except title which we need for hover) */\n.portfolio-item-content,\n.portfolio-item-description,\n.portfolio-item-tags,\n.portfolio-item-actions,\n.btn-primary,\n.featured-badge,\n.tag {\n    display: none;\n}\n\n/* Loading States */\n.loading-state {\n    text-align: center;\n    padding: 4rem 0;\n    color: var(--text-light);\n}\n\n.spinner {\n    display: inline-block;\n    width: 40px;\n    height: 40px;\n    border: 3px solid #f3f3f3;\n    border-top: 3px solid var(--primary-color);\n    border-radius: 50%;\n    animation: spin 1s linear infinite;\n    margin-bottom: 1rem;\n}\n\n@keyframes spin {\n    0% { transform: rotate(0deg); }\n    100% { transform: rotate(360deg); }\n}\n\n/* Lightbox Modal */\n.lightbox {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.9);\n    z-index: 1000;\n    display: none;\n    align-items: center;\n    justify-content: center;\n    padding: 20px;\n}\n\n.lightbox.active {\n    display: flex;\n}\n\n.lightbox-content {\n    background: white;\n    border-radius: var(--border-radius);\n    max-width: 800px;\n    max-height: 90vh;\n    overflow-y: auto;\n    position: relative;\n    display: flex;\n    flex-direction: column;\n}\n\n.lightbox-close {\n    position: absolute;\n    top: 15px;\n    right: 20px;\n    background: none;\n    border: none;\n    font-size: 2rem;\n    cursor: pointer;\n    z-index: 10;\n    color: white;\n    background: rgba(0, 0, 0, 0.5);\n    width: 40px;\n    height: 40px;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.lightbox-image-container {\n    position: relative;\n}\n\n.lightbox-image-container img {\n    width: 100%;\n    height: auto;\n    display: block;\n}\n\n.lightbox-info {\n    padding: 2rem;\n}\n\n.lightbox-info h3 {\n    font-size: 1.5rem;\n    color: var(--primary-color);\n    margin-bottom: 1rem;\n}\n\n.lightbox-info p {\n    color: var(--text-light);\n    margin-bottom: 1.5rem;\n    line-height: 1.6;\n}\n\n.lightbox-actions {\n    text-align: center;\n}\n\n.lightbox-actions .btn-primary {\n    display: inline-flex !important;\n    background: var(--primary-color);\n    color: white;\n    padding: 0.75rem 2rem;\n    border-radius: 6px;\n    text-decoration: none;\n    font-weight: 600;\n    align-items: center;\n    gap: 8px;\n    transition: var(--transition);\n}\n\n.lightbox-actions .btn-primary:hover {\n    background: var(--primary-dark);\n    transform: translateY(-2px);\n}\n\n/* Footer */\nfooter {\n    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);\n    color: white;\n    padding: 3rem 0 2rem;\n}\n\n.footer-content {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));\n    gap: 2rem;\n    margin-bottom: 2rem;\n}\n\n.footer-section h3 {\n    margin-bottom: 1rem;\n    font-size: 1.2rem;\n}\n\n.social-links {\n    display: flex;\n    gap: 1rem;\n}\n\n.social-links a {\n    color: white;\n    font-size: 1.5rem;\n    width: 50px;\n    height: 50px;\n    background: rgba(255, 255, 255, 0.15);\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    text-decoration: none;\n    transition: var(--transition);\n}\n\n.social-links a:hover {\n    background: white;\n    color: var(--primary-color);\n    transform: translateY(-3px);\n}\n\n.footer-store-link {\n    color: white;\n    text-decoration: none;\n    display: inline-flex;\n    align-items: center;\n    gap: 0.5rem;\n    padding: 0.5rem 1rem;\n    border: 2px solid rgba(255, 255, 255, 0.3);\n    border-radius: 6px;\n    transition: var(--transition);\n}\n\n.footer-store-link:hover {\n    background: white;\n    color: var(--primary-color);\n}\n\n.footer-bottom {\n    text-align: center;\n    padding-top: 2rem;\n    border-top: 1px solid rgba(255, 255, 255, 0.2);\n}\n\n.copyright {\n    opacity: 0.8;\n    font-size: 0.9rem;\n}\n\n/* X Icon Style */\n.x-icon {\n    font-family: 'Arial', sans-serif;\n    font-weight: bold;\n    font-size: 1.2rem;\n}\n\n/* Responsive Design */\n@media (max-width: 1200px) {\n    .portfolio-grid {\n        grid-template-columns: repeat(3, 1fr);\n        gap: 12px;\n    }\n}\n\n@media (max-width: 768px) {\n    .main-nav {\n        flex-direction: column;\n        gap: 1rem;\n        padding: 1rem;\n    }\n    \n    .nav-links {\n        gap: 1rem;\n    }\n    \n    .hero-content h2 {\n        font-size: 2.5rem;\n    }\n    \n    .portfolio-grid {\n        grid-template-columns: repeat(2, 1fr);\n        gap: 10px;\n    }\n    \n    .lightbox-content {\n        max-width: 95%;\n        margin: 20px;\n    }\n    \n    .lightbox-info {\n        padding: 1.5rem;\n    }\n}\n\n@media (max-width: 480px) {\n    .logo-container h1 {\n        font-size: 1.5rem;\n    }\n    \n    .hero-content h2 {\n        font-size: 2rem;\n    }\n    \n    .hero-content p {\n        font-size: 1rem;\n    }\n    \n    .portfolio-grid {\n        grid-template-columns: 1fr;\n        gap: 8px;\n    }\n    \n    .social-links {\n        justify-content: center;\n    }\n    \n    .footer-content {\n        grid-template-columns: 1fr;\n        text-align: center;\n    }\n}\n    \n        .content-page { padding: 4rem 2rem; max-width: 800px; margin: 0 auto; }\n        .content-page h2 { color: var(--primary-color); font-size: 2.5rem; margin-bottom: 1rem; }\n        .content-page h3 { color: var(--primary-dark); font-size: 1.5rem; margin: 2rem 0 1rem; }\n        .content-page p, .content-page ul { font-size: 1.1rem; color: #444; margin-bottom: 1.5rem; line-height: 1.8; }\n        .content-page ul { padding-left: 2rem; }\n        .content-page li { margin-bottom: 0.5rem; }\n        .contact-box { background: var(--accent-warm); padding: 2rem; border-radius: 12px; margin-top: 2rem; border-left: 4px solid var(--primary-color); }\n        .contact-box a { color: var(--primary-color); font-weight: bold; text-decoration: none; }\n        .contact-box a:hover { text-decoration: underline; }\n        \n    </style>\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\">\n</head>\n<body>\n    <header>\n        <nav class=\"main-nav\">\n            <div class=\"logo-container\">\n                <a href=\"/\" style=\"display:flex; align-items:center; gap:15px; text-decoration:none;\">\n                    <img src=\"https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/LogoForInsta.png\" alt=\"Hidden Walnuts\" class=\"nav-logo\">\n                    <h1>Hidden Walnuts</h1>\n                </a>\n            </div>\n                        <div class=\"nav-links\">\n                <a href=\"/\" class=\"nav-link\">About</a>\n                <a href=\"/portfolio\" class=\"nav-link\">Portfolio</a>\n                <a href=\"/support\" class=\"nav-link\">Support</a>\n                <a href=\"/game\" class=\"nav-link store-link\">Play the Game</a>\n            </div>\n        </nav>\n    </header>\n\n    \n    <main class=\"content-page\">\n        <h2>Hidden Walnuts Support</h2>\n        <p style=\"font-size: 1.3rem; color: var(--text-light); margin-bottom: 2rem;\">How can we help you today?</p>\n\n        <p>Welcome to Hidden Walnuts Support. Whether you have a question about our print-on-demand merchandise, need help with our web-based games, or are inquiring about our upcoming Apple iOS applications, our team is here to assist.</p>\n\n        <div class=\"contact-box\">\n            <h3><i class=\"fas fa-envelope\"></i> Contact Us</h3>\n            <p><strong>Email Support:</strong> <a href=\"mailto:support@hiddenwalnuts.com\">support@hiddenwalnuts.com</a></p>\n            <p><strong>Response Time:</strong> We aim to respond to all inquiries within 24-48 business hours.</p>\n        </div>\n\n        <h3>Frequently Asked Questions</h3>\n        \n        <div style=\"margin-bottom: 1.5rem;\">\n            <p><strong>Q: I have an issue with a merchandise order.</strong></p>\n            <p><strong>A:</strong> For returns, exchanges, or shipping issues related to our Teepublic or Redbubble stores, please refer back to the respective storefront's customer service portal for the fastest resolution, as they handle our fulfillment directly. You can also email us with your order number.</p>\n        </div>\n\n        <div style=\"margin-bottom: 1.5rem;\">\n            <p><strong>Q: I found a bug in one of your games. How do I report it?</strong></p>\n            <p><strong>A:</strong> We appreciate the feedback! Please email us at our support address with the details of the bug, the device you were using, and your browser.</p>\n        </div>\n\n        <div style=\"margin-bottom: 1.5rem;\">\n            <p><strong>Q: When are your Apple apps releasing?</strong></p>\n            <p><strong>A:</strong> We are currently in active development for our iOS and macOS titles. Stay tuned for announcements on our portfolio page.</p>\n        </div>\n    </main>\n\n\n    <footer>\n        <div class=\"container\">\n            <div class=\"footer-content\">\n                <div class=\"footer-section\">\n                    <h3>Company</h3>\n                    <div style=\"display: flex; flex-direction: column; gap: 0.5rem;\">\n                        <a href=\"/\" style=\"color: white; text-decoration: none; opacity: 0.8;\">About Us</a>\n                        <a href=\"/portfolio\" style=\"color: white; text-decoration: none; opacity: 0.8;\">Portfolio</a>\n                        <a href=\"/support\" style=\"color: white; text-decoration: none; opacity: 0.8;\">Support</a>\n                        <a href=\"/privacy\" style=\"color: white; text-decoration: none; opacity: 0.8;\">Privacy Policy</a>\n                    </div>\n                </div>\n                \n                <div class=\"footer-section\">\n                    <h3>Follow Us</h3>\n                        <div class=\"social-links\">\n                            <a href=\"https://instagram.com/hiddenwalnuts\" target=\"_blank\" aria-label=\"Instagram\"><i class=\"fab fa-instagram\"></i></a>\n                            <a href=\"https://pinterest.com/hiddenwalnuts\" target=\"_blank\" aria-label=\"Pinterest\"><i class=\"fab fa-pinterest\"></i></a>\n                            <a href=\"https://x.com/hiddenwalnuts\" target=\"_blank\" aria-label=\"X\"><span class=\"x-icon\">𝕏</span></a>\n                        </div>\n                    </div>\n                </div>\n                \n                <div class=\"footer-section\">\n                    <h3>Shop</h3>\n                    <a href=\"https://www.teepublic.com/user/hidden-walnuts\" target=\"_blank\" class=\"footer-store-link\">\n                        Visit our TeePublic Store <i class=\"fas fa-external-link-alt\"></i>\n                    </a>\n                    <a href=\"https://www.redbubble.com/people/HiddenWalnuts/explore?page=1&sortOrder=recent\" target=\"_blank\" class=\"footer-store-link\" style=\"margin-top: 10px;\">\n                        Visit our Redbubble Store <i class=\"fas fa-external-link-alt\"></i>\n                    </a>\n                </div>\n            </div>\n            <div class=\"footer-bottom\">\n                <div class=\"copyright\">&copy; <span id=\"currentYear\"></span> Hidden Walnuts. All rights reserved.</div>\n            </div>\n        </div>\n    </footer>\n    <script>document.getElementById('currentYear').textContent = new Date().getFullYear();</script>\n</body>\n</html>";
 
-const PRIVACY_HTML = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>PRIVACY</title>\n    <link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"fav-walnuts.png?v=3\">\n    <link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"fav-walnuts.png?v=3\">\n    <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"fav-walnuts.png?v=3\">\n    <style>\n:root {\n    --primary-color: #2a5d31;\n    --primary-light: #4a7c55;\n    --primary-dark: #1e4022;\n    --secondary-color: #7fad69;\n    --accent-color: #f8faf6;\n    --accent-warm: #f5f7f1;\n    --text-light: #6c757d;\n    --background-color: #ffffff;\n    --card-shadow: 0 4px 20px rgba(42, 93, 49, 0.08);\n    --card-shadow-hover: 0 8px 30px rgba(42, 93, 49, 0.15);\n    --border-radius: 12px;\n    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n* {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n}\n\nbody {\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;\n    line-height: 1.6;\n    color: #333;\n    background: #ffffff;\n    font-weight: 400;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n}\n\n.container {\n    max-width: 1200px;\n    margin: 0 auto;\n    padding: 0 20px;\n}\n\n/* Navigation Styles */\n.main-nav {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 1rem 2rem;\n    background: white;\n    box-shadow: 0 2px 10px rgba(0,0,0,0.1);\n    position: sticky;\n    top: 0;\n    z-index: 100;\n}\n\n.logo-container {\n    display: flex;\n    align-items: center;\n    gap: 15px;\n}\n\n.nav-logo {\n    width: 50px;\n    height: 50px;\n    border-radius: 50%;\n    object-fit: cover;\n}\n\n.logo-container h1 {\n    font-size: 1.8rem;\n    color: var(--primary-color);\n    font-weight: 700;\n}\n\n.nav-links {\n    display: flex;\n    align-items: center;\n    gap: 2rem;\n}\n\n.nav-link {\n    text-decoration: none;\n    color: #666;\n    font-weight: 500;\n    padding: 0.5rem 1rem;\n    border-radius: 6px;\n    transition: var(--transition);\n}\n\n.nav-link:hover,\n.nav-link.active {\n    color: var(--primary-color);\n    background: var(--accent-color);\n}\n\n.store-link {\n    background: var(--primary-color);\n    color: white !important;\n    font-weight: 600;\n    display: flex;\n    align-items: center;\n    gap: 8px;\n}\n\n.store-link:hover {\n    background: var(--primary-dark) !important;\n    transform: translateY(-2px);\n}\n\n/* Hero Section */\n.hero {\n    background: linear-gradient(135deg, var(--accent-color) 0%, #ffffff 100%);\n    padding: 4rem 0;\n    text-align: center;\n}\n\n.hero-content h2 {\n    font-size: 3rem;\n    color: var(--primary-color);\n    margin-bottom: 1rem;\n    font-weight: 700;\n}\n\n.hero-content p {\n    font-size: 1.2rem;\n    color: var(--text-light);\n    max-width: 600px;\n    margin: 0 auto;\n}\n\n/* Portfolio Section */\n.portfolio-section {\n    padding: 2rem 0;\n}\n\n/* Portfolio Grid - Grid Style (Row-Major) */\n.portfolio-grid {\n    display: grid;\n    grid-template-columns: repeat(4, 1fr);\n    gap: 15px;\n    margin: 0;\n}\n\n.portfolio-item {\n    width: 100%;\n    cursor: pointer;\n    transition: var(--transition);\n    position: relative;\n    overflow: hidden;\n}\n\n.portfolio-item:hover {\n    transform: scale(1.02);\n}\n\n.portfolio-item-image {\n    width: 100%;\n    height: auto;\n    display: block;\n    transition: var(--transition);\n}\n\n\n/* Title overlay for hover effect (exactly like Maggie Carroll site) */\n.portfolio-item-title {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    background: rgba(255, 255, 255, 0.9);\n    color: #333;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 16px;\n    font-weight: 500;\n    opacity: 0;\n    transition: var(--transition);\n    pointer-events: none;\n    text-align: center;\n    padding: 20px;\n}\n\n.portfolio-item:hover .portfolio-item-title {\n    opacity: 1;\n}\n\n.portfolio-item:hover .portfolio-item-image {\n    filter: brightness(1.1) contrast(0.8);\n}\n\n/* Remove card-style elements (except title which we need for hover) */\n.portfolio-item-content,\n.portfolio-item-description,\n.portfolio-item-tags,\n.portfolio-item-actions,\n.btn-primary,\n.featured-badge,\n.tag {\n    display: none;\n}\n\n/* Loading States */\n.loading-state {\n    text-align: center;\n    padding: 4rem 0;\n    color: var(--text-light);\n}\n\n.spinner {\n    display: inline-block;\n    width: 40px;\n    height: 40px;\n    border: 3px solid #f3f3f3;\n    border-top: 3px solid var(--primary-color);\n    border-radius: 50%;\n    animation: spin 1s linear infinite;\n    margin-bottom: 1rem;\n}\n\n@keyframes spin {\n    0% { transform: rotate(0deg); }\n    100% { transform: rotate(360deg); }\n}\n\n/* Lightbox Modal */\n.lightbox {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.9);\n    z-index: 1000;\n    display: none;\n    align-items: center;\n    justify-content: center;\n    padding: 20px;\n}\n\n.lightbox.active {\n    display: flex;\n}\n\n.lightbox-content {\n    background: white;\n    border-radius: var(--border-radius);\n    max-width: 800px;\n    max-height: 90vh;\n    overflow-y: auto;\n    position: relative;\n    display: flex;\n    flex-direction: column;\n}\n\n.lightbox-close {\n    position: absolute;\n    top: 15px;\n    right: 20px;\n    background: none;\n    border: none;\n    font-size: 2rem;\n    cursor: pointer;\n    z-index: 10;\n    color: white;\n    background: rgba(0, 0, 0, 0.5);\n    width: 40px;\n    height: 40px;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.lightbox-image-container {\n    position: relative;\n}\n\n.lightbox-image-container img {\n    width: 100%;\n    height: auto;\n    display: block;\n}\n\n.lightbox-info {\n    padding: 2rem;\n}\n\n.lightbox-info h3 {\n    font-size: 1.5rem;\n    color: var(--primary-color);\n    margin-bottom: 1rem;\n}\n\n.lightbox-info p {\n    color: var(--text-light);\n    margin-bottom: 1.5rem;\n    line-height: 1.6;\n}\n\n.lightbox-actions {\n    text-align: center;\n}\n\n.lightbox-actions .btn-primary {\n    display: inline-flex !important;\n    background: var(--primary-color);\n    color: white;\n    padding: 0.75rem 2rem;\n    border-radius: 6px;\n    text-decoration: none;\n    font-weight: 600;\n    align-items: center;\n    gap: 8px;\n    transition: var(--transition);\n}\n\n.lightbox-actions .btn-primary:hover {\n    background: var(--primary-dark);\n    transform: translateY(-2px);\n}\n\n/* Footer */\nfooter {\n    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);\n    color: white;\n    padding: 3rem 0 2rem;\n}\n\n.footer-content {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));\n    gap: 2rem;\n    margin-bottom: 2rem;\n}\n\n.footer-section h3 {\n    margin-bottom: 1rem;\n    font-size: 1.2rem;\n}\n\n.social-links {\n    display: flex;\n    gap: 1rem;\n}\n\n.social-links a {\n    color: white;\n    font-size: 1.5rem;\n    width: 50px;\n    height: 50px;\n    background: rgba(255, 255, 255, 0.15);\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    text-decoration: none;\n    transition: var(--transition);\n}\n\n.social-links a:hover {\n    background: white;\n    color: var(--primary-color);\n    transform: translateY(-3px);\n}\n\n.footer-store-link {\n    color: white;\n    text-decoration: none;\n    display: inline-flex;\n    align-items: center;\n    gap: 0.5rem;\n    padding: 0.5rem 1rem;\n    border: 2px solid rgba(255, 255, 255, 0.3);\n    border-radius: 6px;\n    transition: var(--transition);\n}\n\n.footer-store-link:hover {\n    background: white;\n    color: var(--primary-color);\n}\n\n.footer-bottom {\n    text-align: center;\n    padding-top: 2rem;\n    border-top: 1px solid rgba(255, 255, 255, 0.2);\n}\n\n.copyright {\n    opacity: 0.8;\n    font-size: 0.9rem;\n}\n\n/* X Icon Style */\n.x-icon {\n    font-family: 'Arial', sans-serif;\n    font-weight: bold;\n    font-size: 1.2rem;\n}\n\n/* Responsive Design */\n@media (max-width: 1200px) {\n    .portfolio-grid {\n        grid-template-columns: repeat(3, 1fr);\n        gap: 12px;\n    }\n}\n\n@media (max-width: 768px) {\n    .main-nav {\n        flex-direction: column;\n        gap: 1rem;\n        padding: 1rem;\n    }\n    \n    .nav-links {\n        gap: 1rem;\n    }\n    \n    .hero-content h2 {\n        font-size: 2.5rem;\n    }\n    \n    .portfolio-grid {\n        grid-template-columns: repeat(2, 1fr);\n        gap: 10px;\n    }\n    \n    .lightbox-content {\n        max-width: 95%;\n        margin: 20px;\n    }\n    \n    .lightbox-info {\n        padding: 1.5rem;\n    }\n}\n\n@media (max-width: 480px) {\n    .logo-container h1 {\n        font-size: 1.5rem;\n    }\n    \n    .hero-content h2 {\n        font-size: 2rem;\n    }\n    \n    .hero-content p {\n        font-size: 1rem;\n    }\n    \n    .portfolio-grid {\n        grid-template-columns: 1fr;\n        gap: 8px;\n    }\n    \n    .social-links {\n        justify-content: center;\n    }\n    \n    .footer-content {\n        grid-template-columns: 1fr;\n        text-align: center;\n    }\n}\n    \n        .content-page { padding: 4rem 2rem; max-width: 800px; margin: 0 auto; }\n        .content-page h2 { color: var(--primary-color); font-size: 2.5rem; margin-bottom: 1rem; }\n        .content-page h3 { color: var(--primary-dark); font-size: 1.5rem; margin: 2rem 0 1rem; }\n        .content-page p, .content-page ul { font-size: 1.1rem; color: #444; margin-bottom: 1.5rem; line-height: 1.8; }\n        .content-page ul { padding-left: 2rem; }\n        .content-page li { margin-bottom: 0.5rem; }\n        .contact-box { background: var(--accent-warm); padding: 2rem; border-radius: 12px; margin-top: 2rem; border-left: 4px solid var(--primary-color); }\n        .contact-box a { color: var(--primary-color); font-weight: bold; text-decoration: none; }\n        .contact-box a:hover { text-decoration: underline; }\n        \n    </style>\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\">\n</head>\n<body>\n    <header>\n        <nav class=\"main-nav\">\n            <div class=\"logo-container\">\n                <a href=\"/\" style=\"display:flex; align-items:center; gap:15px; text-decoration:none;\">\n                    <img src=\"https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/LogoForInsta.png\" alt=\"Hidden Walnuts\" class=\"nav-logo\">\n                    <h1>Hidden Walnuts</h1>\n                </a>\n            </div>\n                        <div class=\"nav-links\">\n                <a href=\"/\" class=\"nav-link\">About</a>\n                <a href=\"/portfolio\" class=\"nav-link\">Portfolio</a>\n                <a href=\"/support\" class=\"nav-link\">Support</a>\n                <a href=\"/game\" class=\"nav-link store-link\">Play the Game</a>\n            </div>\n        </nav>\n    </header>\n\n    \n    <main class=\"content-page\">\n        <h2>Privacy Policy</h2>\n        <p style=\"font-size: 1rem; color: var(--text-light); margin-bottom: 2rem;\">Effective Date: February 26, 2026</p>\n\n        <h3>1. Introduction</h3>\n        <p><strong>Hidden Walnuts</strong> (\"we,\" \"our,\" or \"us\") respects your privacy. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website hiddenwalnuts.com, play our web-based games, or use our mobile applications.</p>\n\n        <h3>2. Information We Collect</h3>\n        <ul>\n            <li><strong>Website & Games:</strong> Our static website and web games do not currently require account creation, and we do not collect personally identifiable information (PII) directly unless you voluntarily contact us via our support email. We may use standard web traffic analytics to monitor site performance.</li>\n            <li><strong>Merchandise:</strong> All merchandise purchases are handled by third-party vendors (Redbubble, TeePublic). Please refer to their respective privacy policies for details on payment and shipping data handling.</li>\n            <li><strong>Apple Apps:</strong> Future apps will transparently request permissions and declare all data usage through the App Store Privacy Nutrition Labels.</li>\n        </ul>\n\n        <h3>3. How We Use Information</h3>\n        <p>Any information provided voluntarily (e.g., via support requests) is used solely to resolve your inquiry, provide customer service, and improve our products. We do not sell your personal data to third parties.</p>\n\n        <h3>4. Contact Us</h3>\n        <p>If you have questions or concerns about this Privacy Policy, please contact us at <a href=\"mailto:support@hiddenwalnuts.com\" style=\"color: var(--primary-color);\">support@hiddenwalnuts.com</a>.</p>\n    </main>\n\n\n    <footer>\n        <div class=\"container\">\n            <div class=\"footer-content\">\n                <div class=\"footer-section\">\n                    <h3>Company</h3>\n                    <div style=\"display: flex; flex-direction: column; gap: 0.5rem;\">\n                        <a href=\"/\" style=\"color: white; text-decoration: none; opacity: 0.8;\">About Us</a>\n                        <a href=\"/portfolio\" style=\"color: white; text-decoration: none; opacity: 0.8;\">Portfolio</a>\n                        <a href=\"/support\" style=\"color: white; text-decoration: none; opacity: 0.8;\">Support</a>\n                        <a href=\"/privacy\" style=\"color: white; text-decoration: none; opacity: 0.8;\">Privacy Policy</a>\n                    </div>\n                </div>\n                \n                <div class=\"footer-section\">\n                    <h3>Follow Us</h3>\n                        <div class=\"social-links\">\n                            <a href=\"https://instagram.com/hiddenwalnuts\" target=\"_blank\" aria-label=\"Instagram\"><i class=\"fab fa-instagram\"></i></a>\n                            <a href=\"https://pinterest.com/hiddenwalnuts\" target=\"_blank\" aria-label=\"Pinterest\"><i class=\"fab fa-pinterest\"></i></a>\n                            <a href=\"https://x.com/hiddenwalnuts\" target=\"_blank\" aria-label=\"X\"><span class=\"x-icon\">𝕏</span></a>\n                        </div>\n                    </div>\n                </div>\n                \n                <div class=\"footer-section\">\n                    <h3>Shop</h3>\n                    <a href=\"https://www.teepublic.com/user/hidden-walnuts\" target=\"_blank\" class=\"footer-store-link\">\n                        Visit our TeePublic Store <i class=\"fas fa-external-link-alt\"></i>\n                    </a>\n                    <a href=\"https://www.redbubble.com/people/HiddenWalnuts/explore?page=1&sortOrder=recent\" target=\"_blank\" class=\"footer-store-link\" style=\"margin-top: 10px;\">\n                        Visit our Redbubble Store <i class=\"fas fa-external-link-alt\"></i>\n                    </a>\n                </div>\n            </div>\n            <div class=\"footer-bottom\">\n                <div class=\"copyright\">&copy; <span id=\"currentYear\"></span> Hidden Walnuts. All rights reserved.</div>\n            </div>\n        </div>\n    </footer>\n    <script>document.getElementById('currentYear').textContent = new Date().getFullYear();</script>\n</body>\n</html>";
+const PRIVACY_HTML = APP_PRIVACY_HTML;
