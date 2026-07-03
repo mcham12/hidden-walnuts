@@ -73,6 +73,14 @@ zone_name = "hiddenwalnuts.com"
 pattern = "hiddenwalnuts.com/portfolio/*"
 zone_name = "hiddenwalnuts.com"
 
+[[routes]]
+pattern = "hiddenwalnuts.com/game"
+zone_name = "hiddenwalnuts.com"
+
+[[routes]]
+pattern = "hiddenwalnuts.com/game/*"
+zone_name = "hiddenwalnuts.com"
+
 # No build configuration needed for worker-only architecture
 
 [env.preview]

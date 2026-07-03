@@ -6,6 +6,8 @@
 
 // Configuration
 const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/';
+const APP_STORE_URL = 'https://apps.apple.com/us/app/hidden-walnuts/id6760266796?uo=4';
+const APP_STORE_ASSET_BASE = `${GITHUB_BASE_URL}app-store/`;
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = 'hidden2024!';
 
@@ -268,7 +270,7 @@ const APP_PRIVACY_HTML = `<!DOCTYPE html>
                 <a href="/portfolio" class="nav-link">Portfolio</a>
                 <a href="/support" class="nav-link">Support</a>
                 <a href="/privacy" class="nav-link active">Privacy</a>
-                <a href="/game" class="nav-link store-link">Play the Game</a>
+                <a href="/game" class="nav-link">iOS Game</a>
             </div>
         </nav>
     </header>
@@ -332,6 +334,1279 @@ const APP_PRIVACY_HTML = `<!DOCTYPE html>
             <div class="footer-links">
                 <a href="/">About</a>
                 <a href="/support">Support</a>
+                <a href="/privacy">Privacy Policy</a>
+            </div>
+        </div>
+    </footer>
+    <script>document.getElementById("currentYear").textContent = new Date().getFullYear();</script>
+</body>
+</html>`;
+
+const LIVE_ABOUT_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Walnuts | Artful Merch And Playful Products</title>
+    <meta name="description" content="Hidden Walnuts makes print-on-demand merchandise on TeePublic and Redbubble, plus a playful iPhone and iPad game now live on the App Store.">
+    <link rel="icon" type="image/png" sizes="32x32" href="fav-walnuts.png?v=3">
+    <link rel="icon" type="image/png" sizes="16x16" href="fav-walnuts.png?v=3">
+    <link rel="shortcut icon" type="image/x-icon" href="fav-walnuts.png?v=3">
+    <style>
+        :root {
+            --primary-color: #2a5d31;
+            --primary-dark: #1e4022;
+            --primary-light: #4a7c55;
+            --walnut: #b97836;
+            --sky: #6ba8cf;
+            --accent-color: #f8faf6;
+            --accent-warm: #f7f0e4;
+            --ink: #223026;
+            --muted: #5f6f63;
+            --border: rgba(42, 93, 49, 0.16);
+            --shadow: 0 18px 48px rgba(22, 39, 26, 0.14);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: var(--ink);
+            background: white;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a {
+            color: inherit;
+        }
+
+        .container {
+            width: min(1120px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        .main-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 0.95rem 2rem;
+            background: rgba(255, 255, 255, 0.96);
+            border-bottom: 1px solid rgba(42, 93, 49, 0.12);
+            backdrop-filter: blur(14px);
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .brand-link h1 {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #526357;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 0.58rem 0.82rem;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color);
+            background: var(--accent-color);
+        }
+
+        .hero {
+            position: relative;
+            min-height: 520px;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+            color: white;
+            background:
+                linear-gradient(90deg, rgba(18, 34, 22, 0.88), rgba(18, 34, 22, 0.46) 52%, rgba(18, 34, 22, 0.12)),
+                url("${GITHUB_BASE_URL}Jan6HiddenWalnuts.jpg") center/cover no-repeat;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: auto 0 0;
+            height: 36%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            width: min(1120px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 6rem 0 6.5rem;
+        }
+
+        .eyebrow {
+            color: #f6d68c;
+            font-size: 0.82rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: clamp(2.5rem, 6vw, 5.4rem);
+            line-height: 0.95;
+            max-width: 760px;
+            margin-bottom: 1rem;
+        }
+
+        .hero-copy {
+            max-width: 650px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: clamp(1.08rem, 2vw, 1.32rem);
+            margin-bottom: 1.6rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0.78rem 1.1rem;
+            border-radius: 8px;
+            font-weight: 850;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+
+        .button.primary {
+            background: white;
+            color: var(--primary-dark);
+        }
+
+        .button.secondary {
+            color: white;
+            border-color: rgba(255, 255, 255, 0.55);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section.alt {
+            background: var(--accent-color);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-heading h3 {
+            color: var(--primary-dark);
+            font-size: clamp(1.8rem, 4vw, 2.7rem);
+            line-height: 1.05;
+        }
+
+        .section-heading p {
+            max-width: 440px;
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .product-card {
+            min-height: 240px;
+            padding: 1.35rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 8px 26px rgba(42, 93, 49, 0.08);
+        }
+
+        .product-card h4 {
+            color: var(--primary-dark);
+            font-size: 1.28rem;
+            margin-bottom: 0.7rem;
+        }
+
+        .product-card p {
+            color: #3e4d43;
+            margin-bottom: 1rem;
+        }
+
+        .text-link {
+            color: var(--primary-color);
+            font-weight: 850;
+            text-decoration: none;
+        }
+
+        .text-link:hover {
+            text-decoration: underline;
+        }
+
+        .game-strip {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 360px;
+            gap: 2rem;
+            align-items: center;
+            padding: 2rem;
+            border: 1px solid rgba(42, 93, 49, 0.16);
+            border-radius: 8px;
+            background: linear-gradient(135deg, #f7f0e4, #f8faf6);
+        }
+
+        .game-strip h3 {
+            color: var(--primary-dark);
+            font-size: clamp(1.7rem, 4vw, 2.4rem);
+            line-height: 1.05;
+            margin-bottom: 0.8rem;
+        }
+
+        .game-strip p {
+            color: #3e4d43;
+            margin-bottom: 1.2rem;
+            max-width: 640px;
+        }
+
+        .game-strip img {
+            width: 100%;
+            display: block;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+        }
+
+        footer {
+            color: white;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            padding: 3rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .footer-content h3 {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-content a {
+            color: rgba(255, 255, 255, 0.88);
+            text-decoration: none;
+        }
+
+        .footer-content a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.22);
+            color: rgba(255, 255, 255, 0.76);
+        }
+
+        @media (max-width: 860px) {
+            .main-nav,
+            .section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .product-grid,
+            .game-strip,
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .game-strip {
+                padding: 1.2rem;
+            }
+
+            .game-strip img {
+                max-width: 480px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .main-nav {
+                padding: 0.9rem 1rem;
+            }
+
+            .brand-link h1 {
+                font-size: 1.45rem;
+            }
+
+            .hero {
+                min-height: 480px;
+            }
+
+            .hero-inner {
+                padding: 4rem 0 5.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="main-nav" aria-label="Primary navigation">
+            <a href="/" class="brand-link">
+                <img src="${GITHUB_BASE_URL}LogoForInsta.png" alt="Hidden Walnuts" class="nav-logo">
+                <h1>Hidden Walnuts</h1>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link active">About</a>
+                <a href="/portfolio" class="nav-link">Portfolio</a>
+                <a href="/support" class="nav-link">Support</a>
+                <a href="/privacy" class="nav-link">Privacy</a>
+                <a href="/game" class="nav-link">iOS Game</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-inner">
+                <p class="eyebrow">Art, merch, and playful projects</p>
+                <h2>Hidden Walnuts makes things worth wearing and sharing.</h2>
+                <p class="hero-copy">Browse print-on-demand designs on apparel, accessories, and home goods through our TeePublic and Redbubble storefronts. The iPhone and iPad game is live too, but the stores are still the main event here.</p>
+                <div class="actions">
+                    <a class="button primary" href="https://www.teepublic.com/user/hidden-walnuts" target="_blank" rel="noopener">Shop TeePublic</a>
+                    <a class="button secondary" href="https://www.redbubble.com/people/HiddenWalnuts/explore?page=1&sortOrder=recent" target="_blank" rel="noopener">Shop Redbubble</a>
+                    <a class="button secondary" href="/portfolio">Browse Portfolio</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="section-heading">
+                    <h3>What We Make</h3>
+                    <p>Our work starts with visual ideas, odd little jokes, and designs that fit naturally on real products.</p>
+                </div>
+                <div class="product-grid">
+                    <article class="product-card">
+                        <h4>Print-on-demand merchandise</h4>
+                        <p>Original and curated designs for shirts, stickers, accessories, and home goods through TeePublic and Redbubble.</p>
+                        <a class="text-link" href="/portfolio">View the portfolio</a>
+                    </article>
+                    <article class="product-card">
+                        <h4>Art and design experiments</h4>
+                        <p>Visual riffs on animals, poems, pickleball, old illustrations, and the things that make us smile.</p>
+                        <a class="text-link" href="https://www.redbubble.com/people/HiddenWalnuts/explore?page=1&sortOrder=recent" target="_blank" rel="noopener">Shop Redbubble</a>
+                    </article>
+                    <article class="product-card">
+                        <h4>A walnut game on iPhone and iPad</h4>
+                        <p>Hidden Walnuts is now live on the App Store: walnuts, oddball playable animals, quick mini-games, and a jetpack.</p>
+                        <a class="text-link" href="/game">See the game</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section alt">
+            <div class="container">
+                <div class="game-strip">
+                    <div>
+                        <p class="eyebrow">Also live on the App Store</p>
+                        <h3>Hidden Walnuts for iPhone and iPad</h3>
+                        <p>Play as a squirrel, goat, hare, moose, skunk, mallard, and more. Stash walnuts at Home Base, throw walnuts when things get strange, grow some trees and grab their fresh walnuts, and launch into the air with your jetpack.</p>
+                        <div class="actions">
+                            <a class="button primary" href="${APP_STORE_URL}" target="_blank" rel="noopener">Download on the App Store</a>
+                            <a class="button secondary" style="color: var(--primary-dark); border-color: rgba(42, 93, 49, 0.28);" href="/game">View Game Page</a>
+                        </div>
+                    </div>
+                    <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp" alt="Hidden Walnuts iPad gameplay showing a character flying with a jetpack">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <h3>Company</h3>
+                    <div class="footer-links">
+                        <a href="/">About</a>
+                        <a href="/portfolio">Portfolio</a>
+                        <a href="/support">Support</a>
+                        <a href="/privacy">Privacy Policy</a>
+                    </div>
+                </div>
+                <div>
+                    <h3>Shop</h3>
+                    <div class="footer-links">
+                        <a href="https://www.teepublic.com/user/hidden-walnuts" target="_blank" rel="noopener">TeePublic</a>
+                        <a href="https://www.redbubble.com/people/HiddenWalnuts/explore?page=1&sortOrder=recent" target="_blank" rel="noopener">Redbubble</a>
+                    </div>
+                </div>
+                <div>
+                    <h3>Follow</h3>
+                    <div class="footer-links">
+                        <a href="https://instagram.com/hiddenwalnuts" target="_blank" rel="noopener">Instagram</a>
+                        <a href="https://pinterest.com/hiddenwalnuts" target="_blank" rel="noopener">Pinterest</a>
+                        <a href="https://x.com/hiddenwalnuts" target="_blank" rel="noopener">X</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">&copy; <span id="currentYear"></span> Hidden Walnuts. All rights reserved.</div>
+        </div>
+    </footer>
+    <script>document.getElementById("currentYear").textContent = new Date().getFullYear();</script>
+</body>
+</html>`;
+
+const LIVE_GAME_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Walnuts for iPhone and iPad</title>
+    <meta name="description" content="Hidden Walnuts is live on the App Store: a playful multiplayer walnut game with oddball animals, quick mini-games, and a jetpack.">
+    <meta property="og:title" content="Hidden Walnuts for iPhone and iPad">
+    <meta property="og:description" content="Walnuts, oddball animals, quick mini-games, and a jetpack. Hidden Walnuts is live on the App Store.">
+    <meta property="og:image" content="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp">
+    <link rel="icon" type="image/png" sizes="32x32" href="fav-walnuts.png?v=3">
+    <link rel="icon" type="image/png" sizes="16x16" href="fav-walnuts.png?v=3">
+    <link rel="shortcut icon" type="image/x-icon" href="fav-walnuts.png?v=3">
+    <style>
+        :root {
+            --primary-color: #2a5d31;
+            --primary-dark: #1e4022;
+            --walnut: #b97836;
+            --sky: #6ba8cf;
+            --cream: #f8faf6;
+            --warm: #f7f0e4;
+            --ink: #213026;
+            --muted: #5b6b60;
+            --border: rgba(42, 93, 49, 0.16);
+            --shadow: 0 18px 48px rgba(22, 39, 26, 0.14);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: var(--ink);
+            background: white;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            width: min(1120px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        .main-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 0.95rem 2rem;
+            background: rgba(255, 255, 255, 0.96);
+            border-bottom: 1px solid rgba(42, 93, 49, 0.12);
+            backdrop-filter: blur(14px);
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .brand-link h1 {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #526357;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 0.58rem 0.82rem;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color);
+            background: var(--cream);
+        }
+
+        .hero {
+            position: relative;
+            min-height: min(74vh, 720px);
+            display: flex;
+            align-items: flex-end;
+            color: white;
+            overflow: hidden;
+            background:
+                linear-gradient(90deg, rgba(13, 28, 19, 0.9), rgba(13, 28, 19, 0.48) 50%, rgba(13, 28, 19, 0.16)),
+                url("${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp") center/cover no-repeat;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            inset: auto 0 0;
+            height: 30%;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0), white);
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            width: min(1120px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 6rem 0 6.2rem;
+        }
+
+        .eyebrow {
+            color: #f6d68c;
+            font-size: 0.82rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            font-size: clamp(2.6rem, 6.6vw, 5.8rem);
+            line-height: 0.94;
+            max-width: 760px;
+            margin-bottom: 1rem;
+        }
+
+        .hero-copy {
+            max-width: 650px;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: clamp(1.08rem, 2vw, 1.32rem);
+            margin-bottom: 1.6rem;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+            padding: 0.78rem 1.1rem;
+            border-radius: 8px;
+            font-weight: 850;
+            text-decoration: none;
+            border: 1px solid transparent;
+        }
+
+        .button.primary {
+            color: var(--primary-dark);
+            background: white;
+        }
+
+        .button.secondary {
+            color: white;
+            border-color: rgba(255, 255, 255, 0.56);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .section {
+            padding: 4.2rem 0;
+        }
+
+        .section.alt {
+            background: var(--cream);
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 1.5rem;
+            margin-bottom: 1.6rem;
+        }
+
+        .section-heading h3 {
+            color: var(--primary-dark);
+            font-size: clamp(1.9rem, 4vw, 2.8rem);
+            line-height: 1.04;
+        }
+
+        .section-heading p {
+            max-width: 500px;
+            color: var(--muted);
+            font-size: 1.05rem;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: 360px minmax(0, 1fr);
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .phone-frame {
+            width: min(100%, 360px);
+            margin: 0 auto;
+            padding: 10px;
+            border-radius: 8px;
+            background: #121712;
+            box-shadow: var(--shadow);
+        }
+
+        .phone-frame video {
+            display: block;
+            width: 100%;
+            border-radius: 6px;
+            background: #111;
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.9rem;
+        }
+
+        .feature {
+            padding: 1.15rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+        }
+
+        .feature h4 {
+            color: var(--primary-dark);
+            font-size: 1.12rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .feature p {
+            color: #3e4d43;
+        }
+
+        .media-grid {
+            display: grid;
+            grid-template-columns: 1.25fr 0.8fr 0.8fr;
+            gap: 1rem;
+            align-items: stretch;
+        }
+
+        .media-item {
+            overflow: hidden;
+            border-radius: 8px;
+            background: #e7efe4;
+            box-shadow: 0 8px 26px rgba(42, 93, 49, 0.08);
+        }
+
+        .media-item img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .download-band {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 1.8rem;
+            border: 1px solid rgba(42, 93, 49, 0.16);
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--warm), white);
+        }
+
+        .download-band h3 {
+            color: var(--primary-dark);
+            font-size: clamp(1.7rem, 3.8vw, 2.5rem);
+            line-height: 1.05;
+            margin-bottom: 0.45rem;
+        }
+
+        .download-band p {
+            color: var(--muted);
+        }
+
+        .download-band .button.primary {
+            color: white;
+            background: var(--primary-color);
+        }
+
+        footer {
+            color: white;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            padding: 3rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .footer-content h3 {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .footer-content a {
+            color: rgba(255, 255, 255, 0.88);
+            text-decoration: none;
+        }
+
+        .footer-content a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        .footer-bottom {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.22);
+            color: rgba(255, 255, 255, 0.76);
+        }
+
+        @media (max-width: 900px) {
+            .main-nav,
+            .section-heading,
+            .download-band {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .preview-grid,
+            .feature-list,
+            .media-grid,
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .media-item img {
+                height: auto;
+                object-fit: contain;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .main-nav {
+                padding: 0.9rem 1rem;
+            }
+
+            .brand-link h1 {
+                font-size: 1.45rem;
+            }
+
+            .hero {
+                min-height: 560px;
+            }
+
+            .hero-inner {
+                padding: 4.5rem 0 5.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="main-nav" aria-label="Primary navigation">
+            <a href="/" class="brand-link">
+                <img src="${GITHUB_BASE_URL}LogoForInsta.png" alt="Hidden Walnuts" class="nav-logo">
+                <h1>Hidden Walnuts</h1>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">About</a>
+                <a href="/portfolio" class="nav-link">Portfolio</a>
+                <a href="/support" class="nav-link">Support</a>
+                <a href="/privacy" class="nav-link">Privacy</a>
+                <a href="/game" class="nav-link active">iOS Game</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-inner">
+                <p class="eyebrow">Live on the App Store</p>
+                <h2>Hidden Walnuts for iPhone and iPad</h2>
+                <p class="hero-copy">A silly multiplayer walnut game with oddball animals, quick mini-games, and a jetpack that makes ordinary wandering ridiculous.</p>
+                <div class="actions">
+                    <a class="button primary" href="${APP_STORE_URL}" target="_blank" rel="noopener">Download on the App Store</a>
+                    <a class="button secondary" href="/portfolio">Shop Hidden Walnuts merch</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container preview-grid">
+                <div class="phone-frame">
+                    <video autoplay muted loop playsinline controls poster="${APP_STORE_ASSET_BASE}hidden-walnuts-preview-poster.webp">
+                        <source src="${APP_STORE_ASSET_BASE}hidden-walnuts-preview-portrait.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div>
+                    <div class="section-heading">
+                        <div>
+                            <p class="eyebrow">Walnuts, animals, and lift-off</p>
+                            <h3>Collect, hide, eat, throw, and stash walnuts.</h3>
+                        </div>
+                    </div>
+                    <div class="feature-list">
+                        <article class="feature">
+                            <h4>Fly with the jetpack</h4>
+                            <p>Launch into the air, chase rings, and make the world feel larger than it first appears.</p>
+                        </article>
+                        <article class="feature">
+                            <h4>Play as oddball species</h4>
+                            <p>Choose a squirrel, goat, hare, moose, skunk, mallard, and more.</p>
+                        </article>
+                        <article class="feature">
+                            <h4>Jump into quick mini-games</h4>
+                            <p>Paint targets, scramble through rings, and try short activities that change the rhythm.</p>
+                        </article>
+                        <article class="feature">
+                            <h4>Plant, stash, and return</h4>
+                            <p>Hide walnuts, grow some trees and grab their fresh walnuts, or bring your stash back to Home Base.</p>
+                        </article>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section alt">
+            <div class="container">
+                <div class="section-heading">
+                    <h3>Gameplay Scenes</h3>
+                    <p>These are the same current App Store capture set, optimized here for the web.</p>
+                </div>
+                <div class="media-grid">
+                    <div class="media-item">
+                        <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-plan-stash.webp" alt="Hidden Walnuts iPad gameplay near Home Base and stash area">
+                    </div>
+                    <div class="media-item">
+                        <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-iphone-jetpack.webp" alt="Hidden Walnuts iPhone gameplay showing Jetpack Scramble">
+                    </div>
+                    <div class="media-item">
+                        <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-iphone-paintball.webp" alt="Hidden Walnuts iPhone gameplay showing Paintball Fun">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <div class="container">
+                <div class="download-band">
+                    <div>
+                        <h3>Play free on iPhone and iPad.</h3>
+                        <p>No account required. Pick a guest name, choose a character, and start collecting walnuts.</p>
+                    </div>
+                    <a class="button primary" href="${APP_STORE_URL}" target="_blank" rel="noopener">Open App Store</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <h3>Company</h3>
+                    <div class="footer-links">
+                        <a href="/">About</a>
+                        <a href="/portfolio">Portfolio</a>
+                        <a href="/support">Support</a>
+                        <a href="/privacy">Privacy Policy</a>
+                    </div>
+                </div>
+                <div>
+                    <h3>Shop</h3>
+                    <div class="footer-links">
+                        <a href="https://www.teepublic.com/user/hidden-walnuts" target="_blank" rel="noopener">TeePublic</a>
+                        <a href="https://www.redbubble.com/people/HiddenWalnuts/explore?page=1&sortOrder=recent" target="_blank" rel="noopener">Redbubble</a>
+                    </div>
+                </div>
+                <div>
+                    <h3>Game</h3>
+                    <div class="footer-links">
+                        <a href="${APP_STORE_URL}" target="_blank" rel="noopener">Download on the App Store</a>
+                        <a href="/support">Game support</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">&copy; <span id="currentYear"></span> Hidden Walnuts. All rights reserved.</div>
+        </div>
+    </footer>
+    <script>document.getElementById("currentYear").textContent = new Date().getFullYear();</script>
+</body>
+</html>`;
+
+const LIVE_SUPPORT_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Walnuts Support</title>
+    <meta name="description" content="Support for Hidden Walnuts merchandise and the Hidden Walnuts iPhone and iPad game.">
+    <link rel="icon" type="image/png" sizes="32x32" href="fav-walnuts.png?v=3">
+    <link rel="icon" type="image/png" sizes="16x16" href="fav-walnuts.png?v=3">
+    <link rel="shortcut icon" type="image/x-icon" href="fav-walnuts.png?v=3">
+    <style>
+        :root {
+            --primary-color: #2a5d31;
+            --primary-dark: #1e4022;
+            --accent-color: #f8faf6;
+            --accent-warm: #f7f0e4;
+            --ink: #223026;
+            --muted: #5f6f63;
+            --border: rgba(42, 93, 49, 0.16);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: var(--ink);
+            background: white;
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .container {
+            width: min(960px, calc(100% - 40px));
+            margin: 0 auto;
+        }
+
+        .main-nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+            padding: 0.95rem 2rem;
+            background: rgba(255, 255, 255, 0.96);
+            border-bottom: 1px solid rgba(42, 93, 49, 0.12);
+            backdrop-filter: blur(14px);
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .brand-link h1 {
+            font-size: 1.75rem;
+            line-height: 1;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: #526357;
+            text-decoration: none;
+            font-weight: 700;
+            padding: 0.58rem 0.82rem;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--primary-color);
+            background: var(--accent-color);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--accent-color), white);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-inner {
+            padding: 4.5rem 0 3.5rem;
+        }
+
+        .eyebrow {
+            color: var(--primary-color);
+            font-size: 0.82rem;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        h2 {
+            color: var(--primary-dark);
+            font-size: clamp(2.3rem, 5vw, 4rem);
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .summary {
+            max-width: 720px;
+            color: var(--muted);
+            font-size: 1.18rem;
+        }
+
+        main {
+            padding: 3.5rem 0 4rem;
+        }
+
+        .contact-box {
+            padding: 1.4rem;
+            border: 1px solid var(--border);
+            border-left: 5px solid var(--primary-color);
+            border-radius: 8px;
+            background: var(--accent-warm);
+            margin-bottom: 2.4rem;
+        }
+
+        .contact-box h3,
+        .faq h3 {
+            color: var(--primary-dark);
+            font-size: 1.45rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .contact-box a,
+        .faq a {
+            color: var(--primary-color);
+            font-weight: 850;
+            text-decoration: none;
+        }
+
+        .contact-box a:hover,
+        .faq a:hover {
+            text-decoration: underline;
+        }
+
+        .faq {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .faq-item {
+            padding: 1.2rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: white;
+        }
+
+        .faq-item h4 {
+            color: var(--primary-dark);
+            font-size: 1.1rem;
+            margin-bottom: 0.45rem;
+        }
+
+        .faq-item p {
+            color: #3e4d43;
+        }
+
+        footer {
+            color: white;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
+            padding: 2.5rem 0;
+        }
+
+        .footer-inner {
+            display: flex;
+            justify-content: space-between;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            color: rgba(255, 255, 255, 0.84);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-inner a {
+            color: white;
+            text-decoration: none;
+        }
+
+        @media (max-width: 760px) {
+            .main-nav {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 0.9rem 1rem;
+            }
+
+            .brand-link h1 {
+                font-size: 1.45rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="main-nav" aria-label="Primary navigation">
+            <a href="/" class="brand-link">
+                <img src="${GITHUB_BASE_URL}LogoForInsta.png" alt="Hidden Walnuts" class="nav-logo">
+                <h1>Hidden Walnuts</h1>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link">About</a>
+                <a href="/portfolio" class="nav-link">Portfolio</a>
+                <a href="/support" class="nav-link active">Support</a>
+                <a href="/privacy" class="nav-link">Privacy</a>
+                <a href="/game" class="nav-link">iOS Game</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-inner">
+            <p class="eyebrow">Support</p>
+            <h2>How can we help?</h2>
+            <p class="summary">For merchandise questions, start with the TeePublic or Redbubble storefront handling the order. For the Hidden Walnuts iPhone and iPad game, email us with your device and what happened.</p>
+        </div>
+    </section>
+
+    <main>
+        <div class="container">
+            <div class="contact-box">
+                <h3>Contact Us</h3>
+                <p><strong>Email Support:</strong> <a href="mailto:support@hiddenwalnuts.com">support@hiddenwalnuts.com</a></p>
+                <p><strong>Response Time:</strong> We aim to respond within 24-48 business hours.</p>
+            </div>
+
+            <section class="faq" aria-label="Frequently asked questions">
+                <h3>Frequently Asked Questions</h3>
+                <article class="faq-item">
+                    <h4>I have an issue with a merchandise order.</h4>
+                    <p>For returns, exchanges, or shipping issues related to TeePublic or Redbubble, use that storefront's customer service portal first because they handle fulfillment directly. You can also email us with your order number.</p>
+                </article>
+                <article class="faq-item">
+                    <h4>I found a bug in Hidden Walnuts on iPhone or iPad.</h4>
+                    <p>Email <a href="mailto:support@hiddenwalnuts.com">support@hiddenwalnuts.com</a> with your device, iOS or iPadOS version, what you were doing, and what went wrong.</p>
+                </article>
+                <article class="faq-item">
+                    <h4>Where do I get the game?</h4>
+                    <p>Hidden Walnuts is live on the App Store for iPhone and iPad. <a href="${APP_STORE_URL}" target="_blank" rel="noopener">Open Hidden Walnuts on the App Store</a>.</p>
+                </article>
+                <article class="faq-item">
+                    <h4>How do I manage player data?</h4>
+                    <p>The game includes player-data controls in Settings. You can reset local data or use the delete-data flow if you want player data removed from the game service.</p>
+                </article>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container footer-inner">
+            <div>&copy; <span id="currentYear"></span> Hidden Walnuts. All rights reserved.</div>
+            <div class="footer-links">
+                <a href="/">About</a>
+                <a href="/portfolio">Portfolio</a>
                 <a href="/privacy">Privacy Policy</a>
             </div>
         </div>
@@ -1087,25 +2362,25 @@ footer {
         gap: 1rem;
         padding: 1rem;
     }
-    
+
     .nav-links {
         gap: 1rem;
     }
-    
+
     .hero-content h2 {
         font-size: 2.5rem;
     }
-    
+
     .portfolio-grid {
         grid-template-columns: repeat(2, 1fr);
         gap: 10px;
     }
-    
+
     .lightbox-content {
         max-width: 95%;
         margin: 20px;
     }
-    
+
     .lightbox-info {
         padding: 1.5rem;
     }
@@ -1115,24 +2390,24 @@ footer {
     .logo-container h1 {
         font-size: 1.5rem;
     }
-    
+
     .hero-content h2 {
         font-size: 2rem;
     }
-    
+
     .hero-content p {
         font-size: 1rem;
     }
-    
+
     .portfolio-grid {
         grid-template-columns: 1fr;
         gap: 8px;
     }
-    
+
     .social-links {
         justify-content: center;
     }
-    
+
     .footer-content {
         grid-template-columns: 1fr;
         text-align: center;
@@ -1152,7 +2427,7 @@ footer {
                 <a href="/" class="nav-link">About</a>
                 <a href="/portfolio" class="nav-link active">Portfolio</a>
                 <a href="/support" class="nav-link">Support</a>
-                <a href="/game" class="nav-link store-link">Play the Game</a>
+                <a href="/game" class="nav-link">iOS Game</a>
             </div>
         </nav>
     </header>
@@ -1184,7 +2459,7 @@ footer {
                         <a href="/privacy" style="color: white; text-decoration: none; opacity: 0.8;">Privacy Policy</a>
                     </div>
                 </div>
-                
+
                 <div class="footer-section">
                     <h3>Follow Us</h3>
                     <div class="social-links">
@@ -1199,7 +2474,7 @@ footer {
                         </a>
                     </div>
                 </div>
-                
+
                 <div class="footer-section">
                     <h3>Shop</h3>
                     <a href="https://www.teepublic.com/user/hidden-walnuts" target="_blank" class="footer-store-link">
@@ -1212,7 +2487,7 @@ footer {
                     </a>
                 </div>
             </div>
-            
+
             <div class="footer-bottom">
                 <div class="copyright">
                     &copy; <span id="currentYear"></span> Hidden Walnuts. All rights reserved.
@@ -1261,28 +2536,28 @@ async function initializePortfolio() {
 
 async function loadPortfolioItems() {
     const portfolioGrid = document.getElementById('portfolioGrid');
-    
+
     if (window.location.protocol === 'file:') {
         console.log('Running locally, using sample data');
         allPortfolioItems = getSampleData();
         return;
     }
-    
+
     try {
         const response = await fetch('/api/portfolio');
-        
+
         if (!response.ok) {
             console.log('API not available, using sample data');
             allPortfolioItems = getSampleData();
         } else {
             allPortfolioItems = await response.json();
-            
+
             if (allPortfolioItems.length === 0) {
                 console.log('No items from API, using sample data');
                 allPortfolioItems = getSampleData();
             }
         }
-        
+
     } catch (error) {
         console.error('Error loading portfolio items:', error);
         console.log('Using sample data as fallback');
@@ -1347,14 +2622,14 @@ function getSampleData() {
 
 function renderPortfolioItems() {
     const portfolioGrid = document.getElementById('portfolioGrid');
-    
+
     portfolioGrid.innerHTML = '';
-    
+
     if (allPortfolioItems.length === 0) {
         portfolioGrid.innerHTML = '<div class="no-items"><p>No portfolio items found.</p></div>';
         return;
     }
-    
+
     allPortfolioItems.forEach(item => {
         const portfolioItem = createPortfolioItemElement(item);
         portfolioGrid.appendChild(portfolioItem);
@@ -1365,34 +2640,34 @@ function createPortfolioItemElement(item) {
     const portfolioItem = document.createElement('div');
     portfolioItem.className = 'portfolio-item';
     portfolioItem.setAttribute('data-id', item.id);
-    
+
     const imageUrl = item.imageUrl || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjgwIiBoZWlnaHQ9IjI1MCIgdmlld0JveD0iMCAwIDI4MCAyNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjI4MCIgaGVpZ2h0PSIyNTAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSIxNDAiIHk9IjEyNSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OTk5OSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE2Ij5JbWFnZTwvdGV4dD48L3N2Zz4=';
-    
-    portfolioItem.innerHTML = 
+
+    portfolioItem.innerHTML =
         '<img src="' + imageUrl + '" alt="' + item.title + '" class="portfolio-item-image" loading="lazy">' +
         '<div class="portfolio-item-title">' + item.title + '</div>';
-    
+
     // Click directly to Redbubble (not lightbox)
     portfolioItem.addEventListener('click', () => {
         if (item.redbubbleUrl) {
             window.open(item.redbubbleUrl, '_blank');
         }
     });
-    
+
     return portfolioItem;
 }
 
 function initializeLightbox() {
     const lightbox = document.getElementById('lightbox');
     const closeButton = document.querySelector('.lightbox-close');
-    
+
     closeButton.addEventListener('click', closeLightbox);
     lightbox.addEventListener('click', (e) => {
         if (e.target === lightbox) {
             closeLightbox();
         }
     });
-    
+
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && lightbox.classList.contains('active')) {
             closeLightbox();
@@ -1406,13 +2681,13 @@ function openLightbox(item) {
     const lightboxTitle = document.getElementById('lightboxTitle');
     const lightboxDescription = document.getElementById('lightboxDescription');
     const lightboxBuyLink = document.getElementById('lightboxBuyLink');
-    
+
     lightboxImage.src = item.imageUrl;
     lightboxImage.alt = item.title;
     lightboxTitle.textContent = item.title;
     lightboxDescription.textContent = item.description || 'No description available.';
     lightboxBuyLink.href = item.redbubbleUrl;
-    
+
     lightbox.classList.add('active');
     document.body.style.overflow = 'hidden';
 }
@@ -1452,2062 +2727,14 @@ document.addEventListener('click', function(e) {
 </html>`;
 
 // Game Landing Page HTML
-const GAME_HTML = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hidden Walnuts - The Game</title>
-    <link rel="icon" type="image/png" href="fav-walnuts.png?v=3">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-:root {
-    --forest-green: #2d6b3a;
-    --forest-dark: #1a3d20;
-    --autumn-orange: #e67e22;
-    --autumn-gold: #f39c12;
-    --bark-brown: #8b5a2b;
-    --cream: #faf8f0;
-    --leaf-green: #4a9c5d;
-    --shadow: rgba(26, 61, 32, 0.2);
-}
+const GAME_HTML = LIVE_GAME_HTML;
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
+const ABOUT_HTML = LIVE_ABOUT_HTML;
 
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(180deg, #1a3d20 0%, #2d5a3a 50%, #3d7a4a 100%);
-    min-height: 100vh;
-    color: #333;
-    overflow-x: hidden;
-}
 
-/* Floating Leaves Animation */
-.leaves-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-}
 
-.leaf {
-    position: absolute;
-    top: -50px;
-    opacity: 0.6;
-    font-size: 20px;
-    animation: fall linear infinite;
-}
+const SUPPORT_HTML = LIVE_SUPPORT_HTML;
 
-@keyframes fall {
-    0% {
-        transform: translateY(-50px) rotate(0deg) translateX(0);
-        opacity: 0;
-    }
-    10% {
-        opacity: 0.6;
-    }
-    90% {
-        opacity: 0.6;
-    }
-    100% {
-        transform: translateY(100vh) rotate(360deg) translateX(100px);
-        opacity: 0;
-    }
-}
 
-/* Header */
-.game-header {
-    background: rgba(26, 61, 32, 0.95);
-    padding: 1rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    backdrop-filter: blur(10px);
-    border-bottom: 2px solid var(--leaf-green);
-}
-
-.header-content {
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: white;
-}
-
-.logo-icon {
-    font-size: 2rem;
-}
-
-.logo-text {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--cream);
-}
-
-.nav-links {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-}
-
-.nav-link {
-    color: var(--cream);
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    transition: all 0.3s;
-}
-
-.nav-link:hover {
-    background: rgba(255,255,255,0.1);
-}
-
-.play-btn-nav {
-    background: var(--autumn-orange);
-    color: white !important;
-    font-weight: 600;
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    transition: all 0.3s;
-}
-
-.play-btn-nav:hover {
-    background: var(--autumn-gold);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
-}
-
-/* Hero Section */
-.hero {
-    position: relative;
-    padding: 6rem 2rem;
-    text-align: center;
-    z-index: 1;
-}
-
-.hero-content {
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.hero-icon {
-    font-size: 5rem;
-    margin-bottom: 1.5rem;
-    animation: bounce 2s ease-in-out infinite;
-}
-
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-15px); }
-}
-
-.hero h1 {
-    font-size: 3.5rem;
-    color: var(--cream);
-    margin-bottom: 1rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-.hero-subtitle {
-    font-size: 1.3rem;
-    color: rgba(255,255,255,0.9);
-    margin-bottom: 2.5rem;
-    line-height: 1.6;
-}
-
-.play-now-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 12px;
-    background: linear-gradient(135deg, var(--autumn-orange), var(--autumn-gold));
-    color: white;
-    font-size: 1.5rem;
-    font-weight: 700;
-    padding: 1.2rem 3rem;
-    border-radius: 50px;
-    text-decoration: none;
-    box-shadow: 0 6px 30px rgba(230, 126, 34, 0.5);
-    transition: all 0.3s;
-    animation: glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-    from { box-shadow: 0 6px 30px rgba(230, 126, 34, 0.5); }
-    to { box-shadow: 0 6px 40px rgba(230, 126, 34, 0.8); }
-}
-
-.play-now-btn:hover {
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 10px 40px rgba(230, 126, 34, 0.7);
-}
-
-.play-options {
-    margin-top: 1.5rem;
-    color: rgba(255,255,255,0.8);
-    font-size: 0.95rem;
-}
-
-.hero-screenshot {
-    margin-top: 3rem;
-    position: relative;
-}
-
-.hero-screenshot img {
-    max-width: 100%;
-    width: 700px;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-    border: 3px solid rgba(255, 255, 255, 0.2);
-}
-
-.hero-screenshot::before {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80px;
-    height: 6px;
-    background: var(--autumn-orange);
-    border-radius: 3px;
-}
-
-/* Content Sections */
-.content-section {
-    position: relative;
-    z-index: 1;
-    padding: 4rem 2rem;
-}
-
-.section-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    background: var(--cream);
-    border-radius: 20px;
-    padding: 3rem;
-    box-shadow: 0 10px 40px var(--shadow);
-}
-
-.section-title {
-    font-size: 2rem;
-    color: var(--forest-dark);
-    margin-bottom: 2rem;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-}
-
-/* How to Play Grid */
-.objective-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-}
-
-.objective-card {
-    background: white;
-    padding: 1.5rem;
-    border-radius: 12px;
-    text-align: center;
-    border: 2px solid transparent;
-    transition: all 0.3s;
-    cursor: default;
-}
-
-.objective-card:hover {
-    border-color: var(--leaf-green);
-    transform: translateY(-4px);
-    box-shadow: 0 8px 25px var(--shadow);
-}
-
-.objective-icon {
-    font-size: 2.5rem;
-    margin-bottom: 0.75rem;
-}
-
-.objective-card h4 {
-    color: var(--forest-dark);
-    margin-bottom: 0.5rem;
-}
-
-.objective-card p {
-    font-size: 0.9rem;
-    color: #666;
-}
-
-/* Controls Section */
-.controls-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin-top: 2rem;
-}
-
-@media (max-width: 768px) {
-    .controls-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-.controls-panel {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-}
-
-.controls-panel h4 {
-    color: var(--forest-dark);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.control-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 0.6rem 0;
-    border-bottom: 1px solid #eee;
-}
-
-.control-item:last-child {
-    border-bottom: none;
-}
-
-.control-key {
-    background: var(--forest-dark);
-    color: white;
-    padding: 0.3rem 0.6rem;
-    border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.85rem;
-    min-width: 60px;
-    text-align: center;
-}
-
-.control-action {
-    color: #555;
-    font-size: 0.95rem;
-}
-
-/* Pro Tips - Carousel */
-.tips-carousel-wrapper {
-    position: relative;
-    overflow: hidden;
-    padding: 0 50px;
-}
-
-.tips-carousel {
-    display: flex;
-    transition: transform 0.4s ease;
-    gap: 1.5rem;
-}
-
-.tip-card {
-    background: linear-gradient(135deg, var(--forest-green), var(--leaf-green));
-    border-radius: 12px;
-    padding: 1.25rem;
-    color: white;
-    min-width: 200px;
-    max-width: 200px;
-    flex-shrink: 0;
-    position: relative;
-    overflow: hidden;
-}
-
-.tip-card::before {
-    content: '🍂';
-    position: absolute;
-    top: -20px;
-    right: -20px;
-    font-size: 4rem;
-    opacity: 0.2;
-}
-
-.tip-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 0.75rem;
-}
-
-.tip-icon {
-    font-size: 1.5rem;
-}
-
-.tip-title {
-    font-weight: 600;
-    font-size: 1.1rem;
-}
-
-.tip-content {
-    font-size: 0.95rem;
-    opacity: 0.95;
-    line-height: 1.5;
-}
-
-.carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    background: var(--forest-dark);
-    color: white;
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s;
-    z-index: 10;
-}
-
-.carousel-btn:hover {
-    background: var(--autumn-orange);
-    transform: translateY(-50%) scale(1.1);
-}
-
-.carousel-btn.prev {
-    left: 0;
-}
-
-.carousel-btn.next {
-    right: 0;
-}
-
-.carousel-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-}
-
-.carousel-btn:disabled:hover {
-    background: var(--forest-dark);
-    transform: translateY(-50%);
-}
-
-.carousel-dots {
-    display: flex;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 1.5rem;
-}
-
-.carousel-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #ccc;
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
-.carousel-dot.active {
-    background: var(--forest-green);
-    transform: scale(1.2);
-}
-
-.carousel-dot:hover {
-    background: var(--leaf-green);
-}
-
-/* Rank Progression */
-.rank-journey {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 2rem 0;
-    position: relative;
-}
-
-.rank-journey::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 5%;
-    right: 5%;
-    height: 4px;
-    background: linear-gradient(90deg, var(--leaf-green), var(--autumn-orange));
-    border-radius: 2px;
-    z-index: 0;
-}
-
-.rank-badge {
-    background: white;
-    padding: 0.75rem 1rem;
-    border-radius: 20px;
-    font-weight: 600;
-    font-size: 0.85rem;
-    color: var(--forest-dark);
-    box-shadow: 0 3px 10px var(--shadow);
-    position: relative;
-    z-index: 1;
-    transition: all 0.3s;
-}
-
-.rank-badge:hover {
-    transform: scale(1.1);
-    box-shadow: 0 5px 15px var(--shadow);
-}
-
-.rank-badge.legend {
-    background: linear-gradient(135deg, var(--autumn-gold), var(--autumn-orange));
-    color: white;
-}
-
-/* Benefits Comparison */
-.benefits-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1.5rem;
-}
-
-.benefits-table th,
-.benefits-table td {
-    padding: 1rem;
-    text-align: center;
-    border-bottom: 1px solid #eee;
-}
-
-.benefits-table th {
-    background: var(--forest-dark);
-    color: white;
-    font-weight: 600;
-}
-
-.benefits-table th:first-child {
-    border-radius: 8px 0 0 0;
-    text-align: left;
-}
-
-.benefits-table th:last-child {
-    border-radius: 0 8px 0 0;
-}
-
-.benefits-table td:first-child {
-    text-align: left;
-    color: #555;
-}
-
-.benefits-table tr:hover {
-    background: rgba(74, 156, 93, 0.05);
-}
-
-.check {
-    color: var(--leaf-green);
-    font-size: 1.2rem;
-}
-
-.cross {
-    color: #ccc;
-    font-size: 1.2rem;
-}
-
-/* Final CTA */
-.final-cta {
-    text-align: center;
-    padding: 4rem 2rem;
-    position: relative;
-    z-index: 1;
-}
-
-.final-cta h2 {
-    color: var(--cream);
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-.final-cta p {
-    color: rgba(255,255,255,0.85);
-    font-size: 1.1rem;
-    margin-bottom: 2rem;
-}
-
-/* Footer */
-.game-footer {
-    background: var(--forest-dark);
-    color: var(--cream);
-    padding: 2rem;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-}
-
-.footer-links {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
-}
-
-.footer-links a {
-    color: rgba(255,255,255,0.8);
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-.footer-links a:hover {
-    color: var(--autumn-orange);
-}
-
-.copyright {
-    opacity: 0.7;
-    font-size: 0.9rem;
-}
-
-/* Responsive - Tablet Landscape */
-@media (max-width: 1024px) {
-    .tips-carousel-wrapper {
-        padding: 0 45px;
-    }
-
-    .tip-card {
-        min-width: 180px;
-        max-width: 180px;
-    }
-}
-
-/* Responsive - Tablet Portrait & Large Phones */
-@media (max-width: 768px) {
-    .hero h1 {
-        font-size: 2.5rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1.1rem;
-    }
-
-    .play-now-btn {
-        font-size: 1.2rem;
-        padding: 1rem 2rem;
-    }
-
-    .section-container {
-        padding: 2rem 1.5rem;
-    }
-
-    .rank-journey {
-        justify-content: center;
-        gap: 0.75rem;
-    }
-
-    .rank-journey::before {
-        display: none;
-    }
-
-    .rank-badge {
-        padding: 0.5rem 0.75rem;
-        font-size: 0.75rem;
-    }
-
-    .benefits-table {
-        font-size: 0.85rem;
-    }
-
-    .benefits-table th,
-    .benefits-table td {
-        padding: 0.75rem 0.5rem;
-    }
-
-    .header-content {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .tips-carousel-wrapper {
-        padding: 0 40px;
-    }
-
-    .tip-card {
-        min-width: 170px;
-        max-width: 170px;
-    }
-
-    .carousel-btn {
-        width: 35px;
-        height: 35px;
-        font-size: 1rem;
-    }
-
-    .objective-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-/* Responsive - Phone Landscape */
-@media (max-width: 667px) and (orientation: landscape) {
-    .hero {
-        padding: 3rem 2rem;
-    }
-
-    .hero-icon {
-        font-size: 3rem;
-    }
-
-    .hero h1 {
-        font-size: 2rem;
-    }
-
-    .content-section {
-        padding: 2rem 1rem;
-    }
-
-    .section-container {
-        padding: 1.5rem;
-    }
-
-    .controls-grid {
-        grid-template-columns: 1fr 1fr;
-    }
-}
-
-/* Responsive - Phone Portrait */
-@media (max-width: 480px) {
-    .hero {
-        padding: 4rem 1.5rem;
-    }
-
-    .hero-icon {
-        font-size: 4rem;
-    }
-
-    .hero h1 {
-        font-size: 2rem;
-    }
-
-    .hero-subtitle {
-        font-size: 1rem;
-    }
-
-    .play-now-btn {
-        font-size: 1.1rem;
-        padding: 0.9rem 1.8rem;
-        gap: 8px;
-    }
-
-    .play-options {
-        font-size: 0.85rem;
-    }
-
-    .hero-screenshot {
-        margin-top: 2rem;
-    }
-
-    .hero-screenshot img {
-        width: 100%;
-        border-radius: 8px;
-    }
-
-    .content-section {
-        padding: 2rem 1rem;
-    }
-
-    .section-container {
-        padding: 1.5rem 1rem;
-        border-radius: 12px;
-    }
-
-    .section-title {
-        font-size: 1.5rem;
-    }
-
-    .objective-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 1rem;
-    }
-
-    .objective-card {
-        padding: 1rem;
-    }
-
-    .objective-icon {
-        font-size: 2rem;
-    }
-
-    .objective-card h4 {
-        font-size: 0.95rem;
-    }
-
-    .objective-card p {
-        font-size: 0.8rem;
-    }
-
-    .controls-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-
-    .controls-panel {
-        padding: 1rem;
-    }
-
-    .control-key {
-        min-width: 50px;
-        font-size: 0.75rem;
-        padding: 0.25rem 0.4rem;
-    }
-
-    .control-action {
-        font-size: 0.85rem;
-    }
-
-    .tips-carousel-wrapper {
-        padding: 0 35px;
-    }
-
-    .tip-card {
-        min-width: 160px;
-        max-width: 160px;
-        padding: 1rem;
-    }
-
-    .tip-title {
-        font-size: 1rem;
-    }
-
-    .tip-content {
-        font-size: 0.9rem;
-    }
-
-    .carousel-btn {
-        width: 30px;
-        height: 30px;
-        font-size: 0.9rem;
-    }
-
-    .carousel-dots {
-        gap: 6px;
-    }
-
-    .carousel-dot {
-        width: 8px;
-        height: 8px;
-    }
-
-    .rank-journey {
-        gap: 0.5rem;
-    }
-
-    .rank-badge {
-        padding: 0.4rem 0.6rem;
-        font-size: 0.7rem;
-    }
-
-    .benefits-table {
-        font-size: 0.75rem;
-    }
-
-    .benefits-table th,
-    .benefits-table td {
-        padding: 0.6rem 0.3rem;
-    }
-
-    .final-cta h2 {
-        font-size: 1.8rem;
-    }
-
-    .final-cta p {
-        font-size: 1rem;
-    }
-
-    .footer-links {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    .game-footer {
-        padding: 1.5rem 1rem;
-    }
-}
-
-/* Small phones */
-@media (max-width: 375px) {
-    .hero h1 {
-        font-size: 1.75rem;
-    }
-
-    .objective-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .tip-card {
-        min-width: 150px;
-        max-width: 150px;
-    }
-
-    .rank-badge {
-        padding: 0.35rem 0.5rem;
-        font-size: 0.65rem;
-    }
-}
-    </style>
-</head>
-<body>
-    <!-- Floating Leaves -->
-    <div class="leaves-container" id="leavesContainer"></div>
-
-    <!-- Header -->
-    <header class="game-header">
-        <div class="header-content">
-            <a href="/" class="logo">
-                <span class="logo-icon">🐿️</span>
-                <span class="logo-text">Hidden Walnuts</span>
-            </a>
-            <nav class="nav-links">
-                <a href="/" class="nav-link">About</a>
-                <a href="/portfolio" class="nav-link">Portfolio</a>
-                <a href="/support" class="nav-link">Support</a>
-                <a href="https://game.hiddenwalnuts.com" class="nav-link play-btn-nav active">Play the Game</a>
-            </nav>
-        </div>
-    </header>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-icon">🐿️</div>
-            <h1>Hidden Walnuts</h1>
-            <p class="hero-subtitle">
-                Hidden Walnuts is a casual real-time multiplayer game where you play as a squirrel (or other forest creatures) competing to find hidden walnuts, hide your own for bonus points, and survive in a dynamic forest ecosystem.
-            </p>
-            <a href="https://game.hiddenwalnuts.com" class="play-now-btn">
-                <i class="fas fa-play"></i> Play Now
-            </a>
-            <p class="play-options">
-                Free to play • No download required • Desktop & Mobile
-            </p>
-            <div class="hero-screenshot">
-                <img src="${GITHUB_BASE_URL}Jan6HiddenWalnuts.jpg" alt="Hidden Walnuts gameplay screenshot">
-            </div>
-        </div>
-    </section>
-
-    <!-- How to Play -->
-    <section class="content-section">
-        <div class="section-container">
-            <h2 class="section-title"><i class="fas fa-gamepad"></i> How to Play</h2>
-
-            <div class="objective-grid">
-                <div class="objective-card">
-                    <div class="objective-icon">🔍</div>
-                    <h4>Find</h4>
-                    <p>Find walnuts scattered throughout the forest</p>
-                </div>
-                <div class="objective-card">
-                    <div class="objective-icon">🌱</div>
-                    <h4>Hide & Grow</h4>
-                    <p>Hide walnuts strategically - if they remain unfound for 60+ seconds, they grow into trees for 20 bonus points!</p>
-                </div>
-                <div class="objective-card">
-                    <div class="objective-icon">⚔️</div>
-                    <h4>Survive</h4>
-                    <p>Battle other players and predators by throwing walnuts. Eat walnuts to regain health!</p>
-                </div>
-                <div class="objective-card">
-                    <div class="objective-icon">🏆</div>
-                    <h4>Rank Up</h4>
-                    <p>Climb the ranks from Rookie → Apprentice → Dabbler → Slick → Maestro → Ninja → Legend</p>
-                </div>
-            </div>
-
-            <!-- Controls -->
-            <div class="controls-grid">
-                <div class="controls-panel">
-                    <h4><i class="fas fa-desktop"></i> Desktop Controls</h4>
-                    <div class="control-item">
-                        <span class="control-key">WASD</span>
-                        <span class="control-action">Move your character <span style="opacity: 0.7; font-size: 0.85em;">(or Arrow Keys)</span></span>
-                    </div>
-                    <div class="control-item">
-                        <span class="control-key">Click</span>
-                        <span class="control-action">Pick up walnuts</span>
-                    </div>
-                    <div class="control-item">
-                        <span class="control-key">H</span>
-                        <span class="control-action">Hide a walnut</span>
-                    </div>
-                    <div class="control-item">
-                        <span class="control-key">Space</span>
-                        <span class="control-action">Throw walnut <span style="opacity: 0.7; font-size: 0.85em;">(or T)</span></span>
-                    </div>
-                    <div class="control-item">
-                        <span class="control-key">E</span>
-                        <span class="control-action">Eat walnut (+10 HP)</span>
-                    </div>
-                </div>
-                <div class="controls-panel">
-                    <h4><i class="fas fa-mobile-alt"></i> Mobile Controls</h4>
-                    <div class="control-item">
-                        <span class="control-key">Drag</span>
-                        <span class="control-action">Virtual joystick to move</span>
-                    </div>
-                    <div class="control-item">
-                        <span class="control-key">Tap/Walk</span>
-                        <span class="control-action">Pick up walnuts</span>
-                    </div>
-                    <div class="control-item">
-                        <span class="control-key">Hide Btn</span>
-                        <span class="control-action">Hide a walnut</span>
-                    </div>
-                    <div class="control-item">
-                        <span class="control-key">Throw Btn</span>
-                        <span class="control-action">Throw walnut</span>
-                    </div>
-                    <div class="control-item">
-                        <span class="control-key">Eat Btn</span>
-                        <span class="control-action">Eat walnut to heal</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pro Tips -->
-    <section class="content-section">
-        <div class="section-container">
-            <h2 class="section-title"><i class="fas fa-lightbulb"></i> Pro Tips</h2>
-
-            <div class="tips-carousel-wrapper">
-                <button class="carousel-btn prev" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
-                <div class="tips-carousel" id="tipsCarousel">
-                    <!-- Combat & Survival -->
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">⚠️</span>
-                            <span class="tip-title">Danger Scales</span>
-                        </div>
-                        <p class="tip-content">NPCs and predators get more aggressive as your score increases - stay alert!</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">🎩</span>
-                            <span class="tip-title">Style</span>
-                        </div>
-                        <p class="tip-content">Use Wardrobe to add some style to your character!</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">🦅</span>
-                            <span class="tip-title">Distract Birds</span>
-                        </div>
-                        <p class="tip-content">Throw a walnut at a bird predator to distract it and avoid an attack</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">🦌</span>
-                            <span class="tip-title">Wildebeest</span>
-                        </div>
-                        <p class="tip-content">Hit a Wildebeest with 4 walnuts to annoy it and make it flee</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">❤️</span>
-                            <span class="tip-title">Heal Up</span>
-                        </div>
-                        <p class="tip-content">Eat walnuts to restore health (+25 HP per walnut)</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">💀</span>
-                            <span class="tip-title">Death Penalty</span>
-                        </div>
-                        <p class="tip-content">If you die, you drop all your walnuts - respawn is instant but you lose 5 points!</p>
-                    </div>
-                    <!-- Tree Growing -->
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">🌱</span>
-                            <span class="tip-title">Grow Trees</span>
-                        </div>
-                        <p class="tip-content">Hide a walnut and protect it for 1 minute - it will grow into a tree for bonus points!</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">🌳</span>
-                            <span class="tip-title">Tree Bonus</span>
-                        </div>
-                        <p class="tip-content">Growing trees is efficient: earn points AND the tree drops walnuts immediately</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">🗺️</span>
-                            <span class="tip-title">Minimap Trees</span>
-                        </div>
-                        <p class="tip-content">After growing a tree, a tree icon appears on the minimap for 30 seconds showing its location!</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">🏆</span>
-                            <span class="tip-title">Tree Master</span>
-                        </div>
-                        <p class="tip-content">Grow 20 trees total to earn a special tree growing bonus!</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">👀</span>
-                            <span class="tip-title">Protect Your Stash</span>
-                        </div>
-                        <p class="tip-content">Other players can steal your hidden walnuts before they grow - choose hiding spots wisely!</p>
-                    </div>
-                    <!-- Strategy & Resources -->
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">⭐</span>
-                            <span class="tip-title">Point Values</span>
-                        </div>
-                        <p class="tip-content">Buried walnuts are worth 3 points, regular walnuts are worth 1 point</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">✨</span>
-                            <span class="tip-title">Golden Walnuts</span>
-                        </div>
-                        <p class="tip-content">Golden walnuts are rare bonuses worth 5 points - grab them quickly!</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">🍂</span>
-                            <span class="tip-title">Falling Walnuts</span>
-                        </div>
-                        <p class="tip-content">Trees drop walnuts periodically - watch for falling walnuts in the forest and catch them!</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">🐿️</span>
-                            <span class="tip-title">NPC Competition</span>
-                        </div>
-                        <p class="tip-content">NPCs collect and hide walnuts too - compete to find them first or steal their hidden stashes!</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">📊</span>
-                            <span class="tip-title">Leaderboard</span>
-                        </div>
-                        <p class="tip-content">Check the leaderboard to see how you rank against others - it resets weekly for fresh competition!</p>
-                    </div>
-                    <!-- Basics -->
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">⚙️</span>
-                            <span class="tip-title">Settings</span>
-                        </div>
-                        <p class="tip-content">Adjust volume, graphics quality, and control settings in the settings menu (gear icon).</p>
-                    </div>
-                    <div class="tip-card">
-                        <div class="tip-header">
-                            <span class="tip-icon">💬</span>
-                            <span class="tip-title">Quick Chat</span>
-                        </div>
-                        <p class="tip-content">Use quick chat to communicate with other players - tap the chat bubble icon to send messages!</p>
-                    </div>
-                </div>
-                <button class="carousel-btn next" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
-            </div>
-            <div class="carousel-dots" id="carouselDots"></div>
-        </div>
-    </section>
-
-
-
-    <!-- Final CTA -->
-    <section class="final-cta">
-        <h2>Ready to Play? 🐿️</h2>
-
-        <a href="https://game.hiddenwalnuts.com" class="play-now-btn">
-            <i class="fas fa-play"></i> Play Now - It's Free!
-        </a>
-    </section>
-
-    <!-- Footer -->
-    <footer class="game-footer">
-        <div class="footer-links">
-            <a href="/">About</a>
-            <a href="/portfolio">Portfolio</a>
-            <a href="/support">Support</a>
-            <a href="/privacy">Privacy Policy</a>
-            <a href="https://www.redbubble.com/people/HiddenWalnuts/explore" target="_blank">Redbubble Store</a>
-            <a href="https://www.teepublic.com/user/hidden-walnuts" target="_blank">TeePublic Store</a>
-            <a href="https://instagram.com/hiddenwalnuts" target="_blank">Instagram</a>
-        </div>
-        <p class="copyright">&copy; <span id="currentYear"></span> Hidden Walnuts. All rights reserved.</p>
-    </footer>
-
-    <script>
-    // Floating leaves animation
-    function createLeaves() {
-        const container = document.getElementById('leavesContainer');
-        const leafEmojis = ['🍂', '🍃', '🌿'];
-        const leafCount = 15;
-
-        for (let i = 0; i < leafCount; i++) {
-            setTimeout(() => {
-                const leaf = document.createElement('div');
-                leaf.className = 'leaf';
-                leaf.textContent = leafEmojis[Math.floor(Math.random() * leafEmojis.length)];
-                leaf.style.left = Math.random() * 100 + '%';
-                leaf.style.animationDuration = (8 + Math.random() * 7) + 's';
-                leaf.style.animationDelay = Math.random() * 5 + 's';
-                leaf.style.fontSize = (16 + Math.random() * 12) + 'px';
-                container.appendChild(leaf);
-
-                setTimeout(() => {
-                    leaf.remove();
-                }, 20000);
-            }, i * 1000);
-        }
-
-        setInterval(() => {
-            const leaf = document.createElement('div');
-            leaf.className = 'leaf';
-            leaf.textContent = leafEmojis[Math.floor(Math.random() * leafEmojis.length)];
-            leaf.style.left = Math.random() * 100 + '%';
-            leaf.style.animationDuration = (8 + Math.random() * 7) + 's';
-            leaf.style.fontSize = (16 + Math.random() * 12) + 'px';
-            container.appendChild(leaf);
-
-            setTimeout(() => {
-                leaf.remove();
-            }, 20000);
-        }, 2000);
-    }
-
-    // Tips Carousel
-    function initCarousel() {
-        const carousel = document.getElementById('tipsCarousel');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const dotsContainer = document.getElementById('carouselDots');
-        const cards = carousel.querySelectorAll('.tip-card');
-
-        let currentIndex = 0;
-        let cardsPerView = getCardsPerView();
-        const totalCards = cards.length;
-        const maxIndex = Math.max(0, totalCards - cardsPerView);
-
-        function getCardsPerView() {
-            const width = window.innerWidth;
-            if (width <= 375) return 2;
-            if (width <= 480) return 2;
-            if (width <= 768) return 3;
-            if (width <= 1024) return 4;
-            return 4;
-        }
-
-        function getCardWidth() {
-            const card = cards[0];
-            const style = window.getComputedStyle(card);
-            const width = card.offsetWidth;
-            const gap = parseInt(style.marginRight) || 24;
-            return width + gap;
-        }
-
-        function updateCarousel() {
-            const cardWidth = getCardWidth();
-            carousel.style.transform = 'translateX(-' + (currentIndex * cardWidth) + 'px)';
-            updateButtons();
-            updateDots();
-        }
-
-        function updateButtons() {
-            prevBtn.disabled = currentIndex === 0;
-            nextBtn.disabled = currentIndex >= maxIndex;
-        }
-
-        function createDots() {
-            dotsContainer.innerHTML = '';
-            const numDots = Math.ceil(totalCards / cardsPerView);
-            for (let i = 0; i < numDots; i++) {
-                const dot = document.createElement('button');
-                dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-                dot.addEventListener('click', () => {
-                    currentIndex = Math.min(i * cardsPerView, maxIndex);
-                    updateCarousel();
-                });
-                dotsContainer.appendChild(dot);
-            }
-        }
-
-        function updateDots() {
-            const dots = dotsContainer.querySelectorAll('.carousel-dot');
-            const activeDotIndex = Math.floor(currentIndex / cardsPerView);
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === activeDotIndex);
-            });
-        }
-
-        prevBtn.addEventListener('click', () => {
-            if (currentIndex > 0) {
-                currentIndex = Math.max(0, currentIndex - cardsPerView);
-                updateCarousel();
-            }
-        });
-
-        nextBtn.addEventListener('click', () => {
-            if (currentIndex < maxIndex) {
-                currentIndex = Math.min(maxIndex, currentIndex + cardsPerView);
-                updateCarousel();
-            }
-        });
-
-        // Touch/swipe support
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        carousel.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
-        carousel.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        }, { passive: true });
-
-        function handleSwipe() {
-            const swipeThreshold = 50;
-            const diff = touchStartX - touchEndX;
-
-            if (Math.abs(diff) > swipeThreshold) {
-                if (diff > 0 && currentIndex < maxIndex) {
-                    currentIndex = Math.min(maxIndex, currentIndex + 1);
-                } else if (diff < 0 && currentIndex > 0) {
-                    currentIndex = Math.max(0, currentIndex - 1);
-                }
-                updateCarousel();
-            }
-        }
-
-        // Handle resize
-        let resizeTimeout;
-        window.addEventListener('resize', () => {
-            clearTimeout(resizeTimeout);
-            resizeTimeout = setTimeout(() => {
-                cardsPerView = getCardsPerView();
-                currentIndex = Math.min(currentIndex, Math.max(0, totalCards - cardsPerView));
-                createDots();
-                updateCarousel();
-            }, 150);
-        });
-
-        // Auto-rotate
-        let autoRotateInterval;
-        const autoRotateDelay = 4000;
-
-        function startAutoRotate() {
-            autoRotateInterval = setInterval(() => {
-                if (currentIndex >= maxIndex) {
-                    currentIndex = 0;
-                } else {
-                    currentIndex++;
-                }
-                updateCarousel();
-            }, autoRotateDelay);
-        }
-
-        function stopAutoRotate() {
-            clearInterval(autoRotateInterval);
-        }
-
-        // Pause on hover/touch
-        const wrapper = document.querySelector('.tips-carousel-wrapper');
-        wrapper.addEventListener('mouseenter', stopAutoRotate);
-        wrapper.addEventListener('mouseleave', startAutoRotate);
-        wrapper.addEventListener('touchstart', stopAutoRotate, { passive: true });
-        wrapper.addEventListener('touchend', () => {
-            setTimeout(startAutoRotate, 2000);
-        }, { passive: true });
-
-        createDots();
-        updateCarousel();
-        startAutoRotate();
-    }
-
-    // Update copyright year
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-    // Start animations and carousel
-    createLeaves();
-    initCarousel();
-    </script>
-</body>
-</html>`;
-
-// Admin Interface HTML
-const ADMIN_HTML = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hidden Walnuts - Admin</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f5f5;
-            color: #333;
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        h1 { color: #2c5530; margin-bottom: 10px; }
-        
-        .tabs {
-            display: flex;
-            margin-bottom: 30px;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .tab {
-            flex: 1;
-            padding: 15px 20px;
-            background: #f8f9fa;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s;
-        }
-        
-        .tab.active {
-            background: #2c5530;
-            color: white;
-        }
-        
-        .tab-content {
-            background: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            color: #555;
-        }
-        
-        input, textarea, select {
-            width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: #2c5530;
-        }
-        
-        textarea {
-            height: 100px;
-            resize: vertical;
-        }
-        
-        .file-upload {
-            border: 2px dashed #ccc;
-            border-radius: 6px;
-            padding: 40px;
-            text-align: center;
-            background: #fafafa;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .file-upload:hover {
-            border-color: #2c5530;
-            background: #f0f8f0;
-        }
-        
-        .file-upload.dragover {
-            border-color: #2c5530;
-            background: #e8f5e8;
-        }
-        
-        .btn {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 6px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-right: 10px;
-        }
-        
-        .btn-primary {
-            background: #2c5530;
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            background: #1e3a21;
-        }
-        
-        .btn-danger {
-            background: #dc3545;
-            color: white;
-        }
-        
-        .btn-danger:hover {
-            background: #c82333;
-        }
-        
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-        
-        .items-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        
-        .item-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        
-        .item-card:hover {
-            transform: translateY(-2px);
-        }
-        
-        .item-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            background: #f0f0f0;
-        }
-        
-        .item-content {
-            padding: 20px;
-        }
-        
-        .item-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .item-description {
-            color: #666;
-            margin-bottom: 15px;
-            font-size: 14px;
-        }
-        
-        .item-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #f3f3f3;
-            border-top: 2px solid #2c5530;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .alert {
-            padding: 15px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-        }
-        
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-        
-        .alert-error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-        
-        .hidden { display: none; }
-        
-        .tags-input {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            padding: 8px;
-            border: 2px solid #e0e0e0;
-            border-radius: 6px;
-            min-height: 44px;
-        }
-        
-        .tag {
-            background: #2c5530;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .tag-remove {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-            line-height: 1;
-        }
-        
-        #tagInput {
-            border: none;
-            outline: none;
-            flex: 1;
-            min-width: 120px;
-            padding: 4px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <header>
-            <h1>Hidden Walnuts Portfolio Admin</h1>
-            <p>Manage your portfolio items and images</p>
-        </header>
-
-        <div class="tabs">
-            <button class="tab active" onclick="showTab('add', event)">Add New Item</button>
-            <button class="tab" onclick="showTab('manage', event)">Manage Items</button>
-        </div>
-
-        <!-- Add New Item Tab -->
-        <div id="add-tab" class="tab-content">
-            <h2>Add New Portfolio Item</h2>
-            <div id="alert-container"></div>
-            
-            <form id="item-form">
-                <div class="form-group">
-                    <label for="title">Title *</label>
-                    <input type="text" id="title" name="title" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description" placeholder="Optional description of the artwork"></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="imageUrl">Image URL *</label>
-                    <div style="display: flex; align-items: center; gap: 5px;">
-                        <span style="color: #666; font-size: 14px; white-space: nowrap;">${GITHUB_BASE_URL}</span>
-                        <input type="text" id="imageFilename" name="imageFilename" required placeholder="artwork.jpg" style="flex: 1;">
-                    </div>
-                    <input type="hidden" id="imageUrl" name="imageUrl">
-                    <p style="font-size: 14px; color: #666; margin-top: 5px;">
-                        Just add your filename! Upload images to your GitHub repo's <code>/images/</code> folder first.
-                    </p>
-                    <div id="image-preview" class="hidden" style="margin-top: 15px;">
-                        <div id="preview-name" style="font-size: 14px; color: #666; margin-bottom: 8px;">Current image</div>
-                        <img id="preview-img" style="max-width: 200px; border-radius: 6px;">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="redbubbleUrl">Redbubble URL *</label>
-                    <input type="url" id="redbubbleUrl" name="redbubbleUrl" required placeholder="https://www.redbubble.com/shop/ap/...">
-                </div>
-                
-                <div class="form-group">
-                    <label for="tags">Tags</label>
-                    <div class="tags-input" id="tags-container">
-                        <input type="text" id="tagInput" placeholder="Type and press Enter to add tags">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" id="featured" name="featured"> Featured item
-                    </label>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">
-                    <span id="submit-text">Add Portfolio Item</span>
-                    <span id="submit-loading" class="loading hidden"></span>
-                </button>
-                <button type="button" class="btn btn-secondary" onclick="resetForm()">Reset Form</button>
-            </form>
-        </div>
-
-        <!-- Manage Items Tab -->
-        <div id="manage-tab" class="tab-content hidden">
-            <h2>Manage Portfolio Items</h2>
-            <div id="items-container">
-                <div class="loading"></div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let currentItems = [];
-        let currentTags = [];
-        let editingId = null;
-        
-        // Tab switching
-        function showTab(tabName, event) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.add('hidden'));
-            
-            // If called from onclick, event.target is the clicked button
-            if (event && event.target) {
-                event.target.classList.add('active');
-            } else {
-                // If called programmatically, find the right tab by content
-                const tabs = document.querySelectorAll('.tab');
-                if (tabName === 'add') {
-                    tabs[0].classList.add('active');
-                } else if (tabName === 'manage') {
-                    tabs[1].classList.add('active');
-                }
-            }
-            
-            document.getElementById(tabName + '-tab').classList.remove('hidden');
-            
-            if (tabName === 'manage') {
-                loadItems();
-            }
-        }
-        
-        // Image URL preview handling
-        const imageFilenameInput = document.getElementById('imageFilename');
-        const imageUrlInput = document.getElementById('imageUrl');
-        const imagePreview = document.getElementById('image-preview');
-        const previewImg = document.getElementById('preview-img');
-        const previewName = document.getElementById('preview-name');
-        const baseGitHubUrl = '${GITHUB_BASE_URL}';
-        
-        let previewTimeout;
-        imageFilenameInput.addEventListener('input', (e) => {
-            const filename = e.target.value.trim();
-            
-            // Clear previous timeout
-            clearTimeout(previewTimeout);
-            
-            if (filename) {
-                const fullUrl = baseGitHubUrl + filename;
-                imageUrlInput.value = fullUrl;
-                
-                // Only try to preview after user stops typing for 500ms
-                previewTimeout = setTimeout(() => {
-                    if (isValidImageUrl(fullUrl)) {
-                        previewImg.src = fullUrl;
-                        previewImg.onload = () => {
-                            imagePreview.classList.remove('hidden');
-                        };
-                        previewImg.onerror = () => {
-                            imagePreview.classList.add('hidden');
-                        };
-                    } else {
-                        imagePreview.classList.add('hidden');
-                    }
-                }, 500);
-            } else {
-                imageUrlInput.value = '';
-                imagePreview.classList.add('hidden');
-            }
-        });
-        
-        function isValidImageUrl(url) {
-            return /\.(jpg|jpeg|png|gif|webp)$/i.test(url) || url.includes('imgur.com') || url.includes('github');
-        }
-        
-        // Tags handling
-        const tagInput = document.getElementById('tagInput');
-        const tagsContainer = document.getElementById('tags-container');
-        
-        tagInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault();
-                addTag();
-            }
-        });
-        
-        function addTag() {
-            const value = tagInput.value.trim();
-            if (value && !currentTags.includes(value)) {
-                currentTags.push(value);
-                renderTags();
-                tagInput.value = '';
-            }
-        }
-        
-        function removeTag(tag) {
-            currentTags = currentTags.filter(t => t !== tag);
-            renderTags();
-        }
-        
-        function renderTags() {
-            const tags = tagsContainer.querySelectorAll('.tag');
-            tags.forEach(tag => tag.remove());
-            
-            currentTags.forEach(tag => {
-                const tagElement = document.createElement('span');
-                tagElement.className = 'tag';
-                tagElement.innerHTML = \`
-                    \${tag}
-                    <button type="button" class="tag-remove" onclick="removeTag('\${tag}')">&times;</button>
-                \`;
-                tagsContainer.insertBefore(tagElement, tagInput);
-            });
-        }
-        
-        // Form submission
-        document.getElementById('item-form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const submitBtn = document.querySelector('button[type="submit"]');
-            const submitText = document.getElementById('submit-text');
-            const submitLoading = document.getElementById('submit-loading');
-            
-            submitBtn.disabled = true;
-            submitText.classList.add('hidden');
-            submitLoading.classList.remove('hidden');
-            
-            try {
-                // Create portfolio item with image URL
-                const itemData = {
-                    title: document.getElementById('title').value,
-                    description: document.getElementById('description').value,
-                    imageUrl: document.getElementById('imageUrl').value,
-                    redbubbleUrl: document.getElementById('redbubbleUrl').value,
-                    tags: currentTags,
-                    featured: document.getElementById('featured').checked
-                };
-                
-                const method = editingId ? 'PUT' : 'POST';
-                const url = editingId ? \`/api/portfolio/\${editingId}\` : '/api/portfolio';
-                
-                const response = await fetch(url, {
-                    method,
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(itemData)
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok) {
-                    const wasEditing = editingId;
-                    showAlert(\`Portfolio item \${editingId ? 'updated' : 'added'} successfully!\`, 'success');
-                    resetForm();
-                    if (wasEditing) {
-                        // Go back to manage tab after editing
-                        showTab('manage');
-                    }
-                } else {
-                    throw new Error(result.error || 'Failed to save item');
-                }
-                
-            } catch (error) {
-                showAlert('Error: ' + error.message, 'error');
-            } finally {
-                submitBtn.disabled = false;
-                submitText.classList.remove('hidden');
-                submitLoading.classList.add('hidden');
-            }
-        });
-        
-        // Load and display items
-        async function loadItems() {
-            const container = document.getElementById('items-container');
-            container.innerHTML = '<div class="loading"></div>';
-            
-            try {
-                const response = await fetch('/api/portfolio');
-                currentItems = await response.json();
-                renderItems();
-            } catch (error) {
-                container.innerHTML = \`<p style="color: red;">Error loading items: \${error.message}</p>\`;
-            }
-        }
-        
-        function renderItems() {
-            const container = document.getElementById('items-container');
-            
-            if (currentItems.length === 0) {
-                container.innerHTML = '<p>No portfolio items found. Add some items to get started!</p>';
-                return;
-            }
-            
-            const grid = document.createElement('div');
-            grid.className = 'items-grid';
-            
-            currentItems.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'item-card';
-                card.innerHTML = \`
-                    <img src="\${item.imageUrl}" alt="\${item.title}" class="item-image" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDIwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiIGZpbGw9IiNmMGYwZjAiLz48dGV4dCB4PSIxMDAiIHk9IjEwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzk5OTk5OSI+SW1hZ2U8L3RleHQ+PC9zdmc+'">
-                    <div class="item-content">
-                        <div class="item-title">\${item.title}</div>
-                        <div class="item-description">\${item.description || 'No description'}</div>
-                        <div style="margin-bottom: 10px;">
-                            <small style="color: #666;">
-                                Tags: \${item.tags?.length ? item.tags.join(', ') : 'None'}
-                                \${item.featured ? ' • Featured' : ''}
-                            </small>
-                        </div>
-                        <div class="item-actions">
-                            <button class="btn btn-secondary" onclick="editItem('\${item.id}')">Edit</button>
-                            <button class="btn btn-danger" onclick="deleteItem('\${item.id}', '\${item.title}')">Delete</button>
-                            <a href="\${item.redbubbleUrl}" target="_blank" class="btn btn-primary">View Product</a>
-                        </div>
-                    </div>
-                \`;
-                grid.appendChild(card);
-            });
-            
-            container.innerHTML = '';
-            container.appendChild(grid);
-        }
-        
-        // Edit item
-        function editItem(id) {
-            const item = currentItems.find(i => i.id === id);
-            if (!item) return;
-            
-            editingId = id;
-            
-            document.getElementById('title').value = item.title;
-            document.getElementById('description').value = item.description || '';
-            document.getElementById('redbubbleUrl').value = item.redbubbleUrl;
-            document.getElementById('featured').checked = item.featured || false;
-            
-            currentTags = item.tags || [];
-            renderTags();
-            
-            // Set the hidden imageUrl field with existing URL
-            imageUrlInput.value = item.imageUrl;
-
-            // Extract and show the filename from the URL
-            const filename = item.imageUrl.split('/').pop();
-            imageFilenameInput.value = filename;
-
-            // Show preview of existing image
-            previewImg.src = item.imageUrl;
-            previewName.textContent = 'Current image: ' + filename;
-            imagePreview.classList.remove('hidden');
-
-            // Remove required from image filename input for editing
-            imageFilenameInput.removeAttribute('required');
-            
-            document.getElementById('submit-text').textContent = 'Update Portfolio Item';
-            showTab('add');
-        }
-        
-        // Delete item
-        async function deleteItem(id, title) {
-            if (!confirm(\`Are you sure you want to delete "\${title}"?\`)) return;
-            
-            try {
-                const response = await fetch(\`/api/portfolio/\${id}\`, {
-                    method: 'DELETE'
-                });
-                
-                if (response.ok) {
-                    showAlert('Item deleted successfully!', 'success');
-                    loadItems();
-                } else {
-                    const error = await response.json();
-                    throw new Error(error.error || 'Delete failed');
-                }
-            } catch (error) {
-                showAlert('Error: ' + error.message, 'error');
-            }
-        }
-        
-        // Utility functions
-        function resetForm() {
-            document.getElementById('item-form').reset();
-            currentTags = [];
-            editingId = null;
-            renderTags();
-            imagePreview.classList.add('hidden');
-            imageUrlInput.value = '';
-            document.getElementById('submit-text').textContent = 'Add Portfolio Item';
-            clearAlerts();
-        }
-        
-        function showAlert(message, type) {
-            const container = document.getElementById('alert-container');
-            container.innerHTML = \`<div class="alert alert-\${type}">\${message}</div>\`;
-            setTimeout(clearAlerts, 5000);
-        }
-        
-        function clearAlerts() {
-            document.getElementById('alert-container').innerHTML = '';
-        }
-    </script>
-</body>
-</html>`;
-const ABOUT_HTML = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>ABOUT</title>\n    <link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"fav-walnuts.png?v=3\">\n    <link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"fav-walnuts.png?v=3\">\n    <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"fav-walnuts.png?v=3\">\n    <style>\n:root {\n    --primary-color: #2a5d31;\n    --primary-light: #4a7c55;\n    --primary-dark: #1e4022;\n    --secondary-color: #7fad69;\n    --accent-color: #f8faf6;\n    --accent-warm: #f5f7f1;\n    --text-light: #6c757d;\n    --background-color: #ffffff;\n    --card-shadow: 0 4px 20px rgba(42, 93, 49, 0.08);\n    --card-shadow-hover: 0 8px 30px rgba(42, 93, 49, 0.15);\n    --border-radius: 12px;\n    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n* {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n}\n\nbody {\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;\n    line-height: 1.6;\n    color: #333;\n    background: #ffffff;\n    font-weight: 400;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n}\n\n.container {\n    max-width: 1200px;\n    margin: 0 auto;\n    padding: 0 20px;\n}\n\n/* Navigation Styles */\n.main-nav {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 1rem 2rem;\n    background: white;\n    box-shadow: 0 2px 10px rgba(0,0,0,0.1);\n    position: sticky;\n    top: 0;\n    z-index: 100;\n}\n\n.logo-container {\n    display: flex;\n    align-items: center;\n    gap: 15px;\n}\n\n.nav-logo {\n    width: 50px;\n    height: 50px;\n    border-radius: 50%;\n    object-fit: cover;\n}\n\n.logo-container h1 {\n    font-size: 1.8rem;\n    color: var(--primary-color);\n    font-weight: 700;\n}\n\n.nav-links {\n    display: flex;\n    align-items: center;\n    gap: 2rem;\n}\n\n.nav-link {\n    text-decoration: none;\n    color: #666;\n    font-weight: 500;\n    padding: 0.5rem 1rem;\n    border-radius: 6px;\n    transition: var(--transition);\n}\n\n.nav-link:hover,\n.nav-link.active {\n    color: var(--primary-color);\n    background: var(--accent-color);\n}\n\n.store-link {\n    background: var(--primary-color);\n    color: white !important;\n    font-weight: 600;\n    display: flex;\n    align-items: center;\n    gap: 8px;\n}\n\n.store-link:hover {\n    background: var(--primary-dark) !important;\n    transform: translateY(-2px);\n}\n\n/* Hero Section */\n.hero {\n    background: linear-gradient(135deg, var(--accent-color) 0%, #ffffff 100%);\n    padding: 4rem 0;\n    text-align: center;\n}\n\n.hero-content h2 {\n    font-size: 3rem;\n    color: var(--primary-color);\n    margin-bottom: 1rem;\n    font-weight: 700;\n}\n\n.hero-content p {\n    font-size: 1.2rem;\n    color: var(--text-light);\n    max-width: 600px;\n    margin: 0 auto;\n}\n\n/* Portfolio Section */\n.portfolio-section {\n    padding: 2rem 0;\n}\n\n/* Portfolio Grid - Grid Style (Row-Major) */\n.portfolio-grid {\n    display: grid;\n    grid-template-columns: repeat(4, 1fr);\n    gap: 15px;\n    margin: 0;\n}\n\n.portfolio-item {\n    width: 100%;\n    cursor: pointer;\n    transition: var(--transition);\n    position: relative;\n    overflow: hidden;\n}\n\n.portfolio-item:hover {\n    transform: scale(1.02);\n}\n\n.portfolio-item-image {\n    width: 100%;\n    height: auto;\n    display: block;\n    transition: var(--transition);\n}\n\n\n/* Title overlay for hover effect (exactly like Maggie Carroll site) */\n.portfolio-item-title {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    background: rgba(255, 255, 255, 0.9);\n    color: #333;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 16px;\n    font-weight: 500;\n    opacity: 0;\n    transition: var(--transition);\n    pointer-events: none;\n    text-align: center;\n    padding: 20px;\n}\n\n.portfolio-item:hover .portfolio-item-title {\n    opacity: 1;\n}\n\n.portfolio-item:hover .portfolio-item-image {\n    filter: brightness(1.1) contrast(0.8);\n}\n\n/* Remove card-style elements (except title which we need for hover) */\n.portfolio-item-content,\n.portfolio-item-description,\n.portfolio-item-tags,\n.portfolio-item-actions,\n.btn-primary,\n.featured-badge,\n.tag {\n    display: none;\n}\n\n/* Loading States */\n.loading-state {\n    text-align: center;\n    padding: 4rem 0;\n    color: var(--text-light);\n}\n\n.spinner {\n    display: inline-block;\n    width: 40px;\n    height: 40px;\n    border: 3px solid #f3f3f3;\n    border-top: 3px solid var(--primary-color);\n    border-radius: 50%;\n    animation: spin 1s linear infinite;\n    margin-bottom: 1rem;\n}\n\n@keyframes spin {\n    0% { transform: rotate(0deg); }\n    100% { transform: rotate(360deg); }\n}\n\n/* Lightbox Modal */\n.lightbox {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.9);\n    z-index: 1000;\n    display: none;\n    align-items: center;\n    justify-content: center;\n    padding: 20px;\n}\n\n.lightbox.active {\n    display: flex;\n}\n\n.lightbox-content {\n    background: white;\n    border-radius: var(--border-radius);\n    max-width: 800px;\n    max-height: 90vh;\n    overflow-y: auto;\n    position: relative;\n    display: flex;\n    flex-direction: column;\n}\n\n.lightbox-close {\n    position: absolute;\n    top: 15px;\n    right: 20px;\n    background: none;\n    border: none;\n    font-size: 2rem;\n    cursor: pointer;\n    z-index: 10;\n    color: white;\n    background: rgba(0, 0, 0, 0.5);\n    width: 40px;\n    height: 40px;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.lightbox-image-container {\n    position: relative;\n}\n\n.lightbox-image-container img {\n    width: 100%;\n    height: auto;\n    display: block;\n}\n\n.lightbox-info {\n    padding: 2rem;\n}\n\n.lightbox-info h3 {\n    font-size: 1.5rem;\n    color: var(--primary-color);\n    margin-bottom: 1rem;\n}\n\n.lightbox-info p {\n    color: var(--text-light);\n    margin-bottom: 1.5rem;\n    line-height: 1.6;\n}\n\n.lightbox-actions {\n    text-align: center;\n}\n\n.lightbox-actions .btn-primary {\n    display: inline-flex !important;\n    background: var(--primary-color);\n    color: white;\n    padding: 0.75rem 2rem;\n    border-radius: 6px;\n    text-decoration: none;\n    font-weight: 600;\n    align-items: center;\n    gap: 8px;\n    transition: var(--transition);\n}\n\n.lightbox-actions .btn-primary:hover {\n    background: var(--primary-dark);\n    transform: translateY(-2px);\n}\n\n/* Footer */\nfooter {\n    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);\n    color: white;\n    padding: 3rem 0 2rem;\n}\n\n.footer-content {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));\n    gap: 2rem;\n    margin-bottom: 2rem;\n}\n\n.footer-section h3 {\n    margin-bottom: 1rem;\n    font-size: 1.2rem;\n}\n\n.social-links {\n    display: flex;\n    gap: 1rem;\n}\n\n.social-links a {\n    color: white;\n    font-size: 1.5rem;\n    width: 50px;\n    height: 50px;\n    background: rgba(255, 255, 255, 0.15);\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    text-decoration: none;\n    transition: var(--transition);\n}\n\n.social-links a:hover {\n    background: white;\n    color: var(--primary-color);\n    transform: translateY(-3px);\n}\n\n.footer-store-link {\n    color: white;\n    text-decoration: none;\n    display: inline-flex;\n    align-items: center;\n    gap: 0.5rem;\n    padding: 0.5rem 1rem;\n    border: 2px solid rgba(255, 255, 255, 0.3);\n    border-radius: 6px;\n    transition: var(--transition);\n}\n\n.footer-store-link:hover {\n    background: white;\n    color: var(--primary-color);\n}\n\n.footer-bottom {\n    text-align: center;\n    padding-top: 2rem;\n    border-top: 1px solid rgba(255, 255, 255, 0.2);\n}\n\n.copyright {\n    opacity: 0.8;\n    font-size: 0.9rem;\n}\n\n/* X Icon Style */\n.x-icon {\n    font-family: 'Arial', sans-serif;\n    font-weight: bold;\n    font-size: 1.2rem;\n}\n\n/* Responsive Design */\n@media (max-width: 1200px) {\n    .portfolio-grid {\n        grid-template-columns: repeat(3, 1fr);\n        gap: 12px;\n    }\n}\n\n@media (max-width: 768px) {\n    .main-nav {\n        flex-direction: column;\n        gap: 1rem;\n        padding: 1rem;\n    }\n    \n    .nav-links {\n        gap: 1rem;\n    }\n    \n    .hero-content h2 {\n        font-size: 2.5rem;\n    }\n    \n    .portfolio-grid {\n        grid-template-columns: repeat(2, 1fr);\n        gap: 10px;\n    }\n    \n    .lightbox-content {\n        max-width: 95%;\n        margin: 20px;\n    }\n    \n    .lightbox-info {\n        padding: 1.5rem;\n    }\n}\n\n@media (max-width: 480px) {\n    .logo-container h1 {\n        font-size: 1.5rem;\n    }\n    \n    .hero-content h2 {\n        font-size: 2rem;\n    }\n    \n    .hero-content p {\n        font-size: 1rem;\n    }\n    \n    .portfolio-grid {\n        grid-template-columns: 1fr;\n        gap: 8px;\n    }\n    \n    .social-links {\n        justify-content: center;\n    }\n    \n    .footer-content {\n        grid-template-columns: 1fr;\n        text-align: center;\n    }\n}\n    \n        .content-page { padding: 4rem 2rem; max-width: 800px; margin: 0 auto; }\n        .content-page h2 { color: var(--primary-color); font-size: 2.5rem; margin-bottom: 1rem; }\n        .content-page h3 { color: var(--primary-dark); font-size: 1.5rem; margin: 2rem 0 1rem; }\n        .content-page p, .content-page ul { font-size: 1.1rem; color: #444; margin-bottom: 1.5rem; line-height: 1.8; }\n        .content-page ul { padding-left: 2rem; }\n        .content-page li { margin-bottom: 0.5rem; }\n        .contact-box { background: var(--accent-warm); padding: 2rem; border-radius: 12px; margin-top: 2rem; border-left: 4px solid var(--primary-color); }\n        .contact-box a { color: var(--primary-color); font-weight: bold; text-decoration: none; }\n        .contact-box a:hover { text-decoration: underline; }\n        \n    .hero-banner { width: 100%; max-height: 400px; object-fit: cover; }\n    .hero-banner-container { width: 100%; background: var(--primary-dark); }\n\n    </style>\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\">\n</head>\n<body>\n    <header>\n        <nav class=\"main-nav\">\n            <div class=\"logo-container\">\n                <a href=\"/\" style=\"display:flex; align-items:center; gap:15px; text-decoration:none;\">\n                    <img src=\"https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/LogoForInsta.png\" alt=\"Hidden Walnuts\" class=\"nav-logo\">\n                    <h1>Hidden Walnuts</h1>\n                </a>\n            </div>\n                        <div class=\"nav-links\">\n                <a href=\"/\" class=\"nav-link\">About</a>\n                <a href=\"/portfolio\" class=\"nav-link\">Portfolio</a>\n                <a href=\"/support\" class=\"nav-link\">Support</a>\n                <a href=\"/game\" class=\"nav-link store-link\">Play the Game</a>\n            </div>\n        </nav>\n    </header>\n\n    \n    <div class=\"hero-banner-container\">\n        <img src=\"https://raw.githubusercontent.com/mcham12/hidden-walnuts/feature/apple-preview-deployment/Twitter%20banner%20Hidden%20Walnuts.png\" onerror=\"this.src='https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/Jan6HiddenWalnuts.jpg'\" alt=\"Hidden Walnuts Banner\" class=\"hero-banner\">\n    </div>\n    <main class=\"content-page\">\n        <h2>About Hidden Walnuts</h2>\n\n        <p>Our name was inspired by the walnuts that squirrels try to hide (not always successfully) all over our yard. We enjoy art, poetry, and pickleball and try to share things that make us smile through our designs and games.</p>\n        \n        <p>We specialize in:</p>\n\n        <ul>\n            <li><strong>Print-on-Demand Merchandise:</strong> We feature both original designs and highlight under-appreciated work by other artists and poets, and make these available on apparel, accessories, and home goods through our <a href=\"https://www.teepublic.com/user/hidden-walnuts\" target=\"_blank\" style=\"color: var(--primary-color); text-decoration: none; font-weight: 500;\">TeePublic</a> and <a href=\"https://www.redbubble.com/people/HiddenWalnuts/explore?page=1&sortOrder=recent\" target=\"_blank\" style=\"color: var(--primary-color); text-decoration: none; font-weight: 500;\">RedBubble</a> stores.</li>\n            <li><strong>Web-Based Games:</strong> We develop casual, real-time multiplayer games that are easy to pick up and fun to play directly in your browser.</li>\n            <li><strong>Educational & Fun Apps:</strong> We are currently expanding and will bring our unique blend of fun and educational experiences to iOS, iPadOS, and macOS devices.</li>\n        </ul>\n\n        <p>Our mission is to build products that bring joy, spark curiosity, and add a touch of whimsy to our daily lives.</p>\n    </main>\n\n\n    <footer>\n        <div class=\"container\">\n            <div class=\"footer-content\">\n                <div class=\"footer-section\">\n                    <h3>Company</h3>\n                    <div style=\"display: flex; flex-direction: column; gap: 0.5rem;\">\n                        <a href=\"/\" style=\"color: white; text-decoration: none; opacity: 0.8;\">About Us</a>\n                        <a href=\"/portfolio\" style=\"color: white; text-decoration: none; opacity: 0.8;\">Portfolio</a>\n                        <a href=\"/support\" style=\"color: white; text-decoration: none; opacity: 0.8;\">Support</a>\n                        <a href=\"/privacy\" style=\"color: white; text-decoration: none; opacity: 0.8;\">Privacy Policy</a>\n                    </div>\n                </div>\n                \n                <div class=\"footer-section\">\n                    <h3>Follow Us</h3>\n                        <div class=\"social-links\">\n                            <a href=\"https://instagram.com/hiddenwalnuts\" target=\"_blank\" aria-label=\"Instagram\"><i class=\"fab fa-instagram\"></i></a>\n                            <a href=\"https://pinterest.com/hiddenwalnuts\" target=\"_blank\" aria-label=\"Pinterest\"><i class=\"fab fa-pinterest\"></i></a>\n                            <a href=\"https://x.com/hiddenwalnuts\" target=\"_blank\" aria-label=\"X\"><span class=\"x-icon\">𝕏</span></a>\n                        </div>\n                    </div>\n                </div>\n                \n                <div class=\"footer-section\">\n                    <h3>Shop</h3>\n                    <a href=\"https://www.teepublic.com/user/hidden-walnuts\" target=\"_blank\" class=\"footer-store-link\">\n                        Visit our TeePublic Store <i class=\"fas fa-external-link-alt\"></i>\n                    </a>\n                    <a href=\"https://www.redbubble.com/people/HiddenWalnuts/explore?page=1&sortOrder=recent\" target=\"_blank\" class=\"footer-store-link\" style=\"margin-top: 10px;\">\n                        Visit our Redbubble Store <i class=\"fas fa-external-link-alt\"></i>\n                    </a>\n                </div>\n            </div>\n            <div class=\"footer-bottom\">\n                <div class=\"copyright\">&copy; <span id=\"currentYear\"></span> Hidden Walnuts. All rights reserved.</div>\n            </div>\n        </div>\n    </footer>\n    <script>document.getElementById('currentYear').textContent = new Date().getFullYear();</script>\n</body>\n</html>";
-
-const SUPPORT_HTML = "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>SUPPORT</title>\n    <link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" href=\"fav-walnuts.png?v=3\">\n    <link rel=\"icon\" type=\"image/png\" sizes=\"16x16\" href=\"fav-walnuts.png?v=3\">\n    <link rel=\"shortcut icon\" type=\"image/x-icon\" href=\"fav-walnuts.png?v=3\">\n    <style>\n:root {\n    --primary-color: #2a5d31;\n    --primary-light: #4a7c55;\n    --primary-dark: #1e4022;\n    --secondary-color: #7fad69;\n    --accent-color: #f8faf6;\n    --accent-warm: #f5f7f1;\n    --text-light: #6c757d;\n    --background-color: #ffffff;\n    --card-shadow: 0 4px 20px rgba(42, 93, 49, 0.08);\n    --card-shadow-hover: 0 8px 30px rgba(42, 93, 49, 0.15);\n    --border-radius: 12px;\n    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n* {\n    box-sizing: border-box;\n    margin: 0;\n    padding: 0;\n}\n\nbody {\n    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;\n    line-height: 1.6;\n    color: #333;\n    background: #ffffff;\n    font-weight: 400;\n    -webkit-font-smoothing: antialiased;\n    -moz-osx-font-smoothing: grayscale;\n}\n\n.container {\n    max-width: 1200px;\n    margin: 0 auto;\n    padding: 0 20px;\n}\n\n/* Navigation Styles */\n.main-nav {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 1rem 2rem;\n    background: white;\n    box-shadow: 0 2px 10px rgba(0,0,0,0.1);\n    position: sticky;\n    top: 0;\n    z-index: 100;\n}\n\n.logo-container {\n    display: flex;\n    align-items: center;\n    gap: 15px;\n}\n\n.nav-logo {\n    width: 50px;\n    height: 50px;\n    border-radius: 50%;\n    object-fit: cover;\n}\n\n.logo-container h1 {\n    font-size: 1.8rem;\n    color: var(--primary-color);\n    font-weight: 700;\n}\n\n.nav-links {\n    display: flex;\n    align-items: center;\n    gap: 2rem;\n}\n\n.nav-link {\n    text-decoration: none;\n    color: #666;\n    font-weight: 500;\n    padding: 0.5rem 1rem;\n    border-radius: 6px;\n    transition: var(--transition);\n}\n\n.nav-link:hover,\n.nav-link.active {\n    color: var(--primary-color);\n    background: var(--accent-color);\n}\n\n.store-link {\n    background: var(--primary-color);\n    color: white !important;\n    font-weight: 600;\n    display: flex;\n    align-items: center;\n    gap: 8px;\n}\n\n.store-link:hover {\n    background: var(--primary-dark) !important;\n    transform: translateY(-2px);\n}\n\n/* Hero Section */\n.hero {\n    background: linear-gradient(135deg, var(--accent-color) 0%, #ffffff 100%);\n    padding: 4rem 0;\n    text-align: center;\n}\n\n.hero-content h2 {\n    font-size: 3rem;\n    color: var(--primary-color);\n    margin-bottom: 1rem;\n    font-weight: 700;\n}\n\n.hero-content p {\n    font-size: 1.2rem;\n    color: var(--text-light);\n    max-width: 600px;\n    margin: 0 auto;\n}\n\n/* Portfolio Section */\n.portfolio-section {\n    padding: 2rem 0;\n}\n\n/* Portfolio Grid - Grid Style (Row-Major) */\n.portfolio-grid {\n    display: grid;\n    grid-template-columns: repeat(4, 1fr);\n    gap: 15px;\n    margin: 0;\n}\n\n.portfolio-item {\n    width: 100%;\n    cursor: pointer;\n    transition: var(--transition);\n    position: relative;\n    overflow: hidden;\n}\n\n.portfolio-item:hover {\n    transform: scale(1.02);\n}\n\n.portfolio-item-image {\n    width: 100%;\n    height: auto;\n    display: block;\n    transition: var(--transition);\n}\n\n\n/* Title overlay for hover effect (exactly like Maggie Carroll site) */\n.portfolio-item-title {\n    position: absolute;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    background: rgba(255, 255, 255, 0.9);\n    color: #333;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    font-size: 16px;\n    font-weight: 500;\n    opacity: 0;\n    transition: var(--transition);\n    pointer-events: none;\n    text-align: center;\n    padding: 20px;\n}\n\n.portfolio-item:hover .portfolio-item-title {\n    opacity: 1;\n}\n\n.portfolio-item:hover .portfolio-item-image {\n    filter: brightness(1.1) contrast(0.8);\n}\n\n/* Remove card-style elements (except title which we need for hover) */\n.portfolio-item-content,\n.portfolio-item-description,\n.portfolio-item-tags,\n.portfolio-item-actions,\n.btn-primary,\n.featured-badge,\n.tag {\n    display: none;\n}\n\n/* Loading States */\n.loading-state {\n    text-align: center;\n    padding: 4rem 0;\n    color: var(--text-light);\n}\n\n.spinner {\n    display: inline-block;\n    width: 40px;\n    height: 40px;\n    border: 3px solid #f3f3f3;\n    border-top: 3px solid var(--primary-color);\n    border-radius: 50%;\n    animation: spin 1s linear infinite;\n    margin-bottom: 1rem;\n}\n\n@keyframes spin {\n    0% { transform: rotate(0deg); }\n    100% { transform: rotate(360deg); }\n}\n\n/* Lightbox Modal */\n.lightbox {\n    position: fixed;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background: rgba(0, 0, 0, 0.9);\n    z-index: 1000;\n    display: none;\n    align-items: center;\n    justify-content: center;\n    padding: 20px;\n}\n\n.lightbox.active {\n    display: flex;\n}\n\n.lightbox-content {\n    background: white;\n    border-radius: var(--border-radius);\n    max-width: 800px;\n    max-height: 90vh;\n    overflow-y: auto;\n    position: relative;\n    display: flex;\n    flex-direction: column;\n}\n\n.lightbox-close {\n    position: absolute;\n    top: 15px;\n    right: 20px;\n    background: none;\n    border: none;\n    font-size: 2rem;\n    cursor: pointer;\n    z-index: 10;\n    color: white;\n    background: rgba(0, 0, 0, 0.5);\n    width: 40px;\n    height: 40px;\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.lightbox-image-container {\n    position: relative;\n}\n\n.lightbox-image-container img {\n    width: 100%;\n    height: auto;\n    display: block;\n}\n\n.lightbox-info {\n    padding: 2rem;\n}\n\n.lightbox-info h3 {\n    font-size: 1.5rem;\n    color: var(--primary-color);\n    margin-bottom: 1rem;\n}\n\n.lightbox-info p {\n    color: var(--text-light);\n    margin-bottom: 1.5rem;\n    line-height: 1.6;\n}\n\n.lightbox-actions {\n    text-align: center;\n}\n\n.lightbox-actions .btn-primary {\n    display: inline-flex !important;\n    background: var(--primary-color);\n    color: white;\n    padding: 0.75rem 2rem;\n    border-radius: 6px;\n    text-decoration: none;\n    font-weight: 600;\n    align-items: center;\n    gap: 8px;\n    transition: var(--transition);\n}\n\n.lightbox-actions .btn-primary:hover {\n    background: var(--primary-dark);\n    transform: translateY(-2px);\n}\n\n/* Footer */\nfooter {\n    background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-color) 100%);\n    color: white;\n    padding: 3rem 0 2rem;\n}\n\n.footer-content {\n    display: grid;\n    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));\n    gap: 2rem;\n    margin-bottom: 2rem;\n}\n\n.footer-section h3 {\n    margin-bottom: 1rem;\n    font-size: 1.2rem;\n}\n\n.social-links {\n    display: flex;\n    gap: 1rem;\n}\n\n.social-links a {\n    color: white;\n    font-size: 1.5rem;\n    width: 50px;\n    height: 50px;\n    background: rgba(255, 255, 255, 0.15);\n    border-radius: 50%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    text-decoration: none;\n    transition: var(--transition);\n}\n\n.social-links a:hover {\n    background: white;\n    color: var(--primary-color);\n    transform: translateY(-3px);\n}\n\n.footer-store-link {\n    color: white;\n    text-decoration: none;\n    display: inline-flex;\n    align-items: center;\n    gap: 0.5rem;\n    padding: 0.5rem 1rem;\n    border: 2px solid rgba(255, 255, 255, 0.3);\n    border-radius: 6px;\n    transition: var(--transition);\n}\n\n.footer-store-link:hover {\n    background: white;\n    color: var(--primary-color);\n}\n\n.footer-bottom {\n    text-align: center;\n    padding-top: 2rem;\n    border-top: 1px solid rgba(255, 255, 255, 0.2);\n}\n\n.copyright {\n    opacity: 0.8;\n    font-size: 0.9rem;\n}\n\n/* X Icon Style */\n.x-icon {\n    font-family: 'Arial', sans-serif;\n    font-weight: bold;\n    font-size: 1.2rem;\n}\n\n/* Responsive Design */\n@media (max-width: 1200px) {\n    .portfolio-grid {\n        grid-template-columns: repeat(3, 1fr);\n        gap: 12px;\n    }\n}\n\n@media (max-width: 768px) {\n    .main-nav {\n        flex-direction: column;\n        gap: 1rem;\n        padding: 1rem;\n    }\n    \n    .nav-links {\n        gap: 1rem;\n    }\n    \n    .hero-content h2 {\n        font-size: 2.5rem;\n    }\n    \n    .portfolio-grid {\n        grid-template-columns: repeat(2, 1fr);\n        gap: 10px;\n    }\n    \n    .lightbox-content {\n        max-width: 95%;\n        margin: 20px;\n    }\n    \n    .lightbox-info {\n        padding: 1.5rem;\n    }\n}\n\n@media (max-width: 480px) {\n    .logo-container h1 {\n        font-size: 1.5rem;\n    }\n    \n    .hero-content h2 {\n        font-size: 2rem;\n    }\n    \n    .hero-content p {\n        font-size: 1rem;\n    }\n    \n    .portfolio-grid {\n        grid-template-columns: 1fr;\n        gap: 8px;\n    }\n    \n    .social-links {\n        justify-content: center;\n    }\n    \n    .footer-content {\n        grid-template-columns: 1fr;\n        text-align: center;\n    }\n}\n    \n        .content-page { padding: 4rem 2rem; max-width: 800px; margin: 0 auto; }\n        .content-page h2 { color: var(--primary-color); font-size: 2.5rem; margin-bottom: 1rem; }\n        .content-page h3 { color: var(--primary-dark); font-size: 1.5rem; margin: 2rem 0 1rem; }\n        .content-page p, .content-page ul { font-size: 1.1rem; color: #444; margin-bottom: 1.5rem; line-height: 1.8; }\n        .content-page ul { padding-left: 2rem; }\n        .content-page li { margin-bottom: 0.5rem; }\n        .contact-box { background: var(--accent-warm); padding: 2rem; border-radius: 12px; margin-top: 2rem; border-left: 4px solid var(--primary-color); }\n        .contact-box a { color: var(--primary-color); font-weight: bold; text-decoration: none; }\n        .contact-box a:hover { text-decoration: underline; }\n        \n    </style>\n    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css\">\n</head>\n<body>\n    <header>\n        <nav class=\"main-nav\">\n            <div class=\"logo-container\">\n                <a href=\"/\" style=\"display:flex; align-items:center; gap:15px; text-decoration:none;\">\n                    <img src=\"https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/LogoForInsta.png\" alt=\"Hidden Walnuts\" class=\"nav-logo\">\n                    <h1>Hidden Walnuts</h1>\n                </a>\n            </div>\n                        <div class=\"nav-links\">\n                <a href=\"/\" class=\"nav-link\">About</a>\n                <a href=\"/portfolio\" class=\"nav-link\">Portfolio</a>\n                <a href=\"/support\" class=\"nav-link\">Support</a>\n                <a href=\"/game\" class=\"nav-link store-link\">Play the Game</a>\n            </div>\n        </nav>\n    </header>\n\n    \n    <main class=\"content-page\">\n        <h2>Hidden Walnuts Support</h2>\n        <p style=\"font-size: 1.3rem; color: var(--text-light); margin-bottom: 2rem;\">How can we help you today?</p>\n\n        <p>Welcome to Hidden Walnuts Support. Whether you have a question about our print-on-demand merchandise, need help with our web-based games, or are inquiring about our upcoming Apple iOS applications, our team is here to assist.</p>\n\n        <div class=\"contact-box\">\n            <h3><i class=\"fas fa-envelope\"></i> Contact Us</h3>\n            <p><strong>Email Support:</strong> <a href=\"mailto:support@hiddenwalnuts.com\">support@hiddenwalnuts.com</a></p>\n            <p><strong>Response Time:</strong> We aim to respond to all inquiries within 24-48 business hours.</p>\n        </div>\n\n        <h3>Frequently Asked Questions</h3>\n        \n        <div style=\"margin-bottom: 1.5rem;\">\n            <p><strong>Q: I have an issue with a merchandise order.</strong></p>\n            <p><strong>A:</strong> For returns, exchanges, or shipping issues related to our Teepublic or Redbubble stores, please refer back to the respective storefront's customer service portal for the fastest resolution, as they handle our fulfillment directly. You can also email us with your order number.</p>\n        </div>\n\n        <div style=\"margin-bottom: 1.5rem;\">\n            <p><strong>Q: I found a bug in one of your games. How do I report it?</strong></p>\n            <p><strong>A:</strong> We appreciate the feedback! Please email us at our support address with the details of the bug, the device you were using, and your browser.</p>\n        </div>\n\n        <div style=\"margin-bottom: 1.5rem;\">\n            <p><strong>Q: When are your Apple apps releasing?</strong></p>\n            <p><strong>A:</strong> We are currently in active development for our iOS and macOS titles. Stay tuned for announcements on our portfolio page.</p>\n        </div>\n    </main>\n\n\n    <footer>\n        <div class=\"container\">\n            <div class=\"footer-content\">\n                <div class=\"footer-section\">\n                    <h3>Company</h3>\n                    <div style=\"display: flex; flex-direction: column; gap: 0.5rem;\">\n                        <a href=\"/\" style=\"color: white; text-decoration: none; opacity: 0.8;\">About Us</a>\n                        <a href=\"/portfolio\" style=\"color: white; text-decoration: none; opacity: 0.8;\">Portfolio</a>\n                        <a href=\"/support\" style=\"color: white; text-decoration: none; opacity: 0.8;\">Support</a>\n                        <a href=\"/privacy\" style=\"color: white; text-decoration: none; opacity: 0.8;\">Privacy Policy</a>\n                    </div>\n                </div>\n                \n                <div class=\"footer-section\">\n                    <h3>Follow Us</h3>\n                        <div class=\"social-links\">\n                            <a href=\"https://instagram.com/hiddenwalnuts\" target=\"_blank\" aria-label=\"Instagram\"><i class=\"fab fa-instagram\"></i></a>\n                            <a href=\"https://pinterest.com/hiddenwalnuts\" target=\"_blank\" aria-label=\"Pinterest\"><i class=\"fab fa-pinterest\"></i></a>\n                            <a href=\"https://x.com/hiddenwalnuts\" target=\"_blank\" aria-label=\"X\"><span class=\"x-icon\">𝕏</span></a>\n                        </div>\n                    </div>\n                </div>\n                \n                <div class=\"footer-section\">\n                    <h3>Shop</h3>\n                    <a href=\"https://www.teepublic.com/user/hidden-walnuts\" target=\"_blank\" class=\"footer-store-link\">\n                        Visit our TeePublic Store <i class=\"fas fa-external-link-alt\"></i>\n                    </a>\n                    <a href=\"https://www.redbubble.com/people/HiddenWalnuts/explore?page=1&sortOrder=recent\" target=\"_blank\" class=\"footer-store-link\" style=\"margin-top: 10px;\">\n                        Visit our Redbubble Store <i class=\"fas fa-external-link-alt\"></i>\n                    </a>\n                </div>\n            </div>\n            <div class=\"footer-bottom\">\n                <div class=\"copyright\">&copy; <span id=\"currentYear\"></span> Hidden Walnuts. All rights reserved.</div>\n            </div>\n        </div>\n    </footer>\n    <script>document.getElementById('currentYear').textContent = new Date().getFullYear();</script>\n</body>\n</html>";
 
 const PRIVACY_HTML = APP_PRIVACY_HTML;
