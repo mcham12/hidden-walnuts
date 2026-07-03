@@ -11,6 +11,54 @@ const APP_STORE_URL = 'https://apps.apple.com/us/app/hidden-walnuts/id6760266796
 const APP_STORE_ASSET_BASE = `${GITHUB_BASE_URL}app-store/`;
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = 'hidden2024!';
+const HOME_VISUAL_SRC_TOKEN = '__HOME_VISUAL_SRC__';
+const HOME_VISUAL_ALT_TOKEN = '__HOME_VISUAL_ALT__';
+const HOME_VISUAL_POSITION_TOKEN = '__HOME_VISUAL_POSITION__';
+const HOME_VISUAL_COOKIE = 'hw_home_visual';
+const HOME_VISUALS = [
+    {
+        id: 'game-jetpack',
+        src: `${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp`,
+        alt: 'Hidden Walnuts iPad gameplay showing a character flying with a jetpack',
+        position: 'center center',
+        weight: 1
+    },
+    {
+        id: 'burchfield-late-afternoon',
+        src: `${GITHUB_BASE_URL}home-rotator/burchfield-late-afternoon.webp`,
+        alt: 'Fine art landscape with trees and a house',
+        position: 'center center',
+        weight: 4
+    },
+    {
+        id: 'sekka-farming-village',
+        src: `${GITHUB_BASE_URL}home-rotator/sekka-farming-village.webp`,
+        alt: 'Fine art village landscape with flowering trees',
+        position: 'center center',
+        weight: 4
+    },
+    {
+        id: 'burchfield-sunlight-rain',
+        src: `${GITHUB_BASE_URL}home-rotator/burchfield-sunlight-rain.webp`,
+        alt: 'Fine art landscape with sunlight breaking through clouds',
+        position: 'center 38%',
+        weight: 4
+    },
+    {
+        id: 'burchfield-sunset',
+        src: `${GITHUB_BASE_URL}home-rotator/burchfield-sunset.webp`,
+        alt: 'Fine art landscape with colorful trees at sunset',
+        position: 'center 36%',
+        weight: 4
+    },
+    {
+        id: 'schellbach-frog-prince',
+        src: `${GITHUB_BASE_URL}home-rotator/schellbach-frog-prince.webp`,
+        alt: 'Fine art illustration of a stork and frog near water',
+        position: 'center center',
+        weight: 4
+    }
+];
 
 const APP_PRIVACY_HTML = `<!DOCTYPE html>
 <html lang="en">
@@ -781,7 +829,7 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
                         </div>
                     </div>
                     <figure class="home-visual-frame">
-                        <img id="homeRotatingVisual" src="${GITHUB_BASE_URL}home-rotator/burchfield-late-afternoon.webp" alt="Fine art landscape with trees and a house">
+                        <img id="homeRotatingVisual" src="${HOME_VISUAL_SRC_TOKEN}" alt="${HOME_VISUAL_ALT_TOKEN}" style="object-position: ${HOME_VISUAL_POSITION_TOKEN}">
                     </figure>
                 </div>
             </div>
@@ -821,81 +869,6 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
     </footer>
     <script>
         (() => {
-            const visuals = [
-                {
-                    id: "game-jetpack",
-                    src: "${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp",
-                    alt: "Hidden Walnuts iPad gameplay showing a character flying with a jetpack",
-                    position: "center center",
-                    weight: 1
-                },
-                {
-                    id: "burchfield-late-afternoon",
-                    src: "${GITHUB_BASE_URL}home-rotator/burchfield-late-afternoon.webp",
-                    alt: "Fine art landscape with trees and a house",
-                    position: "center center",
-                    weight: 4
-                },
-                {
-                    id: "sekka-farming-village",
-                    src: "${GITHUB_BASE_URL}home-rotator/sekka-farming-village.webp",
-                    alt: "Fine art village landscape with flowering trees",
-                    position: "center center",
-                    weight: 4
-                },
-                {
-                    id: "burchfield-sunlight-rain",
-                    src: "${GITHUB_BASE_URL}home-rotator/burchfield-sunlight-rain.webp",
-                    alt: "Fine art landscape with sunlight breaking through clouds",
-                    position: "center 38%",
-                    weight: 4
-                },
-                {
-                    id: "burchfield-sunset",
-                    src: "${GITHUB_BASE_URL}home-rotator/burchfield-sunset.webp",
-                    alt: "Fine art landscape with colorful trees at sunset",
-                    position: "center 36%",
-                    weight: 4
-                },
-                {
-                    id: "schellbach-frog-prince",
-                    src: "${GITHUB_BASE_URL}home-rotator/schellbach-frog-prince.webp",
-                    alt: "Fine art illustration of a stork and frog near water",
-                    position: "center center",
-                    weight: 4
-                }
-            ];
-
-            const storageKey = "hiddenWalnuts.homeVisual.v2";
-            const randomUnit = () => {
-                if (window.crypto && window.crypto.getRandomValues) {
-                    const values = new Uint32Array(1);
-                    window.crypto.getRandomValues(values);
-                    return values[0] / 4294967296;
-                }
-                return Math.random();
-            };
-            let selectedId = null;
-            try {
-                selectedId = window.sessionStorage.getItem(storageKey);
-            } catch (_) {}
-
-            let visual = visuals.find((candidate) => candidate.id === selectedId);
-            if (!visual) {
-                const weightedVisuals = visuals.flatMap((candidate) => Array(candidate.weight || 1).fill(candidate));
-                visual = weightedVisuals[Math.floor(randomUnit() * weightedVisuals.length)];
-                try {
-                    window.sessionStorage.setItem(storageKey, visual.id);
-                } catch (_) {}
-            }
-
-            const image = document.getElementById("homeRotatingVisual");
-            if (image && visual) {
-                image.src = visual.src;
-                image.alt = visual.alt;
-                image.style.objectPosition = visual.position;
-            }
-
             const currentYear = document.getElementById("currentYear");
             if (currentYear) {
                 currentYear.textContent = new Date().getFullYear();
@@ -1801,6 +1774,72 @@ async function serveFavicon(request) {
     return new Response(upstream.body, { status: 200, headers });
 }
 
+function escapeHtmlAttribute(value) {
+    return String(value).replace(/[&"<>]/g, (character) => ({
+        '&': '&amp;',
+        '"': '&quot;',
+        '<': '&lt;',
+        '>': '&gt;'
+    }[character]));
+}
+
+function getCookieValue(request, name) {
+    const cookieHeader = request.headers.get('Cookie') || '';
+    const target = `${name}=`;
+    return cookieHeader
+        .split(';')
+        .map((cookie) => cookie.trim())
+        .find((cookie) => cookie.startsWith(target))
+        ?.slice(target.length) || null;
+}
+
+function randomHomeVisual() {
+    const totalWeight = HOME_VISUALS.reduce((total, visual) => total + (visual.weight || 1), 0);
+    const values = new Uint32Array(1);
+    crypto.getRandomValues(values);
+    let target = values[0] % totalWeight;
+
+    for (const visual of HOME_VISUALS) {
+        target -= visual.weight || 1;
+        if (target < 0) {
+            return visual;
+        }
+    }
+
+    return HOME_VISUALS.find((visual) => visual.id === 'burchfield-late-afternoon') || HOME_VISUALS[0];
+}
+
+function selectHomeVisual(request) {
+    const selectedId = getCookieValue(request, HOME_VISUAL_COOKIE);
+    const selectedVisual = HOME_VISUALS.find((visual) => visual.id === selectedId);
+    if (selectedVisual) {
+        return { visual: selectedVisual, shouldSetCookie: false };
+    }
+
+    return { visual: randomHomeVisual(), shouldSetCookie: true };
+}
+
+function renderHomeHTML(visual) {
+    return ABOUT_HTML
+        .split(HOME_VISUAL_SRC_TOKEN).join(escapeHtmlAttribute(visual.src))
+        .split(HOME_VISUAL_ALT_TOKEN).join(escapeHtmlAttribute(visual.alt))
+        .split(HOME_VISUAL_POSITION_TOKEN).join(escapeHtmlAttribute(visual.position));
+}
+
+function homeResponse(request) {
+    const { visual, shouldSetCookie } = selectHomeVisual(request);
+    const headers = new Headers({
+        'Content-Type': 'text/html',
+        'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0'
+    });
+
+    if (shouldSetCookie) {
+        headers.set('Set-Cookie', `${HOME_VISUAL_COOKIE}=${visual.id}; Path=/; SameSite=Lax`);
+    }
+
+    return new Response(renderHomeHTML(visual), { headers });
+}
+
 export default {
     async fetch(request, env) {
         const url = new URL(request.url);
@@ -1872,9 +1911,7 @@ export default {
 
             // Default landing page (About) route
             if (path === '/' || path === '') {
-                return new Response(ABOUT_HTML, {
-                    headers: { 'Content-Type': 'text/html', 'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0' }
-                });
+                return homeResponse(request);
             }
 
             // Portfolio API route (this was duplicated, moved to handleAPI)
