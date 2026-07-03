@@ -5,6 +5,7 @@
  */
 
 // Configuration
+const GITHUB_ROOT_BASE_URL = 'https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/';
 const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/';
 const APP_STORE_URL = 'https://apps.apple.com/us/app/hidden-walnuts/id6760266796?uo=4';
 const APP_STORE_ASSET_BASE = `${GITHUB_BASE_URL}app-store/`;
@@ -1670,6 +1671,11 @@ export default {
         }
 
         try {
+            // Root static assets are hosted from GitHub raw because this Worker serves HTML/API only.
+            if (path === '/fav-walnuts.png') {
+                return Response.redirect(`${GITHUB_ROOT_BASE_URL}fav-walnuts.png`, 302);
+            }
+
             // API Routes
             if (path.startsWith('/api/')) {
                 const response = await handleAPI(request, env, path);
