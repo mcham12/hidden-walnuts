@@ -724,11 +724,12 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
             <div class="hero-inner">
                 <p class="eyebrow">Art, merch, and playful projects</p>
                 <h2>Hidden Walnuts makes things worth wearing and sharing.</h2>
-                <p class="hero-copy">Browse print-on-demand designs on apparel, accessories, and home goods through our TeePublic and Redbubble storefronts. The iPhone and iPad game is live too, but the stores are still the main event here.</p>
+                <p class="hero-copy">Browse print-on-demand designs on apparel, accessories, and home goods through our Redbubble and TeePublic storefronts. Also try the Hidden Walnuts iOS game.</p>
                 <div class="actions">
-                    <a class="button primary" href="https://www.teepublic.com/user/hidden-walnuts" target="_blank" rel="noopener">Shop TeePublic</a>
+                    <a class="button primary" href="/portfolio">Browse Portfolio</a>
                     <a class="button secondary" href="https://www.redbubble.com/people/HiddenWalnuts/explore?page=1&sortOrder=recent" target="_blank" rel="noopener">Shop Redbubble</a>
-                    <a class="button secondary" href="/portfolio">Browse Portfolio</a>
+                    <a class="button secondary" href="https://www.teepublic.com/user/hidden-walnuts" target="_blank" rel="noopener">Shop TeePublic</a>
+                    <a class="button secondary" href="/game">iOS Game</a>
                 </div>
             </div>
         </section>
@@ -1264,8 +1265,8 @@ const LIVE_GAME_HTML = `<!DOCTYPE html>
         <section class="section alt">
             <div class="container">
                 <div class="section-heading">
-                    <h3>Gameplay Scenes</h3>
-                    <p>These are the same current App Store capture set, optimized here for the web.</p>
+                    <h3>A Look Inside</h3>
+                    <p>Fly with the jetpack, stash walnuts near Home Base, and jump into quick activities like paintball and ring chasing.</p>
                 </div>
                 <div class="media-grid">
                     <div class="media-item">
