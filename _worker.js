@@ -14,49 +14,38 @@ const ADMIN_PASSWORD = 'hidden2024!';
 const HOME_VISUAL_SRC_TOKEN = '__HOME_VISUAL_SRC__';
 const HOME_VISUAL_ALT_TOKEN = '__HOME_VISUAL_ALT__';
 const HOME_VISUAL_POSITION_TOKEN = '__HOME_VISUAL_POSITION__';
-const HOME_VISUAL_COOKIE = 'hw_home_visual';
-const HOME_VISUALS = [
-    {
-        id: 'game-jetpack',
-        src: `${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp`,
-        alt: 'Hidden Walnuts iPad gameplay showing a character flying with a jetpack',
-        position: 'center center',
-        weight: 1
-    },
+const LEGACY_HOME_VISUAL_COOKIE = 'hw_home_visual';
+const HOME_ART_VISUAL_COOKIE = 'hw_home_art_visual';
+const HOME_ART_VISUALS = [
     {
         id: 'burchfield-late-afternoon',
         src: `${GITHUB_BASE_URL}home-rotator/burchfield-late-afternoon.webp`,
         alt: 'Fine art landscape with trees and a house',
-        position: 'center center',
-        weight: 4
+        position: 'center center'
     },
     {
         id: 'sekka-farming-village',
         src: `${GITHUB_BASE_URL}home-rotator/sekka-farming-village.webp`,
         alt: 'Fine art village landscape with flowering trees',
-        position: 'center center',
-        weight: 4
+        position: 'center center'
     },
     {
         id: 'burchfield-sunlight-rain',
         src: `${GITHUB_BASE_URL}home-rotator/burchfield-sunlight-rain.webp`,
         alt: 'Fine art landscape with sunlight breaking through clouds',
-        position: 'center 38%',
-        weight: 4
+        position: 'center 38%'
     },
     {
         id: 'burchfield-sunset',
         src: `${GITHUB_BASE_URL}home-rotator/burchfield-sunset.webp`,
         alt: 'Fine art landscape with colorful trees at sunset',
-        position: 'center 36%',
-        weight: 4
+        position: 'center 36%'
     },
     {
         id: 'schellbach-frog-prince',
         src: `${GITHUB_BASE_URL}home-rotator/schellbach-frog-prince.webp`,
         alt: 'Fine art illustration of a stork and frog near water',
-        position: 'center center',
-        weight: 4
+        position: 'center center'
     }
 ];
 
@@ -679,6 +668,46 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
             object-position: center center;
         }
 
+        .home-visual-stack {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .home-game-card {
+            display: grid;
+            grid-template-columns: 112px minmax(0, 1fr);
+            gap: 0.8rem;
+            align-items: center;
+            padding: 0.65rem;
+            color: var(--primary-dark);
+            text-decoration: none;
+            border: 1px solid rgba(42, 93, 49, 0.16);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.72);
+        }
+
+        .home-game-card img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            display: block;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .home-game-card-copy strong {
+            display: block;
+            color: var(--primary-dark);
+            line-height: 1.15;
+        }
+
+        .home-game-card-copy span {
+            display: block;
+            color: var(--muted);
+            font-size: 0.92rem;
+            line-height: 1.25;
+            margin-top: 0.15rem;
+        }
+
         footer {
             color: white;
             background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
@@ -828,9 +857,15 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
                             <a class="button secondary" style="color: var(--primary-dark); border-color: rgba(42, 93, 49, 0.28);" href="/game">View Game Page</a>
                         </div>
                     </div>
-                    <figure class="home-visual-frame">
-                        <img id="homeRotatingVisual" src="${HOME_VISUAL_SRC_TOKEN}" alt="${HOME_VISUAL_ALT_TOKEN}" style="object-position: ${HOME_VISUAL_POSITION_TOKEN}">
-                    </figure>
+                    <div class="home-visual-stack">
+                        <figure class="home-visual-frame">
+                            <img id="homeRotatingVisual" src="${HOME_VISUAL_SRC_TOKEN}" alt="${HOME_VISUAL_ALT_TOKEN}" style="object-position: ${HOME_VISUAL_POSITION_TOKEN}">
+                        </figure>
+                        <a class="home-game-card" href="/game">
+                            <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp" alt="Hidden Walnuts iPad gameplay showing a character flying with a jetpack">
+                            <span class="home-game-card-copy"><strong>iOS game live</strong><span>Jetpacks, walnuts, quick mini-games.</span></span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1793,30 +1828,20 @@ function getCookieValue(request, name) {
         ?.slice(target.length) || null;
 }
 
-function randomHomeVisual() {
-    const totalWeight = HOME_VISUALS.reduce((total, visual) => total + (visual.weight || 1), 0);
+function randomHomeArtVisual() {
     const values = new Uint32Array(1);
     crypto.getRandomValues(values);
-    let target = values[0] % totalWeight;
-
-    for (const visual of HOME_VISUALS) {
-        target -= visual.weight || 1;
-        if (target < 0) {
-            return visual;
-        }
-    }
-
-    return HOME_VISUALS.find((visual) => visual.id === 'burchfield-late-afternoon') || HOME_VISUALS[0];
+    return HOME_ART_VISUALS[values[0] % HOME_ART_VISUALS.length];
 }
 
-function selectHomeVisual(request) {
-    const selectedId = getCookieValue(request, HOME_VISUAL_COOKIE);
-    const selectedVisual = HOME_VISUALS.find((visual) => visual.id === selectedId);
+function selectHomeArtVisual(request) {
+    const selectedId = getCookieValue(request, HOME_ART_VISUAL_COOKIE);
+    const selectedVisual = HOME_ART_VISUALS.find((visual) => visual.id === selectedId);
     if (selectedVisual) {
         return { visual: selectedVisual, shouldSetCookie: false };
     }
 
-    return { visual: randomHomeVisual(), shouldSetCookie: true };
+    return { visual: randomHomeArtVisual(), shouldSetCookie: true };
 }
 
 function renderHomeHTML(visual) {
@@ -1827,14 +1852,16 @@ function renderHomeHTML(visual) {
 }
 
 function homeResponse(request) {
-    const { visual, shouldSetCookie } = selectHomeVisual(request);
+    const { visual, shouldSetCookie } = selectHomeArtVisual(request);
     const headers = new Headers({
         'Content-Type': 'text/html',
         'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0'
     });
 
+    headers.append('Set-Cookie', `${LEGACY_HOME_VISUAL_COOKIE}=; Path=/; Max-Age=0; SameSite=Lax`);
+
     if (shouldSetCookie) {
-        headers.set('Set-Cookie', `${HOME_VISUAL_COOKIE}=${visual.id}; Path=/; SameSite=Lax`);
+        headers.append('Set-Cookie', `${HOME_ART_VISUAL_COOKIE}=${visual.id}; Path=/; SameSite=Lax`);
     }
 
     return new Response(renderHomeHTML(visual), { headers });
