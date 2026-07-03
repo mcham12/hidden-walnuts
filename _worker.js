@@ -1068,9 +1068,27 @@ const LIVE_GAME_HTML = `<!DOCTYPE html>
 
         .media-grid {
             display: grid;
-            grid-template-columns: 1.25fr 0.8fr 0.8fr;
-            gap: 1rem;
-            align-items: stretch;
+            gap: 1.1rem;
+        }
+
+        .ipad-showcase {
+            display: grid;
+            grid-template-columns: minmax(0, 1.6fr) minmax(260px, 1fr);
+            gap: 1.1rem;
+            align-items: start;
+        }
+
+        .landscape-stack {
+            display: grid;
+            gap: 1.1rem;
+        }
+
+        .phone-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(240px, 360px));
+            justify-content: center;
+            gap: 1.1rem;
+            margin-top: 0.2rem;
         }
 
         .media-item {
@@ -1083,8 +1101,12 @@ const LIVE_GAME_HTML = `<!DOCTYPE html>
         .media-item img {
             display: block;
             width: 100%;
-            height: 100%;
-            object-fit: cover;
+            height: auto;
+            object-fit: contain;
+        }
+
+        .media-item.landscape img {
+            aspect-ratio: 4 / 3;
         }
 
         .download-band {
@@ -1163,14 +1185,18 @@ const LIVE_GAME_HTML = `<!DOCTYPE html>
 
             .preview-grid,
             .feature-list,
-            .media-grid,
+            .ipad-showcase,
+            .phone-row,
             .footer-content {
                 grid-template-columns: 1fr;
             }
 
-            .media-item img {
-                height: auto;
-                object-fit: contain;
+            .phone-row {
+                justify-items: center;
+            }
+
+            .media-item.phone {
+                max-width: 360px;
             }
         }
 
@@ -1266,14 +1292,26 @@ const LIVE_GAME_HTML = `<!DOCTYPE html>
                     <p>Fly with the jetpack, stash walnuts near Home Base, and jump into quick activities like paintball and ring chasing.</p>
                 </div>
                 <div class="media-grid">
-                    <div class="media-item">
-                        <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-plan-stash.webp" alt="Hidden Walnuts iPad gameplay near Home Base and stash area">
+                    <div class="ipad-showcase">
+                        <div class="media-item landscape featured">
+                            <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-explore.webp" alt="Hidden Walnuts iPad gameplay from a high tree perch">
+                        </div>
+                        <div class="landscape-stack">
+                            <div class="media-item landscape">
+                                <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp" alt="Hidden Walnuts iPad gameplay showing a character flying with a jetpack">
+                            </div>
+                            <div class="media-item landscape">
+                                <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-plan-stash.webp" alt="Hidden Walnuts iPad gameplay near Home Base and stash area">
+                            </div>
+                        </div>
                     </div>
-                    <div class="media-item">
-                        <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-iphone-jetpack.webp" alt="Hidden Walnuts iPhone gameplay showing Jetpack Scramble">
-                    </div>
-                    <div class="media-item">
-                        <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-iphone-paintball.webp" alt="Hidden Walnuts iPhone gameplay showing Paintball Fun">
+                    <div class="phone-row">
+                        <div class="media-item phone">
+                            <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-iphone-jetpack.webp" alt="Hidden Walnuts iPhone gameplay showing Jetpack Scramble">
+                        </div>
+                        <div class="media-item phone">
+                            <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-iphone-paintball.webp" alt="Hidden Walnuts iPhone gameplay showing Paintball Fun">
+                        </div>
                     </div>
                 </div>
             </div>
