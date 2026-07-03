@@ -781,7 +781,7 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
                         </div>
                     </div>
                     <figure class="home-visual-frame">
-                        <img id="homeRotatingVisual" src="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp" alt="Hidden Walnuts iPad gameplay showing a character flying with a jetpack">
+                        <img id="homeRotatingVisual" src="${GITHUB_BASE_URL}home-rotator/burchfield-late-afternoon.webp" alt="Fine art landscape with trees and a house">
                     </figure>
                 </div>
             </div>
@@ -826,41 +826,55 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
                     id: "game-jetpack",
                     src: "${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp",
                     alt: "Hidden Walnuts iPad gameplay showing a character flying with a jetpack",
-                    position: "center center"
+                    position: "center center",
+                    weight: 1
                 },
                 {
                     id: "burchfield-late-afternoon",
                     src: "${GITHUB_BASE_URL}home-rotator/burchfield-late-afternoon.webp",
                     alt: "Fine art landscape with trees and a house",
-                    position: "center center"
+                    position: "center center",
+                    weight: 4
                 },
                 {
                     id: "sekka-farming-village",
                     src: "${GITHUB_BASE_URL}home-rotator/sekka-farming-village.webp",
                     alt: "Fine art village landscape with flowering trees",
-                    position: "center center"
+                    position: "center center",
+                    weight: 4
                 },
                 {
                     id: "burchfield-sunlight-rain",
                     src: "${GITHUB_BASE_URL}home-rotator/burchfield-sunlight-rain.webp",
                     alt: "Fine art landscape with sunlight breaking through clouds",
-                    position: "center 38%"
+                    position: "center 38%",
+                    weight: 4
                 },
                 {
                     id: "burchfield-sunset",
                     src: "${GITHUB_BASE_URL}home-rotator/burchfield-sunset.webp",
                     alt: "Fine art landscape with colorful trees at sunset",
-                    position: "center 36%"
+                    position: "center 36%",
+                    weight: 4
                 },
                 {
                     id: "schellbach-frog-prince",
                     src: "${GITHUB_BASE_URL}home-rotator/schellbach-frog-prince.webp",
                     alt: "Fine art illustration of a stork and frog near water",
-                    position: "center center"
+                    position: "center center",
+                    weight: 4
                 }
             ];
 
-            const storageKey = "hiddenWalnuts.homeVisual.v1";
+            const storageKey = "hiddenWalnuts.homeVisual.v2";
+            const randomUnit = () => {
+                if (window.crypto && window.crypto.getRandomValues) {
+                    const values = new Uint32Array(1);
+                    window.crypto.getRandomValues(values);
+                    return values[0] / 4294967296;
+                }
+                return Math.random();
+            };
             let selectedId = null;
             try {
                 selectedId = window.sessionStorage.getItem(storageKey);
@@ -868,7 +882,8 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
 
             let visual = visuals.find((candidate) => candidate.id === selectedId);
             if (!visual) {
-                visual = visuals[Math.floor(Math.random() * visuals.length)];
+                const weightedVisuals = visuals.flatMap((candidate) => Array(candidate.weight || 1).fill(candidate));
+                visual = weightedVisuals[Math.floor(randomUnit() * weightedVisuals.length)];
                 try {
                     window.sessionStorage.setItem(storageKey, visual.id);
                 } catch (_) {}
