@@ -60,7 +60,7 @@ const APP_PRIVACY_HTML = `<!DOCTYPE html>
             z-index: 100;
         }
 
-        .logo-container a {
+        .brand-link {
             display: flex;
             align-items: center;
             gap: 15px;
@@ -75,7 +75,7 @@ const APP_PRIVACY_HTML = `<!DOCTYPE html>
             object-fit: cover;
         }
 
-        .logo-container h1 {
+        .brand-link h1 {
             font-size: 1.8rem;
             color: var(--primary-color);
             font-weight: 700;
@@ -84,15 +84,15 @@ const APP_PRIVACY_HTML = `<!DOCTYPE html>
         .nav-links {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.4rem;
             flex-wrap: wrap;
         }
 
         .nav-link {
             color: #56635a;
             text-decoration: none;
-            font-weight: 600;
-            padding: 0.55rem 0.85rem;
+            font-weight: 700;
+            padding: 0.58rem 0.82rem;
             border-radius: 8px;
         }
 
@@ -235,7 +235,7 @@ const APP_PRIVACY_HTML = `<!DOCTYPE html>
                 padding: 1rem;
             }
 
-            .logo-container h1 {
+            .brand-link h1 {
                 font-size: 1.45rem;
             }
 
@@ -260,12 +260,10 @@ const APP_PRIVACY_HTML = `<!DOCTYPE html>
 <body>
     <header>
         <nav class="main-nav" aria-label="Primary navigation">
-            <div class="logo-container">
-                <a href="/">
-                    <img src="https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/LogoForInsta.png" alt="Hidden Walnuts" class="nav-logo">
-                    <h1>Hidden Walnuts</h1>
-                </a>
-            </div>
+            <a href="/" class="brand-link">
+                <img src="https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/LogoForInsta.png" alt="Hidden Walnuts" class="nav-logo">
+                <h1>Hidden Walnuts</h1>
+            </a>
             <div class="nav-links">
                 <a href="/" class="nav-link">About</a>
                 <a href="/portfolio" class="nav-link">Portfolio</a>
@@ -1999,18 +1997,23 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
-    background: white;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    gap: 1.5rem;
+    padding: 0.95rem 2rem;
+    background: rgba(255, 255, 255, 0.96);
+    border-bottom: 1px solid rgba(42, 93, 49, 0.12);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    backdrop-filter: blur(14px);
     position: sticky;
     top: 0;
     z-index: 100;
 }
 
-.logo-container {
+.brand-link {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 14px;
+    color: var(--primary-color);
+    text-decoration: none;
 }
 
 .nav-logo {
@@ -2020,24 +2023,26 @@ body {
     object-fit: cover;
 }
 
-.logo-container h1 {
-    font-size: 1.8rem;
+.brand-link h1 {
+    font-size: 1.75rem;
     color: var(--primary-color);
     font-weight: 700;
+    line-height: 1;
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 0.4rem;
+    flex-wrap: wrap;
 }
 
 .nav-link {
     text-decoration: none;
-    color: #666;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
+    color: #526357;
+    font-weight: 700;
+    padding: 0.58rem 0.82rem;
+    border-radius: 8px;
     transition: var(--transition);
 }
 
@@ -2393,8 +2398,8 @@ footer {
 }
 
 @media (max-width: 480px) {
-    .logo-container h1 {
-        font-size: 1.5rem;
+    .brand-link h1 {
+        font-size: 1.45rem;
     }
 
     .hero-content h2 {
@@ -2424,15 +2429,16 @@ footer {
 </head>
 <body>
     <header>
-        <nav class="main-nav">
-            <div class="logo-container">
+        <nav class="main-nav" aria-label="Primary navigation">
+            <a href="/" class="brand-link">
                 <img src="${GITHUB_BASE_URL}LogoForInsta.png" alt="Hidden Walnuts" class="nav-logo">
                 <h1>Hidden Walnuts</h1>
-            </div>
-                        <div class="nav-links">
+            </a>
+            <div class="nav-links">
                 <a href="/" class="nav-link">About</a>
                 <a href="/portfolio" class="nav-link active">Portfolio</a>
                 <a href="/support" class="nav-link">Support</a>
+                <a href="/privacy" class="nav-link">Privacy</a>
                 <a href="/game" class="nav-link">iOS Game</a>
             </div>
         </nav>
