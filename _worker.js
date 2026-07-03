@@ -738,7 +738,6 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
             <div class="container">
                 <div class="section-heading">
                     <h3>What We Make</h3>
-                    <p>Our work starts with visual ideas, odd little jokes, and designs that fit naturally on real products.</p>
                 </div>
                 <div class="product-grid">
                     <article class="product-card">
