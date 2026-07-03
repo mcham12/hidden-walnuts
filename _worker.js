@@ -613,11 +613,22 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
             max-width: 640px;
         }
 
-        .game-strip img {
+        .home-visual-frame {
             width: 100%;
-            display: block;
+            aspect-ratio: 4 / 3;
+            margin: 0;
+            overflow: hidden;
             border-radius: 8px;
+            background: #e7efe4;
             box-shadow: var(--shadow);
+        }
+
+        .home-visual-frame img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center center;
         }
 
         footer {
@@ -676,7 +687,7 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
                 padding: 1.2rem;
             }
 
-            .game-strip img {
+            .home-visual-frame {
                 max-width: 480px;
             }
         }
@@ -769,7 +780,9 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
                             <a class="button secondary" style="color: var(--primary-dark); border-color: rgba(42, 93, 49, 0.28);" href="/game">View Game Page</a>
                         </div>
                     </div>
-                    <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp" alt="Hidden Walnuts iPad gameplay showing a character flying with a jetpack">
+                    <figure class="home-visual-frame">
+                        <img id="homeRotatingVisual" src="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp" alt="Hidden Walnuts iPad gameplay showing a character flying with a jetpack">
+                    </figure>
                 </div>
             </div>
         </section>
@@ -806,7 +819,74 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
             <div class="footer-bottom">&copy; <span id="currentYear"></span> Hidden Walnuts. All rights reserved.</div>
         </div>
     </footer>
-    <script>document.getElementById("currentYear").textContent = new Date().getFullYear();</script>
+    <script>
+        (() => {
+            const visuals = [
+                {
+                    id: "game-jetpack",
+                    src: "${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp",
+                    alt: "Hidden Walnuts iPad gameplay showing a character flying with a jetpack",
+                    position: "center center"
+                },
+                {
+                    id: "burchfield-late-afternoon",
+                    src: "${GITHUB_BASE_URL}home-rotator/burchfield-late-afternoon.webp",
+                    alt: "Fine art landscape with trees and a house",
+                    position: "center center"
+                },
+                {
+                    id: "sekka-farming-village",
+                    src: "${GITHUB_BASE_URL}home-rotator/sekka-farming-village.webp",
+                    alt: "Fine art village landscape with flowering trees",
+                    position: "center center"
+                },
+                {
+                    id: "burchfield-sunlight-rain",
+                    src: "${GITHUB_BASE_URL}home-rotator/burchfield-sunlight-rain.webp",
+                    alt: "Fine art landscape with sunlight breaking through clouds",
+                    position: "center 38%"
+                },
+                {
+                    id: "burchfield-sunset",
+                    src: "${GITHUB_BASE_URL}home-rotator/burchfield-sunset.webp",
+                    alt: "Fine art landscape with colorful trees at sunset",
+                    position: "center 36%"
+                },
+                {
+                    id: "schellbach-frog-prince",
+                    src: "${GITHUB_BASE_URL}home-rotator/schellbach-frog-prince.webp",
+                    alt: "Fine art illustration of a stork and frog near water",
+                    position: "center center"
+                }
+            ];
+
+            const storageKey = "hiddenWalnuts.homeVisual.v1";
+            let selectedId = null;
+            try {
+                selectedId = window.sessionStorage.getItem(storageKey);
+            } catch (_) {}
+
+            let visual = visuals.find((candidate) => candidate.id === selectedId);
+            if (!visual) {
+                visual = visuals[Math.floor(Math.random() * visuals.length)];
+                try {
+                    window.sessionStorage.setItem(storageKey, visual.id);
+                } catch (_) {}
+            }
+
+            const image = document.getElementById("homeRotatingVisual");
+            if (image && visual) {
+                image.src = visual.src;
+                image.alt = visual.alt;
+                image.style.objectPosition = visual.position;
+            }
+
+            const currentYear = document.getElementById("currentYear");
+            if (currentYear) {
+                currentYear.textContent = new Date().getFullYear();
+            }
+        })();
+    </script>
 </body>
 </html>`;
 
