@@ -19,9 +19,9 @@ const APP_PRIVACY_HTML = `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hidden Walnuts Privacy Policy</title>
     <meta name="description" content="Privacy policy for Hidden Walnuts on iPhone and iPad.">
-    <link rel="icon" type="image/png" sizes="32x32" href="fav-walnuts.png?v=3">
-    <link rel="icon" type="image/png" sizes="16x16" href="fav-walnuts.png?v=3">
-    <link rel="shortcut icon" type="image/x-icon" href="fav-walnuts.png?v=3">
+    <link rel="icon" type="image/png" sizes="32x32" href="/fav-walnuts.png?v=4">
+    <link rel="icon" type="image/png" sizes="16x16" href="/fav-walnuts.png?v=4">
+    <link rel="shortcut icon" type="image/png" href="/fav-walnuts.png?v=4">
     <style>
         :root {
             --primary-color: #2a5d31;
@@ -348,9 +348,9 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hidden Walnuts | Artful Merch And Playful Products</title>
     <meta name="description" content="Hidden Walnuts makes print-on-demand merchandise on TeePublic and Redbubble, plus a playful iPhone and iPad game now live on the App Store.">
-    <link rel="icon" type="image/png" sizes="32x32" href="fav-walnuts.png?v=3">
-    <link rel="icon" type="image/png" sizes="16x16" href="fav-walnuts.png?v=3">
-    <link rel="shortcut icon" type="image/x-icon" href="fav-walnuts.png?v=3">
+    <link rel="icon" type="image/png" sizes="32x32" href="/fav-walnuts.png?v=4">
+    <link rel="icon" type="image/png" sizes="16x16" href="/fav-walnuts.png?v=4">
+    <link rel="shortcut icon" type="image/png" href="/fav-walnuts.png?v=4">
     <style>
         :root {
             --primary-color: #2a5d31;
@@ -820,9 +820,9 @@ const LIVE_GAME_HTML = `<!DOCTYPE html>
     <meta property="og:title" content="Hidden Walnuts for iPhone and iPad">
     <meta property="og:description" content="Walnuts, oddball animals, quick mini-games, and a jetpack. Hidden Walnuts is live on the App Store.">
     <meta property="og:image" content="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp">
-    <link rel="icon" type="image/png" sizes="32x32" href="fav-walnuts.png?v=3">
-    <link rel="icon" type="image/png" sizes="16x16" href="fav-walnuts.png?v=3">
-    <link rel="shortcut icon" type="image/x-icon" href="fav-walnuts.png?v=3">
+    <link rel="icon" type="image/png" sizes="32x32" href="/fav-walnuts.png?v=4">
+    <link rel="icon" type="image/png" sizes="16x16" href="/fav-walnuts.png?v=4">
+    <link rel="shortcut icon" type="image/png" href="/fav-walnuts.png?v=4">
     <style>
         :root {
             --primary-color: #2a5d31;
@@ -1371,9 +1371,9 @@ const LIVE_SUPPORT_HTML = `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hidden Walnuts Support</title>
     <meta name="description" content="Support for Hidden Walnuts merchandise and the Hidden Walnuts iPhone and iPad game.">
-    <link rel="icon" type="image/png" sizes="32x32" href="fav-walnuts.png?v=3">
-    <link rel="icon" type="image/png" sizes="16x16" href="fav-walnuts.png?v=3">
-    <link rel="shortcut icon" type="image/x-icon" href="fav-walnuts.png?v=3">
+    <link rel="icon" type="image/png" sizes="32x32" href="/fav-walnuts.png?v=4">
+    <link rel="icon" type="image/png" sizes="16x16" href="/fav-walnuts.png?v=4">
+    <link rel="shortcut icon" type="image/png" href="/fav-walnuts.png?v=4">
     <style>
         :root {
             --primary-color: #2a5d31;
@@ -1689,6 +1689,23 @@ function requireAuth(request) {
     return null; // Authentication successful
 }
 
+async function serveFavicon(request) {
+    const upstream = await fetch(`${GITHUB_ROOT_BASE_URL}fav-walnuts.png`);
+    if (!upstream.ok) {
+        return new Response('Favicon not found', { status: 404 });
+    }
+
+    const headers = new Headers();
+    headers.set('Content-Type', 'image/png');
+    headers.set('Cache-Control', 'public, max-age=86400');
+
+    if (request.method === 'HEAD') {
+        return new Response(null, { status: 200, headers });
+    }
+
+    return new Response(upstream.body, { status: 200, headers });
+}
+
 export default {
     async fetch(request, env) {
         const url = new URL(request.url);
@@ -1708,8 +1725,8 @@ export default {
 
         try {
             // Root static assets are hosted from GitHub raw because this Worker serves HTML/API only.
-            if (path === '/fav-walnuts.png') {
-                return Response.redirect(`${GITHUB_ROOT_BASE_URL}fav-walnuts.png`, 302);
+            if (path === '/fav-walnuts.png' || path === '/favicon.ico' || path === '/apple-touch-icon.png') {
+                return serveFavicon(request);
             }
 
             // API Routes
@@ -1987,11 +2004,11 @@ const MAIN_HTML = `<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hidden Walnuts</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="fav-walnuts.png?v=3">
-    <link rel="icon" type="image/png" sizes="16x16" href="fav-walnuts.png?v=3">
-    <link rel="shortcut icon" type="image/x-icon" href="fav-walnuts.png?v=3">
-    <link rel="apple-touch-icon" sizes="180x180" href="fav-walnuts.png?v=3">
-    <meta name="msapplication-TileImage" content="fav-walnuts.png?v=3">
+    <link rel="icon" type="image/png" sizes="32x32" href="/fav-walnuts.png?v=4">
+    <link rel="icon" type="image/png" sizes="16x16" href="/fav-walnuts.png?v=4">
+    <link rel="shortcut icon" type="image/png" href="/fav-walnuts.png?v=4">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=4">
+    <meta name="msapplication-TileImage" content="/fav-walnuts.png?v=4">
     <style>
 :root {
     --primary-color: #2a5d31;
