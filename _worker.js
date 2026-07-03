@@ -9,6 +9,7 @@ const GITHUB_ROOT_BASE_URL = 'https://raw.githubusercontent.com/mcham12/hidden-w
 const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/';
 const APP_STORE_URL = 'https://apps.apple.com/us/app/hidden-walnuts/id6760266796?uo=4';
 const APP_STORE_ASSET_BASE = `${GITHUB_BASE_URL}app-store/`;
+const SITE_BUILD_ID = 'home-art-game-sections-2026-07-03-v1';
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = 'hidden2024!';
 const HOME_VISUAL_SRC_TOKEN = '__HOME_VISUAL_SRC__';
@@ -385,6 +386,7 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hidden Walnuts | Artful Merch And Playful Products</title>
     <meta name="description" content="Hidden Walnuts makes print-on-demand merchandise on TeePublic and Redbubble, plus a playful iPhone and iPad game now live on the App Store.">
+    <meta name="hw-site-version" content="${SITE_BUILD_ID}">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5">
     <link rel="shortcut icon" type="image/png" href="/favicon.ico?v=5">
@@ -626,9 +628,55 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
             text-decoration: underline;
         }
 
+        .portfolio-showcase {
+            display: grid;
+            grid-template-columns: 390px minmax(0, 1fr);
+            gap: 1.5rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1.3rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: linear-gradient(135deg, #ffffff, #f8faf6);
+            box-shadow: 0 10px 32px rgba(42, 93, 49, 0.08);
+        }
+
+        .portfolio-art-frame,
+        .game-media-frame {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            margin: 0;
+            overflow: hidden;
+            border-radius: 8px;
+            background: #e7efe4;
+            box-shadow: var(--shadow);
+        }
+
+        .portfolio-art-frame img,
+        .game-media-frame img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            object-position: center center;
+        }
+
+        .portfolio-showcase-copy h4 {
+            color: var(--primary-dark);
+            font-size: clamp(1.55rem, 3vw, 2.25rem);
+            line-height: 1.05;
+            margin-bottom: 0.75rem;
+        }
+
+        .portfolio-showcase-copy p {
+            max-width: 560px;
+            color: #3e4d43;
+            margin-bottom: 1.15rem;
+        }
+
         .game-strip {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) 360px;
+            grid-template-columns: minmax(0, 1fr) 390px;
             gap: 2rem;
             align-items: center;
             padding: 2rem;
@@ -648,64 +696,6 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
             color: #3e4d43;
             margin-bottom: 1.2rem;
             max-width: 640px;
-        }
-
-        .home-visual-frame {
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            margin: 0;
-            overflow: hidden;
-            border-radius: 8px;
-            background: #e7efe4;
-            box-shadow: var(--shadow);
-        }
-
-        .home-visual-frame img {
-            width: 100%;
-            height: 100%;
-            display: block;
-            object-fit: cover;
-            object-position: center center;
-        }
-
-        .home-visual-stack {
-            display: grid;
-            gap: 0.75rem;
-        }
-
-        .home-game-card {
-            display: grid;
-            grid-template-columns: 112px minmax(0, 1fr);
-            gap: 0.8rem;
-            align-items: center;
-            padding: 0.65rem;
-            color: var(--primary-dark);
-            text-decoration: none;
-            border: 1px solid rgba(42, 93, 49, 0.16);
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.72);
-        }
-
-        .home-game-card img {
-            width: 100%;
-            aspect-ratio: 4 / 3;
-            display: block;
-            object-fit: cover;
-            border-radius: 6px;
-        }
-
-        .home-game-card-copy strong {
-            display: block;
-            color: var(--primary-dark);
-            line-height: 1.15;
-        }
-
-        .home-game-card-copy span {
-            display: block;
-            color: var(--muted);
-            font-size: 0.92rem;
-            line-height: 1.25;
-            margin-top: 0.15rem;
         }
 
         footer {
@@ -755,6 +745,7 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
             }
 
             .product-grid,
+            .portfolio-showcase,
             .game-strip,
             .footer-content {
                 grid-template-columns: 1fr;
@@ -764,7 +755,8 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
                 padding: 1.2rem;
             }
 
-            .home-visual-frame {
+            .portfolio-art-frame,
+            .game-media-frame {
                 max-width: 480px;
             }
         }
@@ -825,6 +817,19 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
                 <div class="section-heading">
                     <h3>What We Make</h3>
                 </div>
+                <div class="portfolio-showcase">
+                    <figure class="portfolio-art-frame">
+                        <img id="homeArtVisual" src="${HOME_VISUAL_SRC_TOKEN}" alt="${HOME_VISUAL_ALT_TOKEN}" style="object-position: ${HOME_VISUAL_POSITION_TOKEN}">
+                    </figure>
+                    <div class="portfolio-showcase-copy">
+                        <h4>Artwork for prints, products, and odd little ideas.</h4>
+                        <p>Browse designs that work naturally on shirts, stickers, accessories, and home goods through our Redbubble and TeePublic shops.</p>
+                        <div class="actions">
+                            <a class="button primary" style="background: var(--primary-dark); color: white;" href="/portfolio">Browse Portfolio</a>
+                            <a class="button secondary" style="color: var(--primary-dark); border-color: rgba(42, 93, 49, 0.28);" href="https://www.redbubble.com/people/HiddenWalnuts/explore?page=1&sortOrder=recent" target="_blank" rel="noopener">Shop Redbubble</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="product-grid">
                     <article class="product-card">
                         <h4>Print-on-demand merchandise</h4>
@@ -857,15 +862,9 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
                             <a class="button secondary" style="color: var(--primary-dark); border-color: rgba(42, 93, 49, 0.28);" href="/game">View Game Page</a>
                         </div>
                     </div>
-                    <div class="home-visual-stack">
-                        <figure class="home-visual-frame">
-                            <img id="homeRotatingVisual" src="${HOME_VISUAL_SRC_TOKEN}" alt="${HOME_VISUAL_ALT_TOKEN}" style="object-position: ${HOME_VISUAL_POSITION_TOKEN}">
-                        </figure>
-                        <a class="home-game-card" href="/game">
-                            <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp" alt="Hidden Walnuts iPad gameplay showing a character flying with a jetpack">
-                            <span class="home-game-card-copy"><strong>iOS game live</strong><span>Jetpacks, walnuts, quick mini-games.</span></span>
-                        </a>
-                    </div>
+                    <figure class="game-media-frame">
+                        <img src="${APP_STORE_ASSET_BASE}hidden-walnuts-ipad-jetpack.webp" alt="Hidden Walnuts iPad gameplay showing a character flying with a jetpack">
+                    </figure>
                 </div>
             </div>
         </section>
