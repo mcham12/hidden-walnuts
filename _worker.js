@@ -9,7 +9,7 @@ const GITHUB_ROOT_BASE_URL = 'https://raw.githubusercontent.com/mcham12/hidden-w
 const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/';
 const APP_STORE_URL = 'https://apps.apple.com/us/app/hidden-walnuts/id6760266796?uo=4';
 const APP_STORE_ASSET_BASE = `${GITHUB_BASE_URL}app-store/`;
-const SITE_BUILD_ID = 'home-art-game-sections-2026-07-03-v1';
+const SITE_BUILD_ID = 'home-storefront-hero-2026-07-03-v2';
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = 'hidden2024!';
 const HOME_VISUAL_SRC_TOKEN = '__HOME_VISUAL_SRC__';
@@ -493,7 +493,7 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
             color: white;
             background:
                 linear-gradient(90deg, rgba(18, 34, 22, 0.88), rgba(18, 34, 22, 0.46) 52%, rgba(18, 34, 22, 0.12)),
-                url("${GITHUB_BASE_URL}Jan6HiddenWalnuts.jpg") center/cover no-repeat;
+                url("${GITHUB_BASE_URL}home-rotator/burchfield-late-afternoon.webp") center/cover no-repeat;
         }
 
         .hero::after {
