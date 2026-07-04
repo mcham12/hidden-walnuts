@@ -16,8 +16,7 @@ A modern portfolio website for Hidden Walnuts artwork with admin interface, buil
 ### Custom Domain (Preferred)
 - **Portfolio Site**: https://hiddenwalnuts.com  
 - **Admin Interface**: https://hiddenwalnuts.com/admin
-  - Username: `admin`  
-  - Password: `hidden2024!`
+  - Uses HTTP Basic Auth. Do not store or repeat the credential in docs or chat.
 
 ### Workers.dev Domain (Fallback)
 - **Portfolio Site**: https://hidden-walnuts-portfolio.mattmcarroll.workers.dev
@@ -43,10 +42,10 @@ A modern portfolio website for Hidden Walnuts artwork with admin interface, buil
 
 ### API Endpoints
 - `GET /api/portfolio` - List all portfolio items
-- `POST /api/portfolio` - Create new portfolio item
+- `POST /api/portfolio` - Create new portfolio item, admin auth required
 - `GET /api/portfolio/:id` - Get specific portfolio item  
-- `PUT /api/portfolio/:id` - Update portfolio item
-- `DELETE /api/portfolio/:id` - Delete portfolio item
+- `PUT /api/portfolio/:id` - Update portfolio item, admin auth required
+- `DELETE /api/portfolio/:id` - Delete portfolio item, admin auth required
 
 ## File Structure
 
@@ -87,8 +86,10 @@ Images are hosted on GitHub for free tier compatibility:
 
 ## Deployment
 
+GitHub Actions deploys the Worker when changes are pushed to `main`; see `.github/workflows/deploy.yml`.
+
 ```bash
-# Deploy to Cloudflare Workers
+# Direct local deploy also works when Wrangler is authenticated
 wrangler deploy
 ```
 
@@ -97,6 +98,7 @@ See DEPLOYMENT.md for detailed setup instructions.
 ## Security
 
 - Admin interface protected with HTTP Basic Authentication
+- Portfolio write API requests require the same admin authentication
 - CORS headers configured for API access
 - Input validation on all forms
 - No sensitive data in client-side code

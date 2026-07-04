@@ -1,196 +1,183 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with this repository.
+This file provides agent guidance for the Hidden Walnuts website repository. Grok also reads this file through Claude-compatibility, so keep it current and concise.
 
-## Project Overview
+## Current Project Snapshot
 
-Hidden Walnuts is a **portfolio website with admin interface** built entirely on **Cloudflare Workers**. The architecture uses a single worker file that serves the main portfolio site, admin interface, and API endpoints.
+Hidden Walnuts is a Cloudflare Workers site for:
 
-## Architecture
+- `hiddenwalnuts.com` home/about storefront page.
+- Portfolio/gallery at `/portfolio`.
+- iOS game marketing page at `/game`.
+- Support page at `/support`.
+- App privacy policy at `/privacy`.
+- Portfolio JSON API under `/api/portfolio`.
+- Protected admin route at `/admin` for portfolio management.
 
-### Single Worker Architecture
-- **Main Portfolio Site**: Masonry grid layout displaying artwork
-- **Admin Interface**: Password-protected CRUD interface for managing portfolio items  
-- **API Endpoints**: RESTful API for portfolio operations
-- **Storage**: Cloudflare KV for metadata, GitHub raw URLs for images
-- **Authentication**: HTTP Basic Auth for admin access
+The current architecture is still worker-first: `_worker.js` contains routing, page templates, embedded CSS/JS, API handlers, and asset references. There is no framework build step.
 
-### Key Files Structure
+Recent Codex work focused on the homepage/App Store direction and fine-art homepage visual rotation. Treat `_worker.js` and `wrangler.toml` as the authoritative current state when older docs disagree.
+
+## Important Current Caveats
+
+- Do not repeat or expose admin credentials in chat, PR descriptions, logs, or generated docs. Existing files may contain old/plaintext credentials; avoid spreading them further.
+- `/admin` is protected by HTTP Basic Auth and serves `ADMIN_HTML`. It supports add/edit/delete portfolio flows against the existing API.
+- Public portfolio reads stay open. Portfolio API writes (`POST`, `PUT`, `DELETE`) require the same admin auth.
+- `wrangler.toml` routes `/about`, but `_worker.js` currently serves the about/home page at `/` and does not explicitly handle `/about`. Verify this before relying on `/about`.
+- `CUSTOM_DOMAIN_SETUP.md`, `DEPLOYMENT.md`, and `PORTFOLIO_GUIDE.md` are useful, but parts may describe older status or old absolute paths. Prefer current repo path `/Users/hiddenwalnutsdev/Developer/hiddenwalnuts/Website`.
+
+## Key Files
+
+```text
+_worker.js              Cloudflare Worker app, page templates, API handlers
+wrangler.toml           Worker name, KV binding, preview env, custom-domain routes
+README.md               General project overview
+DEPLOYMENT.md           Deployment and operational notes; may contain older status
+CUSTOM_DOMAIN_SETUP.md  Domain/routing notes; verify against wrangler.toml
+PORTFOLIO_GUIDE.md      Portfolio image/content workflow; old paths may need translation
+gamecontent.md          Older game/help copy reference
+images/                 GitHub-hosted image assets
 ```
-/
-├── _worker.js          # Complete application (HTML/CSS/JS/API)
-├── wrangler.toml       # Cloudflare Workers configuration  
-├── images/             # GitHub-hosted images directory
-├── LogoForInsta.png    # Site logo
-├── fav-walnuts.png     # Favicon
-├── README.md           # Project documentation
-├── DEPLOYMENT.md       # Deployment guide
-└── CLAUDE.md          # This file
-```
 
-## Live URLs
+## Current Worker Structure
 
-- **Portfolio Site**: https://hidden-walnuts-portfolio.mattmcarroll.workers.dev
-- **Admin Interface**: https://hidden-walnuts-portfolio.mattmcarroll.workers.dev/admin
-  - Username: `admin`
-  - Password: `hidden2024!`
+Important constants near the top of `_worker.js`:
+
+- `GITHUB_ROOT_BASE_URL`
+- `GITHUB_BASE_URL`
+- `APP_STORE_URL`
+- `APP_STORE_ASSET_BASE`
+- `SITE_BUILD_ID`
+- `HOME_ART_VISUALS`
+
+Server-rendered page templates:
+
+- `LIVE_ABOUT_HTML` is used for the root homepage through `homeResponse()`.
+- `LIVE_GAME_HTML` is used for `/game`.
+- `LIVE_SUPPORT_HTML` is used for `/support`.
+- `APP_PRIVACY_HTML` is used for `/privacy`.
+- `MAIN_HTML` is used for `/portfolio`.
+- `ADMIN_HTML` is used for `/admin`.
+
+Important runtime helpers:
+
+- `serveFavicon()`
+- `selectHomeArtVisual()`
+- `renderHomeHTML()`
+- `homeResponse()`
+- `handleAPI()`
+- Portfolio CRUD helpers: `getPortfolioItems`, `getPortfolioItem`, `createPortfolioItem`, `updatePortfolioItem`, `deletePortfolioItem`.
+
+Image upload code exists as `handleImageUpload()`, but the `/api/upload` route is disabled. The active image workflow is still GitHub-hosted image URLs.
+
+## Routes
+
+Active route handling in `_worker.js`:
+
+- `GET /` -> homepage/about storefront, with server-selected homepage art visual cookie.
+- `/portfolio` -> portfolio grid page that fetches `/api/portfolio`.
+- `/game` -> native iOS game marketing page and App Store links.
+- `/support` -> support page.
+- `/privacy` -> app privacy policy.
+- `/admin` -> protected portfolio admin page.
+- `/fav-walnuts.png`, `/favicon.ico`, `/apple-touch-icon.png` -> proxied from GitHub raw asset.
+- `/api/portfolio` -> public GET portfolio collection; authenticated POST create.
+- `/api/portfolio/:id` -> public GET portfolio item; authenticated PUT/DELETE update or delete.
+
+Configured custom-domain routes in `wrangler.toml` include:
+
+- `hiddenwalnuts.com`
+- `hiddenwalnuts.com/`
+- `hiddenwalnuts.com/admin`
+- `hiddenwalnuts.com/admin/*`
+- `hiddenwalnuts.com/api/*`
+- `www.hiddenwalnuts.com/*`
+- `hiddenwalnuts.com/about`
+- `hiddenwalnuts.com/about/*`
+- `hiddenwalnuts.com/support`
+- `hiddenwalnuts.com/support/*`
+- `hiddenwalnuts.com/privacy`
+- `hiddenwalnuts.com/privacy/*`
+- `hiddenwalnuts.com/portfolio`
+- `hiddenwalnuts.com/portfolio/*`
+- `hiddenwalnuts.com/game`
+- `hiddenwalnuts.com/game/*`
+
+Preserve separation from other subdomains such as `game.hiddenwalnuts.com` and `api.hiddenwalnuts.com`.
+
+## Cloudflare And Data
+
+- Worker name: `hidden-walnuts-portfolio`.
+- Main script: `_worker.js`.
+- KV binding: `PORTFOLIO_KV`.
+- Preview env: `hidden-walnuts-portfolio-preview`.
+- Portfolio metadata is stored in KV as JSON under `item:<id>` keys.
+- Portfolio images are referenced by GitHub raw URLs from the `images/` directory.
 
 ## Development Commands
 
-### Local Development
-```bash
-# Start local worker
-wrangler dev
+Local Worker:
 
-# Access locally:
-# Portfolio: http://localhost:8787
-# Admin: http://localhost:8787/admin
+```bash
+wrangler dev
 ```
 
-### Deployment
-```bash
-# Deploy to production
-wrangler deploy
+Deploy:
 
-# View logs
+```bash
+wrangler deploy
+```
+
+CI deploy:
+
+- `.github/workflows/deploy.yml` deploys on pushes to `main` with `cloudflare/wrangler-action@v3`.
+- Pull requests deploy with `wrangler deploy --env preview`.
+- The workflow needs GitHub secrets `CF_API_TOKEN` and `CF_ACCOUNT_ID`.
+
+Logs:
+
+```bash
 wrangler tail
 ```
 
-### KV Operations
-```bash
-# List portfolio items
-wrangler kv:key list --binding PORTFOLIO_KV
+KV inspection:
 
-# View specific item
+```bash
+wrangler kv:key list --binding PORTFOLIO_KV
 wrangler kv:key get --binding PORTFOLIO_KV "item:ID_HERE"
 ```
 
-## Architecture Principles
+Syntax check:
 
-### Worker-First Design
-- Single `_worker.js` file contains everything
-- HTML, CSS, and JavaScript embedded as template literals
-- No build process or static file serving required
-- Self-contained and portable
-
-### Content Management
-- Portfolio items stored in Cloudflare KV as JSON
-- Images hosted on GitHub raw URLs (free tier compatible)
-- Admin interface provides full CRUD operations
-- No external CMS or database required
-
-### Security Model
-- HTTP Basic Authentication protects admin routes
-- CORS headers enable API access
-- Input validation on all forms
-- No sensitive data exposed in client code
-
-## Image Workflow
-
-1. **Add to GitHub**: Place images in `/images/` directory, commit and push
-2. **Admin Interface**: Enter filename only (e.g., `artwork.jpg`)
-3. **Auto-Generation**: System generates full GitHub raw URL
-4. **Display**: Portfolio site loads images from GitHub URLs
-
-## Making Changes
-
-### Code Structure
-The `_worker.js` file contains:
-- **Configuration constants** at top
-- **Authentication middleware** 
-- **Main fetch handler** with routing
-- **API functions** for CRUD operations
-- **HTML templates** as template literals (MAIN_HTML, ADMIN_HTML)
-
-### Adding Features
-1. **New API endpoints**: Add to `handleAPI()` function
-2. **UI changes**: Modify HTML templates in constants
-3. **Styling**: Update CSS within HTML templates
-4. **Authentication**: Modify `requireAuth()` function
-
-### Testing Changes
 ```bash
-# Always test locally first
-wrangler dev
-
-# Deploy when ready
-wrangler deploy
+node --check _worker.js
 ```
 
-## Common Tasks
+There is currently no `package.json` in this repo. Do not introduce a build tool or dependency manager unless the task explicitly requires it.
 
-### Adding New Portfolio Items
-Use admin interface - no code changes needed:
-1. Login to `/admin`
-2. Click "Add New Item"
-3. Fill form with image filename, title, description, Redbubble URL
-4. System handles URL generation and storage
+## Editing Rules
 
-### Updating Styles
-Edit CSS within the `MAIN_HTML` template literal in `_worker.js`:
-```javascript
-const MAIN_HTML = `<!DOCTYPE html>
-<html>
-<head>
-    <style>
-    /* CSS goes here */
-    :root {
-        --primary-color: #2a5d31;
-        /* etc... */
-    }
-    </style>
-</head>
-...
-`;
-```
+- Keep the worker-first architecture unless the user explicitly approves a structural change.
+- Be careful with embedded template literals; a small quoting mistake can break the entire Worker.
+- Do not add new plaintext secrets. Use Wrangler secrets or Cloudflare configuration for new sensitive values.
+- Prefer narrowly scoped edits in `_worker.js` over broad rewrites.
+- Keep App Store/game marketing content aligned with the live native iOS app direction.
+- For UI changes, verify desktop and mobile layouts, nav links, accessibility basics, and `/api/portfolio` loading behavior.
+- For Cloudflare changes, use the Cloudflare/Wrangler skills and verify routes against both `_worker.js` and `wrangler.toml`.
 
-### Modifying Admin Interface  
-Edit the `ADMIN_HTML` template literal in `_worker.js`.
+## Validation Checklist
 
-### Changing Authentication
-Update constants at top of `_worker.js`:
-```javascript
-const ADMIN_USERNAME = 'admin';
-const ADMIN_PASSWORD = 'your-password';
-```
+Before calling website code work complete:
 
-## Important Notes
-
-### Architecture Decision
-This project uses an **embedded worker architecture** rather than traditional static files + API. This means:
-- ✅ No conflicting static files (`index.html`, `styles.css`, etc.)
-- ✅ Single deployment target
-- ✅ No build process required
-- ✅ Self-contained and portable
-
-### Image Hosting
-Uses GitHub raw URLs instead of Cloudflare Images:
-- ✅ Free tier compatible
-- ✅ Version controlled with Git
-- ✅ Reliable CDN distribution
-- ❌ Manual upload process (via Git)
-
-### Development Workflow
-1. **Code changes**: Edit `_worker.js`
-2. **Test locally**: `wrangler dev`
-3. **Deploy**: `wrangler deploy`
-4. **Content changes**: Use admin interface
-
-## Troubleshooting
-
-### Worker Issues
-- Check `wrangler tail` for logs
-- Verify KV namespace binding in `wrangler.toml`
-- Test API endpoints directly: `/api/portfolio`
-
-### Image Issues  
-- Ensure images are pushed to GitHub
-- Verify repository is public
-- Check exact filename matching
-
-### Authentication Issues
-- Verify credentials in worker constants
-- Check browser isn't caching old auth
-- Test with incognito/private browsing
-
-This architecture is production-ready and fully operational. The worker-first approach eliminates complexity while providing a complete portfolio management system.
+1. Run `node --check _worker.js`.
+2. If practical, run `wrangler dev` and smoke:
+   - `/`
+   - `/portfolio`
+   - `/game`
+   - `/support`
+   - `/privacy`
+   - `/api/portfolio`
+   - `/admin` if the task touches admin behavior.
+3. For route/config changes, compare `_worker.js` routing with `wrangler.toml`.
+4. For visual changes, check mobile and desktop widths.
+5. For deploy-impacting work, use `wrangler deploy` only when the user asked for deployment or the repo workflow clearly expects it.

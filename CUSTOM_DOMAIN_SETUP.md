@@ -6,12 +6,16 @@ You want the main `hiddenwalnuts.com` domain to show the portfolio. I've configu
 
 ## Current Status ✅
 
-The worker has been **successfully deployed with main domain routes**:
+The worker is configured with targeted main-domain routes:
 - `hiddenwalnuts.com` ✅ (root domain)
 - `hiddenwalnuts.com/` ✅ (main page)  
 - `hiddenwalnuts.com/admin` ✅ (admin interface)
 - `hiddenwalnuts.com/api/*` ✅ (portfolio API)
 - `www.hiddenwalnuts.com/*` ✅ (www subdomain)
+- `hiddenwalnuts.com/support` ✅
+- `hiddenwalnuts.com/privacy` ✅
+- `hiddenwalnuts.com/portfolio` ✅
+- `hiddenwalnuts.com/game` ✅
 
 **This WON'T affect**:
 - `game.hiddenwalnuts.com` (different subdomain)
@@ -63,7 +67,7 @@ Under "Triggers" tab, you should see:
 - `hiddenwalnuts.com/api/*` - Zone: hiddenwalnuts.com ✅
 - `www.hiddenwalnuts.com/*` - Zone: hiddenwalnuts.com ✅
 
-### Step 2: Test the Setup
+### Step 3: Test the Setup
 
 After verifying DNS is proxied (may take a few minutes to propagate):
 
@@ -80,6 +84,12 @@ curl -I https://hiddenwalnuts.com/admin
 # Test API
 curl https://hiddenwalnuts.com/api/portfolio
 
+# Test current content routes
+curl -I https://hiddenwalnuts.com/portfolio
+curl -I https://hiddenwalnuts.com/game
+curl -I https://hiddenwalnuts.com/support
+curl -I https://hiddenwalnuts.com/privacy
+
 # Test that subdomains still work
 curl -I https://game.hiddenwalnuts.com  # Should still work
 curl -I https://api.hiddenwalnuts.com   # Should still work
@@ -95,7 +105,7 @@ Expected responses:
 
 Visit these URLs in your browser:
 - **Portfolio**: https://hiddenwalnuts.com
-- **Admin**: https://hiddenwalnuts.com/admin (login: admin/hidden2024!)
+- **Admin**: https://hiddenwalnuts.com/admin (uses current admin credentials from the password manager / deployment configuration)
 - **API**: https://hiddenwalnuts.com/api/portfolio
 
 ## Troubleshooting

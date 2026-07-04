@@ -1894,7 +1894,7 @@ export default {
                 const response = await handleAPI(request, env, path);
                 return new Response(response.body, {
                     status: response.status,
-                    headers: { ...corsHeaders, 'Content-Type': 'application/json' }
+                    headers: { ...corsHeaders, 'Content-Type': 'application/json', ...(response.headers || {}) }
                 });
             }
 
@@ -1954,6 +1954,19 @@ export default {
 
 async function handleAPI(request, env, path) {
     const method = request.method;
+    if (method !== 'GET') {
+        const authResult = requireAuth(request);
+        if (authResult) {
+            const headers = {};
+            const challenge = authResult.headers.get('WWW-Authenticate');
+            if (challenge) headers['WWW-Authenticate'] = challenge;
+            return {
+                status: authResult.status,
+                headers,
+                body: JSON.stringify({ error: 'Authentication required' })
+            };
+        }
+    }
 
     if (path === '/api/portfolio') {
         if (method === 'GET') {
@@ -2154,6 +2167,732 @@ async function handleImageUpload(request, env) {
 function generateId() {
     return Date.now().toString(36) + Math.random().toString(36).substr(2);
 }
+
+const ADMIN_HTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Walnuts Admin</title>
+    <style>
+        :root {
+            --green: #2a5d31;
+            --green-dark: #1d3d22;
+            --ink: #233026;
+            --muted: #647064;
+            --line: #d8e0d6;
+            --bg: #f5f7f1;
+            --danger: #b42318;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            color: var(--ink);
+            background: var(--bg);
+            line-height: 1.5;
+        }
+
+        button,
+        input,
+        textarea {
+            font: inherit;
+        }
+
+        .page {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            color: var(--green-dark);
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+        }
+
+        .lede {
+            margin: 0;
+            color: var(--muted);
+            max-width: 740px;
+        }
+
+        .tabs {
+            display: inline-flex;
+            gap: 6px;
+            padding: 5px;
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+        }
+
+        .tab {
+            border: 0;
+            border-radius: 6px;
+            padding: 10px 14px;
+            background: transparent;
+            color: var(--green-dark);
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .tab[aria-selected="true"] {
+            background: var(--green);
+            color: #ffffff;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 320px;
+            gap: 22px;
+            align-items: start;
+        }
+
+        .panel,
+        .side-panel {
+            background: #ffffff;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            box-shadow: 0 10px 28px rgba(31, 49, 31, 0.08);
+        }
+
+        .panel {
+            padding: 24px;
+        }
+
+        .side-panel {
+            padding: 18px;
+        }
+
+        .panel[hidden] {
+            display: none;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--green-dark);
+            font-weight: 700;
+        }
+
+        input[type="text"],
+        input[type="url"],
+        textarea {
+            width: 100%;
+            border: 1px solid #c8d3c4;
+            border-radius: 7px;
+            padding: 11px 12px;
+            background: #ffffff;
+            color: var(--ink);
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: 2px solid rgba(42, 93, 49, 0.24);
+            border-color: var(--green);
+        }
+
+        .filename-row {
+            display: grid;
+            grid-template-columns: minmax(210px, auto) minmax(0, 1fr);
+            border: 1px solid #c8d3c4;
+            border-radius: 7px;
+            overflow: hidden;
+            background: #ffffff;
+        }
+
+        .filename-prefix {
+            padding: 11px 12px;
+            background: #edf2e8;
+            color: var(--muted);
+            border-right: 1px solid #c8d3c4;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .filename-row input {
+            border: 0;
+            border-radius: 0;
+        }
+
+        .hint {
+            margin-top: 7px;
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .check-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+            font-weight: 700;
+            color: var(--green-dark);
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn {
+            border: 0;
+            border-radius: 7px;
+            padding: 11px 15px;
+            cursor: pointer;
+            font-weight: 800;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 42px;
+        }
+
+        .btn-primary {
+            background: var(--green);
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: var(--green-dark);
+        }
+
+        .btn-secondary {
+            background: #e7ede3;
+            color: var(--green-dark);
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #ffffff;
+        }
+
+        .btn[disabled] {
+            cursor: wait;
+            opacity: 0.65;
+        }
+
+        .notice {
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: 7px;
+            border: 1px solid var(--line);
+            background: #f6faf2;
+            color: var(--green-dark);
+        }
+
+        .notice.error {
+            border-color: #f3b6b1;
+            background: #fff5f4;
+            color: var(--danger);
+        }
+
+        .preview {
+            display: grid;
+            gap: 10px;
+        }
+
+        .preview img {
+            width: 100%;
+            max-height: 240px;
+            object-fit: contain;
+            border: 1px solid var(--line);
+            border-radius: 7px;
+            background: #f8faf6;
+        }
+
+        .preview a {
+            color: var(--green-dark);
+            overflow-wrap: anywhere;
+        }
+
+        .manage-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .items-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .item-card {
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            overflow: hidden;
+            background: #ffffff;
+            display: grid;
+        }
+
+        .item-card img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            background: #edf2e8;
+        }
+
+        .item-body {
+            padding: 14px;
+            display: grid;
+            gap: 9px;
+        }
+
+        .item-title {
+            margin: 0;
+            font-size: 1.05rem;
+            color: var(--green-dark);
+        }
+
+        .item-meta {
+            margin: 0;
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        .item-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .empty {
+            color: var(--muted);
+            padding: 20px;
+            border: 1px dashed var(--line);
+            border-radius: 8px;
+            background: #fbfcfa;
+        }
+
+        @media (max-width: 820px) {
+            .page {
+                padding: 16px;
+            }
+
+            .topbar,
+            .layout,
+            .manage-head {
+                display: grid;
+            }
+
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .filename-row {
+                grid-template-columns: 1fr;
+            }
+
+            .filename-prefix {
+                border-right: 0;
+                border-bottom: 1px solid #c8d3c4;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="page">
+        <header class="topbar">
+            <div>
+                <h1>Hidden Walnuts Admin</h1>
+                <p class="lede">Manage portfolio items stored in Cloudflare KV. Prepare web images in the GitHub <code>images/</code> folder first, then enter the filename here.</p>
+            </div>
+            <nav class="tabs" aria-label="Admin sections">
+                <button class="tab" id="edit-tab" type="button" aria-selected="true">Add/Edit</button>
+                <button class="tab" id="manage-tab" type="button" aria-selected="false">Manage</button>
+            </nav>
+        </header>
+
+        <div id="alert" aria-live="polite"></div>
+
+        <section id="edit-panel" class="layout">
+            <form id="item-form" class="panel">
+                <input type="hidden" id="itemId">
+                <div class="field">
+                    <label for="title">Title</label>
+                    <input id="title" name="title" type="text" required autocomplete="off">
+                </div>
+
+                <div class="field">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description"></textarea>
+                </div>
+
+                <div class="field">
+                    <label for="imageFilename">Image filename or full image URL</label>
+                    <div class="filename-row">
+                        <span class="filename-prefix">${GITHUB_BASE_URL}</span>
+                        <input id="imageFilename" name="imageFilename" type="text" required placeholder="ArtworkName_web.jpg">
+                    </div>
+                    <input id="imageUrl" name="imageUrl" type="hidden">
+                    <div class="hint">Enter a filename from <code>images/</code>, or paste a full <code>https://</code> image URL.</div>
+                </div>
+
+                <div class="field">
+                    <label for="redbubbleUrl">Store URL</label>
+                    <input id="redbubbleUrl" name="redbubbleUrl" type="url" required placeholder="https://www.redbubble.com/shop/ap/...">
+                </div>
+
+                <div class="field">
+                    <label for="tags">Tags</label>
+                    <input id="tags" name="tags" type="text" placeholder="nature, vintage, woodland">
+                    <div class="hint">Comma-separated. Used as portfolio metadata.</div>
+                </div>
+
+                <label class="check-row">
+                    <input id="featured" name="featured" type="checkbox">
+                    Featured item
+                </label>
+
+                <div class="actions">
+                    <button id="submitButton" class="btn btn-primary" type="submit">Add Portfolio Item</button>
+                    <button id="resetButton" class="btn btn-secondary" type="button">Reset</button>
+                </div>
+            </form>
+
+            <aside class="side-panel">
+                <h2>Image Preview</h2>
+                <div id="previewEmpty" class="empty">Enter an image filename to preview it.</div>
+                <div id="preview" class="preview" hidden>
+                    <img id="previewImage" alt="">
+                    <a id="previewLink" href="#" target="_blank" rel="noopener">Open image URL</a>
+                </div>
+            </aside>
+        </section>
+
+        <section id="manage-panel" class="panel" hidden>
+            <div class="manage-head">
+                <div>
+                    <h2>Portfolio Items</h2>
+                    <p id="itemsSummary" class="item-meta">Loading items...</p>
+                </div>
+                <button id="refreshButton" class="btn btn-secondary" type="button">Refresh</button>
+            </div>
+            <div id="itemsContainer"></div>
+        </section>
+    </main>
+
+    <script>
+        (function () {
+            var imageBaseUrl = '${GITHUB_BASE_URL}';
+            var currentItems = [];
+            var editingId = null;
+            var editPanel = document.getElementById('edit-panel');
+            var managePanel = document.getElementById('manage-panel');
+            var editTab = document.getElementById('edit-tab');
+            var manageTab = document.getElementById('manage-tab');
+            var itemForm = document.getElementById('item-form');
+            var imageFilenameInput = document.getElementById('imageFilename');
+            var imageUrlInput = document.getElementById('imageUrl');
+            var preview = document.getElementById('preview');
+            var previewEmpty = document.getElementById('previewEmpty');
+            var previewImage = document.getElementById('previewImage');
+            var previewLink = document.getElementById('previewLink');
+            var submitButton = document.getElementById('submitButton');
+            var itemsContainer = document.getElementById('itemsContainer');
+            var itemsSummary = document.getElementById('itemsSummary');
+
+            function showAlert(message, isError) {
+                var alert = document.getElementById('alert');
+                alert.className = 'notice' + (isError ? ' error' : '');
+                alert.textContent = message;
+                window.clearTimeout(showAlert.timeout);
+                showAlert.timeout = window.setTimeout(function () {
+                    alert.className = '';
+                    alert.textContent = '';
+                }, 6000);
+            }
+
+            function showPanel(name) {
+                var showingManage = name === 'manage';
+                editPanel.hidden = showingManage;
+                managePanel.hidden = !showingManage;
+                editTab.setAttribute('aria-selected', String(!showingManage));
+                manageTab.setAttribute('aria-selected', String(showingManage));
+                if (showingManage) loadItems();
+            }
+
+            function normalizeFilename(value) {
+                return String(value || '').trim().replace(/^\\/+/, '');
+            }
+
+            function imageUrlFromInput(value) {
+                var trimmed = String(value || '').trim();
+                if (!trimmed) return '';
+                if (/^https?:\\/\\//i.test(trimmed)) return trimmed;
+                return imageBaseUrl + normalizeFilename(trimmed);
+            }
+
+            function imageInputFromUrl(url) {
+                var value = String(url || '');
+                if (value.indexOf(imageBaseUrl) === 0) {
+                    return value.slice(imageBaseUrl.length);
+                }
+                return value;
+            }
+
+            function updatePreview() {
+                var url = imageUrlFromInput(imageFilenameInput.value);
+                imageUrlInput.value = url;
+                if (!url) {
+                    preview.hidden = true;
+                    previewEmpty.hidden = false;
+                    return;
+                }
+                previewImage.src = url;
+                previewImage.alt = document.getElementById('title').value || 'Portfolio image preview';
+                previewLink.href = url;
+                preview.hidden = false;
+                previewEmpty.hidden = true;
+            }
+
+            function parseTags(value) {
+                var seen = {};
+                return String(value || '')
+                    .split(',')
+                    .map(function (tag) { return tag.trim(); })
+                    .filter(function (tag) {
+                        if (!tag || seen[tag]) return false;
+                        seen[tag] = true;
+                        return true;
+                    });
+            }
+
+            async function requestJson(path, options) {
+                var requestOptions = options || {};
+                var headers = Object.assign(
+                    { 'Accept': 'application/json' },
+                    requestOptions.headers || {}
+                );
+                var response = await fetch(path, Object.assign({}, requestOptions, {
+                    credentials: 'same-origin',
+                    headers: headers
+                }));
+                var text = await response.text();
+                var data = null;
+                if (text) {
+                    try {
+                        data = JSON.parse(text);
+                    } catch (error) {
+                        throw new Error(text);
+                    }
+                }
+                if (!response.ok) {
+                    throw new Error((data && data.error) || 'Request failed with status ' + response.status);
+                }
+                return data;
+            }
+
+            function setSubmitting(isSubmitting) {
+                submitButton.disabled = isSubmitting;
+                submitButton.textContent = isSubmitting
+                    ? 'Saving...'
+                    : (editingId ? 'Update Portfolio Item' : 'Add Portfolio Item');
+            }
+
+            function resetForm() {
+                editingId = null;
+                itemForm.reset();
+                imageUrlInput.value = '';
+                submitButton.textContent = 'Add Portfolio Item';
+                updatePreview();
+            }
+
+            async function handleSubmit(event) {
+                event.preventDefault();
+                updatePreview();
+
+                var payload = {
+                    title: document.getElementById('title').value.trim(),
+                    description: document.getElementById('description').value.trim(),
+                    imageUrl: imageUrlInput.value,
+                    redbubbleUrl: document.getElementById('redbubbleUrl').value.trim(),
+                    tags: parseTags(document.getElementById('tags').value),
+                    featured: document.getElementById('featured').checked
+                };
+
+                if (!payload.title || !payload.imageUrl || !payload.redbubbleUrl) {
+                    showAlert('Title, image, and store URL are required.', true);
+                    return;
+                }
+
+                setSubmitting(true);
+                try {
+                    var path = editingId ? '/api/portfolio/' + encodeURIComponent(editingId) : '/api/portfolio';
+                    var method = editingId ? 'PUT' : 'POST';
+                    await requestJson(path, {
+                        method: method,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    showAlert(editingId ? 'Portfolio item updated.' : 'Portfolio item added.', false);
+                    resetForm();
+                    await loadItems();
+                    showPanel('manage');
+                } catch (error) {
+                    showAlert(error.message, true);
+                } finally {
+                    setSubmitting(false);
+                }
+            }
+
+            async function loadItems() {
+                itemsSummary.textContent = 'Loading items...';
+                itemsContainer.innerHTML = '<div class="empty">Loading portfolio items...</div>';
+                try {
+                    currentItems = await requestJson('/api/portfolio');
+                    renderItems();
+                } catch (error) {
+                    itemsSummary.textContent = 'Could not load portfolio items.';
+                    itemsContainer.innerHTML = '';
+                    showAlert(error.message, true);
+                }
+            }
+
+            function renderItems() {
+                itemsContainer.innerHTML = '';
+                itemsSummary.textContent = currentItems.length + ' item' + (currentItems.length === 1 ? '' : 's');
+                if (!currentItems.length) {
+                    itemsContainer.innerHTML = '<div class="empty">No portfolio items yet.</div>';
+                    return;
+                }
+
+                var grid = document.createElement('div');
+                grid.className = 'items-grid';
+
+                currentItems.forEach(function (item) {
+                    var card = document.createElement('article');
+                    card.className = 'item-card';
+
+                    var image = document.createElement('img');
+                    image.src = item.imageUrl || '';
+                    image.alt = item.title || 'Portfolio image';
+                    image.loading = 'lazy';
+                    card.appendChild(image);
+
+                    var body = document.createElement('div');
+                    body.className = 'item-body';
+
+                    var title = document.createElement('h3');
+                    title.className = 'item-title';
+                    title.textContent = item.title || 'Untitled';
+                    body.appendChild(title);
+
+                    var meta = document.createElement('p');
+                    meta.className = 'item-meta';
+                    var tags = Array.isArray(item.tags) && item.tags.length ? item.tags.join(', ') : 'No tags';
+                    meta.textContent = tags + (item.featured ? ' | Featured' : '');
+                    body.appendChild(meta);
+
+                    var description = document.createElement('p');
+                    description.className = 'item-meta';
+                    description.textContent = item.description || 'No description';
+                    body.appendChild(description);
+
+                    var actions = document.createElement('div');
+                    actions.className = 'item-actions';
+
+                    var edit = document.createElement('button');
+                    edit.className = 'btn btn-secondary';
+                    edit.type = 'button';
+                    edit.textContent = 'Edit';
+                    edit.addEventListener('click', function () { editItem(item); });
+                    actions.appendChild(edit);
+
+                    var remove = document.createElement('button');
+                    remove.className = 'btn btn-danger';
+                    remove.type = 'button';
+                    remove.textContent = 'Delete';
+                    remove.addEventListener('click', function () { deleteItem(item); });
+                    actions.appendChild(remove);
+
+                    if (item.redbubbleUrl) {
+                        var open = document.createElement('a');
+                        open.className = 'btn btn-primary';
+                        open.href = item.redbubbleUrl;
+                        open.target = '_blank';
+                        open.rel = 'noopener';
+                        open.textContent = 'Open';
+                        actions.appendChild(open);
+                    }
+
+                    body.appendChild(actions);
+                    card.appendChild(body);
+                    grid.appendChild(card);
+                });
+
+                itemsContainer.appendChild(grid);
+            }
+
+            function editItem(item) {
+                editingId = item.id;
+                document.getElementById('title').value = item.title || '';
+                document.getElementById('description').value = item.description || '';
+                imageFilenameInput.value = imageInputFromUrl(item.imageUrl);
+                imageUrlInput.value = item.imageUrl || '';
+                document.getElementById('redbubbleUrl').value = item.redbubbleUrl || '';
+                document.getElementById('tags').value = Array.isArray(item.tags) ? item.tags.join(', ') : '';
+                document.getElementById('featured').checked = Boolean(item.featured);
+                submitButton.textContent = 'Update Portfolio Item';
+                updatePreview();
+                showPanel('edit');
+            }
+
+            async function deleteItem(item) {
+                if (!window.confirm('Delete "' + (item.title || 'this item') + '" from the portfolio?')) return;
+                try {
+                    await requestJson('/api/portfolio/' + encodeURIComponent(item.id), { method: 'DELETE' });
+                    showAlert('Portfolio item deleted.', false);
+                    if (editingId === item.id) resetForm();
+                    await loadItems();
+                } catch (error) {
+                    showAlert(error.message, true);
+                }
+            }
+
+            previewImage.addEventListener('error', function () {
+                preview.hidden = true;
+                previewEmpty.hidden = false;
+            });
+            imageFilenameInput.addEventListener('input', updatePreview);
+            document.getElementById('title').addEventListener('input', updatePreview);
+            itemForm.addEventListener('submit', handleSubmit);
+            document.getElementById('resetButton').addEventListener('click', resetForm);
+            document.getElementById('refreshButton').addEventListener('click', loadItems);
+            editTab.addEventListener('click', function () { showPanel('edit'); });
+            manageTab.addEventListener('click', function () { showPanel('manage'); });
+            updatePreview();
+        }());
+    </script>
+</body>
+</html>`;
 
 // Main Website HTML
 const MAIN_HTML = `<!DOCTYPE html>
