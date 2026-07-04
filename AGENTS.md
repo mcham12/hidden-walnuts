@@ -30,6 +30,8 @@ Before changing code or deployment behavior, read:
 - Use the Cloudflare and Wrangler skills for Worker, KV, routing, deploy, and Cloudflare-specific changes.
 - Use Chrome DevTools and `web-perf` skills for live-site debugging, accessibility, Core Web Vitals, LCP, and browser behavior.
 - Use Firecrawl skills for external website/content research or scraping.
+- For non-trivial Worker, admin, API, UI, route, or deploy changes, run the global `composer-review-loop` before committing, pushing, or deploying. Treat its reviewer output as advisory and verify findings against `_worker.js`, `wrangler.toml`, and the relevant docs before fixing.
+- Use subagents for independent read-only checks such as route/doc comparison, Cloudflare config review, UI/accessibility review, or admin/API risk review. Keep implementation edits in the main session unless isolated worktrees are explicitly requested.
 - Local run:
   ```bash
   wrangler dev
