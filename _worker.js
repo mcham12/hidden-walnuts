@@ -2003,16 +2003,18 @@ async function handleAPI(request, env, path) {
 // CRUD Operations
 async function getPortfolioItems(env) {
     try {
-        const items = [];
+        const keys = [];
         let cursor;
         do {
             const page = await env.PORTFOLIO_KV.list({ prefix: 'item:', cursor });
-            for (const key of page.keys) {
-                const item = await env.PORTFOLIO_KV.get(key.name, { type: 'json' });
-                if (item) items.push(item);
-            }
+            keys.push(...page.keys);
             cursor = page.list_complete ? undefined : page.cursor;
         } while (cursor);
+
+        const fetched = await Promise.all(
+            keys.map((key) => env.PORTFOLIO_KV.get(key.name, { type: 'json' }))
+        );
+        const items = fetched.filter(Boolean);
 
         // Sort: featured checkbox items first, then by dateAdded (newest first)
         return items.sort((a, b) => {
