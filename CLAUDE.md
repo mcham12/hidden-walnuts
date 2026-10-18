@@ -150,8 +150,10 @@ wrangler kv:key get --binding PORTFOLIO_KV "item:ID_HERE"
 Syntax check:
 
 ```bash
-node --check _worker.js
+node scripts/lint.mjs
 ```
+
+`node --check _worker.js` misses syntax errors after `export` on Node 22.
 
 There is currently no `package.json` in this repo. Do not introduce a build tool or dependency manager unless the task explicitly requires it.
 
@@ -169,14 +171,12 @@ There is currently no `package.json` in this repo. Do not introduce a build tool
 
 Before calling website code work complete:
 
-1. Run `node --check _worker.js`.
-2. If practical, run `wrangler dev` and smoke:
+1. Run `node scripts/lint.mjs`.
+2. Run `node scripts/verify.mjs`. If practical, also smoke the routes that command does not cover:
    - `/`
-   - `/portfolio`
    - `/game`
    - `/support`
    - `/privacy`
-   - `/api/portfolio`
    - `/admin` if the task touches admin behavior.
 3. For route/config changes, compare `_worker.js` routing with `wrangler.toml`.
 4. For visual changes, check mobile and desktop widths.

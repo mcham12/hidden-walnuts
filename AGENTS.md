@@ -53,13 +53,14 @@ Before changing code or deployment behavior, read:
 
 - Respect the worker-first architecture: no build process, no framework migration, and no separate static app unless the user explicitly asks.
 - Keep `_worker.js` self-contained unless a change clearly warrants a structural split and the user approves.
-- Be careful with embedded template literals in `_worker.js`; validate syntax after editing.
+- Be careful with embedded template literals in `_worker.js`. Run `node scripts/lint.mjs` after editing.
 - Do not expose, quote, or casually repeat admin credentials from docs or code in chat, PR text, or logs.
 - Prefer secrets for any new sensitive value; do not add new plaintext credentials.
 - When editing image/content workflows, remember that some docs contain old absolute paths. Use the current repo path on this machine: `/Users/hiddenwalnutsdev/Developer/hiddenwalnuts/Website`.
 
 ## Validation Defaults
 
+- For code changes, run `node scripts/lint.mjs` and `node scripts/verify.mjs`. `node --check _worker.js` misses syntax errors after `export` on Node 22.
 - For code changes, run a local Worker check with `wrangler dev` when practical.
 - For Cloudflare config changes, inspect `wrangler.toml` and use `wrangler deploy --dry-run` or equivalent safe checks if available before deploying.
 - For UI changes, verify mobile and desktop behavior, accessibility basics, and that `/`, `/admin`, and `/api/portfolio` still route correctly.
