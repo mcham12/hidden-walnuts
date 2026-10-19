@@ -26,6 +26,9 @@ jobs:
       - name: Lint
         run: node scripts/lint.mjs
 
+      - name: Preview KV stays off production
+        run: node scripts/check-preview-kv.mjs
+
       - name: Behavior check against local wrangler dev
         run: node scripts/verify.mjs --evidence "${{ runner.temp }}/verify-evidence"
 
