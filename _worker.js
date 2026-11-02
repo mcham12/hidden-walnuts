@@ -1,3 +1,5 @@
+import { ALLOWED_SEASONS, presentPortfolioItem, selectFeatured } from './featured-seasons.js';
+
 /**
  * Cloudflare Worker for Hidden Walnuts Portfolio Admin
  * Last Deployed: 2025-12-15
@@ -2014,15 +2016,12 @@ async function getPortfolioItems(env) {
         const fetched = await Promise.all(
             keys.map((key) => env.PORTFOLIO_KV.get(key.name, { type: 'json' }))
         );
-        const items = fetched.filter(Boolean);
-
-        // Sort: featured checkbox items first, then by dateAdded (newest first)
-        return items.sort((a, b) => {
-            const aFeatured = a.featured ? 1 : 0;
-            const bFeatured = b.featured ? 1 : 0;
-            if (bFeatured !== aFeatured) return bFeatured - aFeatured;
-            return new Date(b.dateAdded) - new Date(a.dateAdded);
-        });
+        const items = fetched.filter(Boolean).map((item) => presentPortfolioItem(item));
+        const chosen = selectFeatured(items, new Date());
+        const chosenItems = new Set(chosen);
+        const rest = items.filter((item) => !chosenItems.has(item));
+        rest.sort((left, right) => new Date(right.dateAdded) - new Date(left.dateAdded));
+        return chosen.concat(rest);
     } catch (error) {
         console.error('Error getting portfolio items:', error);
         return [];
@@ -2035,10 +2034,23 @@ async function getPortfolioItem(env, id) {
         if (!item) {
             return { status: 404, body: JSON.stringify({ error: 'Item not found' }) };
         }
-        return { status: 200, body: JSON.stringify(item) };
+        return { status: 200, body: JSON.stringify(presentPortfolioItem(item)) };
     } catch (error) {
         return { status: 500, body: JSON.stringify({ error: error.message }) };
     }
+}
+
+function portfolioSeasonFields(data) {
+    const fields = {};
+    if (!data || typeof data !== 'object') return fields;
+    if (typeof data.season === 'string') {
+        if (ALLOWED_SEASONS.has(data.season)) fields.season = data.season;
+        else if (data.season.trim() !== '') fields.season = 'evergreen';
+    }
+    if (typeof data.religious === 'boolean') fields.religious = data.religious;
+    if (typeof data.pin === 'boolean') fields.pin = data.pin;
+    if (typeof data.exclude === 'boolean') fields.exclude = data.exclude;
+    return fields;
 }
 
 async function createPortfolioItem(request, env) {
@@ -2053,7 +2065,8 @@ async function createPortfolioItem(request, env) {
             redbubbleUrl: data.redbubbleUrl,
             tags: data.tags || [],
             featured: data.featured || false,
-            dateAdded: new Date().toISOString()
+            dateAdded: new Date().toISOString(),
+            ...portfolioSeasonFields(data)
         };
 
         await env.PORTFOLIO_KV.put(`item:${id}`, JSON.stringify(item));
@@ -2204,7 +2217,8 @@ const ADMIN_HTML = `<!DOCTYPE html>
 
         button,
         input,
-        textarea {
+        textarea,
+        select {
             font: inherit;
         }
 
@@ -2298,7 +2312,8 @@ const ADMIN_HTML = `<!DOCTYPE html>
 
         input[type="text"],
         input[type="url"],
-        textarea {
+        textarea,
+        select {
             width: 100%;
             border: 1px solid #c8d3c4;
             border-radius: 7px;
@@ -2313,7 +2328,8 @@ const ADMIN_HTML = `<!DOCTYPE html>
         }
 
         input:focus,
-        textarea:focus {
+        textarea:focus,
+        select:focus {
             outline: 2px solid rgba(42, 93, 49, 0.24);
             border-color: var(--green);
         }
@@ -2571,9 +2587,39 @@ const ADMIN_HTML = `<!DOCTYPE html>
                     <div class="hint">Comma-separated. Used as portfolio metadata.</div>
                 </div>
 
+                <div class="field">
+                    <label for="season">Season</label>
+                    <select id="season" name="season">
+                        <option value="evergreen" selected>Evergreen</option>
+                        <option value="winter">Winter</option>
+                        <option value="spring">Spring</option>
+                        <option value="summer">Summer</option>
+                        <option value="autumn">Autumn</option>
+                        <option value="christmas">Christmas</option>
+                        <option value="easter">Easter</option>
+                        <option value="good-friday">Good Friday</option>
+                        <option value="pentecost">Pentecost</option>
+                        <option value="all-saints">All Saints</option>
+                        <option value="halloween">Halloween</option>
+                        <option value="valentine">Valentine</option>
+                    </select>
+                </div>
+
                 <label class="check-row">
                     <input id="featured" name="featured" type="checkbox">
                     Featured item
+                </label>
+                <label class="check-row">
+                    <input id="religious" name="religious" type="checkbox">
+                    Christian subject
+                </label>
+                <label class="check-row">
+                    <input id="pin" name="pin" type="checkbox">
+                    Pin to featured
+                </label>
+                <label class="check-row">
+                    <input id="exclude" name="exclude" type="checkbox">
+                    Exclude from featured
                 </label>
 
                 <div class="actions">
@@ -2740,6 +2786,10 @@ const ADMIN_HTML = `<!DOCTYPE html>
                     imageUrl: imageUrlInput.value,
                     redbubbleUrl: document.getElementById('redbubbleUrl').value.trim(),
                     tags: parseTags(document.getElementById('tags').value),
+                    season: document.getElementById('season').value,
+                    religious: document.getElementById('religious').checked,
+                    pin: document.getElementById('pin').checked,
+                    exclude: document.getElementById('exclude').checked,
                     featured: document.getElementById('featured').checked
                 };
 
@@ -2813,7 +2863,13 @@ const ADMIN_HTML = `<!DOCTYPE html>
                     var meta = document.createElement('p');
                     meta.className = 'item-meta';
                     var tags = Array.isArray(item.tags) && item.tags.length ? item.tags.join(', ') : 'No tags';
-                    meta.textContent = tags + (item.featured ? ' | Featured' : '');
+                    var marks = [];
+                    if (item.season && item.season !== 'evergreen') marks.push(item.season);
+                    if (item.religious) marks.push('Christian');
+                    if (item.pin) marks.push('Pinned');
+                    if (item.exclude) marks.push('Excluded');
+                    if (item.featured) marks.push('Featured');
+                    meta.textContent = tags + (marks.length ? ' | ' + marks.join(', ') : '');
                     body.appendChild(meta);
 
                     var description = document.createElement('p');
@@ -2864,6 +2920,12 @@ const ADMIN_HTML = `<!DOCTYPE html>
                 imageUrlInput.value = item.imageUrl || '';
                 document.getElementById('redbubbleUrl').value = item.redbubbleUrl || '';
                 document.getElementById('tags').value = Array.isArray(item.tags) ? item.tags.join(', ') : '';
+                var seasonInput = document.getElementById('season');
+                seasonInput.value = item.season || 'evergreen';
+                if (seasonInput.value === '') seasonInput.value = 'evergreen';
+                document.getElementById('religious').checked = item.religious === true;
+                document.getElementById('pin').checked = item.pin === true;
+                document.getElementById('exclude').checked = item.exclude === true;
                 document.getElementById('featured').checked = Boolean(item.featured);
                 submitButton.textContent = 'Update Portfolio Item';
                 updatePreview();
