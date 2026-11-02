@@ -114,14 +114,19 @@ Each KV item is JSON:
   "redbubbleUrl": "https://www.redbubble.com/shop/ap/123456789",
   "tags": ["nature", "vintage"],
   "featured": false,
+  "season": "winter",
+  "religious": false,
+  "pin": false,
+  "exclude": false,
   "dateAdded": "2026-07-04T10:30:00.000Z"
 }
 ```
 
-Sorting behavior in `_worker.js`:
+`season` is one of `evergreen`, `winter`, `spring`, `summer`, `autumn`, `christmas`, `easter`, `good-friday`, `pentecost`, `all-saints`, `halloween`, or `valentine`. A missing or blank `season` means evergreen. `religious` is true only for a Christian subject. `pin` keeps a design in the featured slots. `exclude` keeps it out. The `featured` boolean is still stored. It does not choose the public order.
 
-1. `featured: true` items first.
-2. Then newest `dateAdded` first.
+The public feed leads with up to 8 designs chosen from the America/Chicago date, `season`, `religious`, `pin`, `exclude`, and `dateAdded`. The rest of the feed stays newest first.
+
+When the weekly sync adds a design, set `season`. Set `religious` when the design is a Christian subject. Leave `pin` and `exclude` unset. Do not rotate `featured` to choose what shoppers see first.
 
 The admin UI uses an image filename field and generates the GitHub raw URL. It also accepts a full `https://` image URL. The API stores the full `imageUrl`.
 
@@ -139,13 +144,17 @@ The admin UI uses an image filename field and generates the GitHub raw URL. It a
 | Image filename or URL | Use the web image filename, or paste a full image URL |
 | Store URL | Full Redbubble/TeePublic product URL |
 | Tags | Optional comma-separated metadata |
-| Featured | Checked for priority sorting |
+| Season | One season or occasion. Leave evergreen when the picture has no season. |
+| Christian subject | Check only for a Christian subject. |
+| Pin to featured | Keep this design in the featured slots. |
+| Exclude from featured | Keep this design out of the featured slots. |
+| Featured | Stored flag. It does not set the public order. |
 
 5. Save, then verify `/portfolio`.
 
 Manage existing items from the admin `Manage` tab:
 
-- Edit title, description, image, store URL, tags, and featured state.
+- Edit title, description, image, store URL, tags, season, Christian subject, pin, exclude, and the stored featured flag.
 - Delete stale items only after confirming the public portfolio no longer needs them.
 
 ## API Fallback
@@ -175,6 +184,8 @@ curl -X POST https://hiddenwalnuts.com/api/portfolio \
     "imageUrl": "https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/MyArtwork_web.jpg",
     "redbubbleUrl": "https://www.redbubble.com/shop/ap/123456789",
     "tags": ["portfolio"],
+    "season": "evergreen",
+    "religious": false,
     "featured": false
   }'
 ```
