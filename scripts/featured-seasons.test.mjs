@@ -352,6 +352,61 @@ check('the current catalog on 20 Apr 2026 leads with every spring design', () =>
     assert.equal(selected.filter((item) => catalogSeason(item) === 'spring').length, spring.length);
 });
 
+check('july and october do not feature christmas, easter, or winter', () => {
+    const blocked = new Set(['christmas', 'easter', 'winter', 'good-friday']);
+    const dates = [
+        '2027-07-04T18:00:00.000Z',
+        '2027-10-10T18:00:00.000Z',
+        '2027-10-31T17:00:00.000Z',
+    ];
+    for (const iso of dates) {
+        const selected = selectFeatured(PORTFOLIO_SNAPSHOT, at(iso));
+        assert.equal(selected.length, 8, iso);
+        for (const item of selected) {
+            const season = catalogSeason(item);
+            assert.equal(blocked.has(season), false, `${iso} ${item.title} ${season}`);
+        }
+    }
+    const july = selectFeatured(PORTFOLIO_SNAPSHOT, at(dates[0]));
+    for (const item of july) {
+        const season = catalogSeason(item);
+        assert.equal(season === 'summer' || season === 'evergreen', true, item.title);
+    }
+    const october = selectFeatured(PORTFOLIO_SNAPSHOT, at(dates[1]));
+    for (const item of october) {
+        const season = catalogSeason(item);
+        assert.equal(season === 'autumn' || season === 'evergreen', true, item.title);
+    }
+});
+
+check('leftover slots use evergreen before a design from another season', () => {
+    const summer = design('only-summer', { season: 'summer' });
+    const evergreen = many('evergreen', 10, 'green');
+    const nativity = design('july-nativity', {
+        season: 'christmas',
+        religious: true,
+        dateAdded: '2027-07-03T18:00:00.000Z',
+    });
+    const winter = many('winter', 4, 'snow');
+    const easter = many('easter', 2, 'risen');
+    const selected = selectFeatured(
+        [nativity, ...winter, ...easter, summer, ...evergreen],
+        at('2027-07-04T18:00:00.000Z'),
+    );
+    assert.equal(selected.length, 8);
+    assert.equal(selected.includes(summer), true);
+    assert.equal(selected.includes(nativity), false);
+    for (const item of selected) {
+        assert.equal(item.season === 'summer' || item.season === 'evergreen', true, item.id);
+    }
+
+    const onlySeasonal = selectFeatured(
+        [summer, nativity],
+        at('2027-07-04T18:00:00.000Z'),
+    );
+    assert.deepEqual(ids(onlySeasonal), ['only-summer', 'july-nativity']);
+});
+
 check('the current catalog features Easter designs on 1 Apr 2026', () => {
     const selected = selectFeatured(PORTFOLIO_SNAPSHOT, at('2026-04-01T18:00:00.000Z'));
     const easter = PORTFOLIO_SNAPSHOT.filter((item) => {

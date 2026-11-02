@@ -124,7 +124,7 @@ Each KV item is JSON:
 
 `season` is one of `evergreen`, `winter`, `spring`, `summer`, `autumn`, `christmas`, `easter`, `good-friday`, `pentecost`, `all-saints`, `halloween`, or `valentine`. A missing or blank `season` means evergreen. `religious` is true only for a Christian subject. `pin` keeps a design in the featured slots. `exclude` keeps it out. The `featured` boolean is still stored. It does not choose the public order.
 
-The public feed leads with up to 8 designs chosen from the America/Chicago date, `season`, `religious`, `pin`, `exclude`, and `dateAdded`. The rest of the feed stays newest first.
+The public feed leads with up to 8 designs chosen from the America/Chicago date, `season`, `religious`, `pin`, `exclude`, and `dateAdded`. Empty slots go to evergreen designs and recent arrivals. A design tagged for another season is used only when nothing else is left. The rest of the feed stays newest first.
 
 When the weekly sync adds a design, set `season`. Set `religious` when the design is a Christian subject. Leave `pin` and `exclude` unset. Do not rotate `featured` to choose what shoppers see first.
 

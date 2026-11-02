@@ -372,33 +372,48 @@ export function selectFeatured(items, now = new Date(), catalog = FEATURED_CATAL
     take(inSeasonRecent, FEATURED_SLOTS - picked.length, picked, pickedItems);
 
     const recentPicked = picked.filter((entry) => entry.weight > 0).length;
-    const offSeasonRecent = eligible.filter((entry) => (
-        entry.band === null && entry.weight > 0 && !pickedItems.has(entry.item)
+    const recentEvergreen = eligible.filter((entry) => (
+        entry.band === null
+        && entry.design.season === 'evergreen'
+        && entry.weight > 0
+        && !pickedItems.has(entry.item)
     ));
-    const offSeasonRecentNeeded = Math.min(
-        offSeasonRecent.length,
+    const recentEvergreenNeeded = Math.min(
+        recentEvergreen.length,
         Math.max(0, RECENT_SHARE - recentPicked),
     );
-    const seasonalRoom = Math.max(0, FEATURED_SLOTS - picked.length - offSeasonRecentNeeded);
+    const seasonalRoom = Math.max(0, FEATURED_SLOTS - picked.length - recentEvergreenNeeded);
     const inSeasonStale = eligible
         .filter((entry) => entry.band !== null && entry.weight === 0 && !pickedItems.has(entry.item))
         .sort(compareBandHash);
     take(inSeasonStale, seasonalRoom, picked, pickedItems);
 
-    const offSeasonRecentOrdered = offSeasonRecent
+    const recentEvergreenOrdered = recentEvergreen
         .filter((entry) => !pickedItems.has(entry.item))
         .sort(compareWeightHash);
-    take(offSeasonRecentOrdered, offSeasonRecentNeeded, picked, pickedItems);
+    take(recentEvergreenOrdered, recentEvergreenNeeded, picked, pickedItems);
 
     if (picked.length < FEATURED_SLOTS) {
         const moreInSeason = eligible
             .filter((entry) => entry.band !== null && !pickedItems.has(entry.item))
             .sort(compareHash);
         take(moreInSeason, FEATURED_SLOTS - picked.length, picked, pickedItems);
-        const outOfSeason = eligible
-            .filter((entry) => entry.band === null && !pickedItems.has(entry.item))
+        const evergreen = eligible
+            .filter((entry) => (
+                entry.band === null
+                && entry.design.season === 'evergreen'
+                && !pickedItems.has(entry.item)
+            ))
             .sort(compareHash);
-        take(outOfSeason, FEATURED_SLOTS - picked.length, picked, pickedItems);
+        take(evergreen, FEATURED_SLOTS - picked.length, picked, pickedItems);
+        const otherSeason = eligible
+            .filter((entry) => (
+                entry.band === null
+                && entry.design.season !== 'evergreen'
+                && !pickedItems.has(entry.item)
+            ))
+            .sort(compareWeightHash);
+        take(otherSeason, FEATURED_SLOTS - picked.length, picked, pickedItems);
     }
 
     return picked.map((entry) => entry.item);
