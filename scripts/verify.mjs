@@ -59,7 +59,28 @@ const IMAGE_BASE = 'https://raw.githubusercontent.com/mcham12/hidden-walnuts/mai
 
 /** @typedef {{ status: number, contentType: string, body: string }} HttpObservation */
 
-/** @typedef {{ page: HttpObservation, pageSlash: HttpObservation, feed: HttpObservation }} Observation */
+/**
+ * @typedef {object} DesignObservation
+ * @property {string} id
+ * @property {string} title
+ * @property {string} href
+ * @property {HttpObservation} page
+ */
+
+/**
+ * @typedef {object} Observation
+ * @property {HttpObservation} page
+ * @property {HttpObservation} pageSlash
+ * @property {HttpObservation} feed
+ * @property {HttpObservation} home
+ * @property {HttpObservation} robots
+ * @property {HttpObservation} sitemap
+ * @property {HttpObservation} llms
+ * @property {HttpObservation} gptbot
+ * @property {HttpObservation} perplexity
+ * @property {HttpObservation} missingDesign
+ * @property {DesignObservation[]} designs
+ */
 
 /** @typedef {{ name: string, ok: boolean, detail: string }} Assertion */
 
@@ -462,8 +483,8 @@ function readAdminConstant(workerSource, name) {
  * @param {string} url
  * @returns {Promise<HttpObservation>}
  */
-async function requestText(url) {
-    const response = await fetch(url);
+async function requestText(url, userAgent) {
+    const response = await fetch(url, userAgent ? { headers: { 'User-Agent': userAgent } } : undefined);
     return {
         status: response.status,
         contentType: response.headers.get('content-type') ?? '',
@@ -479,7 +500,32 @@ async function observe(origin) {
     const page = await requestText(`${origin}/portfolio`);
     const pageSlash = await requestText(`${origin}/portfolio/`);
     const feed = await requestText(`${origin}/api/portfolio`);
-    return { page, pageSlash, feed };
+    const home = await requestText(`${origin}/`);
+    const robots = await requestText(`${origin}/robots.txt`);
+    const sitemap = await requestText(`${origin}/sitemap.xml`);
+    const llms = await requestText(`${origin}/llms.txt`);
+    const gptbot = await requestText(`${origin}/portfolio`, 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; GPTBot/1.2; +https://openai.com/gptbot');
+    const perplexity = await requestText(`${origin}/portfolio`, 'Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)');
+    const missingDesign = await requestText(`${origin}/portfolio/zzzznotreal`);
+    /** @type {DesignObservation[]} */
+    const designs = [];
+    try {
+        const parsed = JSON.parse(feed.body);
+        if (Array.isArray(parsed)) {
+            for (const item of parsed) {
+                if (!isPlainObject(item) || typeof item.id !== 'string' || !/^[a-z0-9]+$/.test(item.id)) continue;
+                designs.push({
+                    id: item.id,
+                    title: typeof item.title === 'string' ? item.title : '',
+                    href: typeof item.redbubbleUrl === 'string' ? item.redbubbleUrl : '',
+                    page: await requestText(`${origin}/portfolio/${item.id}`),
+                });
+            }
+        }
+    } catch {
+        designs.length = 0;
+    }
+    return { page, pageSlash, feed, home, robots, sitemap, llms, gptbot, perplexity, missingDesign, designs };
 }
 
 /**
@@ -658,7 +704,7 @@ function provePortfolio(observation, seed) {
         for (const name of laterNames) {
             assertions.push({ name, ok: false, detail: 'skipped: feed is not a JSON array' });
         }
-        return assertions;
+        return assertions.concat(catalogSurfaceAssertions(observation, null));
     }
 
     const parsed = raw.map((entry) => parsePortfolioItem(entry));
@@ -732,7 +778,282 @@ function provePortfolio(observation, seed) {
         ok: seedProblems.length === 0,
         detail: seedProblems.join('\n'),
     });
+    return assertions.concat(catalogSurfaceAssertions(observation, raw));
+}
+
+/**
+ * @param {Observation} observation
+ * @param {unknown[] | null} raw
+ * @returns {Assertion[]}
+ */
+function catalogSurfaceAssertions(observation, raw) {
+    /** @type {Assertion[]} */
+    const assertions = [];
+    const documents = [
+        ['GET /portfolio', observation.page],
+        ['GET /portfolio/', observation.pageSlash],
+        ['GET /portfolio as GPTBot', observation.gptbot],
+        ['GET /portfolio as PerplexityBot', observation.perplexity],
+    ];
+    if (!Array.isArray(raw)) {
+        for (const [label] of documents) {
+            assertions.push({
+                name: `${label} HTML includes each design title, image alt, and shop link`,
+                ok: false,
+                detail: 'skipped: feed is not a JSON array',
+            });
+        }
+        assertions.push({
+            name: 'portfolio JSON-LD is an ItemList of the same designs with shop offers and no price or rating',
+            ok: false,
+            detail: 'skipped: feed is not a JSON array',
+        });
+    } else {
+        for (const [label, page] of documents) {
+            /** @type {string[]} */
+            const problems = [];
+            if (page.status !== 200 || !page.contentType.startsWith('text/html')) {
+                problems.push(`status ${page.status} content-type ${page.contentType || '(none)'}`);
+            }
+            if (page.body.includes('__PORTFOLIO_')) problems.push('discovery token was not replaced');
+            let cursor = -1;
+            for (const item of raw) {
+                if (!isPlainObject(item)) {
+                    problems.push('feed item is not an object');
+                    continue;
+                }
+                const title = typeof item.title === 'string' ? item.title : '';
+                const href = typeof item.redbubbleUrl === 'string' ? item.redbubbleUrl : '';
+                const id = typeof item.id === 'string' ? item.id : '';
+                const escapedTitle = escapeForAttribute(title);
+                const escapedHref = escapeForAttribute(href);
+                if (!page.body.includes(`<h2>${escapedTitle}</h2>`)) problems.push(`missing title ${title}`);
+                if (!page.body.includes(`alt="${escapedTitle}"`)) problems.push(`missing alt for ${title}`);
+                if (href && !page.body.includes(`href="${escapedHref}"`)) problems.push(`missing shop link ${href}`);
+                const marker = `id="design-${id}"`;
+                const at = page.body.indexOf(marker);
+                if (at < 0) problems.push(`missing card ${id}`);
+                else if (at <= cursor) problems.push(`card ${id} is out of feed order`);
+                else cursor = at;
+            }
+            assertions.push({
+                name: `${label} HTML includes each design title, image alt, and shop link`,
+                ok: problems.length === 0,
+                detail: problems.join('\n'),
+            });
+        }
+
+        const ldProblems = portfolioJsonLdProblems(observation.page.body, raw);
+        assertions.push({
+            name: 'portfolio JSON-LD is an ItemList of the same designs with shop offers and no price or rating',
+            ok: ldProblems.length === 0,
+            detail: ldProblems.join('\n'),
+        });
+    }
+
+    const robotsProblems = [];
+    if (observation.robots.status !== 200 || !observation.robots.contentType.startsWith('text/plain')) {
+        robotsProblems.push(`status ${observation.robots.status} content-type ${observation.robots.contentType || '(none)'}`);
+    }
+    const expectedRobots = [
+        'User-agent: *',
+        'Allow: /',
+        'Content-Signal: search=yes, ai-input=yes, ai-train=yes',
+        '',
+        'Sitemap: https://hiddenwalnuts.com/sitemap.xml',
+        '',
+    ].join('\n');
+    if (observation.robots.body !== expectedRobots) robotsProblems.push(observation.robots.body);
+    if (observation.robots.body.includes('Disallow')) robotsProblems.push('Disallow is present');
+    assertions.push({
+        name: 'GET /robots.txt allows search and AI use and points at the sitemap',
+        ok: robotsProblems.length === 0,
+        detail: robotsProblems.join('\n'),
+    });
+
+    /** @type {string[]} */
+    const sitemapProblems = [];
+    if (observation.sitemap.status !== 200 || !observation.sitemap.contentType.startsWith('application/xml')) {
+        sitemapProblems.push(`status ${observation.sitemap.status} content-type ${observation.sitemap.contentType || '(none)'}`);
+    }
+    for (const loc of [
+        'https://hiddenwalnuts.com/',
+        'https://hiddenwalnuts.com/portfolio',
+        'https://hiddenwalnuts.com/game',
+    ]) {
+        if (!observation.sitemap.body.includes(`<loc>${loc}</loc>`)) sitemapProblems.push(`missing ${loc}`);
+    }
+    if (Array.isArray(raw)) {
+        for (const item of raw) {
+            if (!isPlainObject(item) || typeof item.id !== 'string') continue;
+            const loc = `https://hiddenwalnuts.com/portfolio/${item.id}`;
+            if (!observation.sitemap.body.includes(`<loc>${loc}</loc>`)) sitemapProblems.push(`missing ${loc}`);
+        }
+    }
+    assertions.push({
+        name: 'GET /sitemap.xml lists the home page, portfolio, game, and each design',
+        ok: sitemapProblems.length === 0,
+        detail: sitemapProblems.join('\n'),
+    });
+
+    /** @type {string[]} */
+    const llmsProblems = [];
+    if (observation.llms.status !== 200 || !observation.llms.contentType.startsWith('text/plain')) {
+        llmsProblems.push(`status ${observation.llms.status} content-type ${observation.llms.contentType || '(none)'}`);
+    }
+    for (const phrase of [
+        'Vintage and public-domain art prints on Redbubble and TeePublic',
+        'iPhone and iPad game',
+        'id6760266796',
+    ]) {
+        if (!observation.llms.body.includes(phrase)) llmsProblems.push(`missing ${phrase}`);
+    }
+    if (Array.isArray(raw)) {
+        for (const item of raw) {
+            if (!isPlainObject(item)) continue;
+            if (typeof item.title === 'string' && !observation.llms.body.includes(item.title)) {
+                llmsProblems.push(`missing title ${item.title}`);
+            }
+            if (typeof item.redbubbleUrl === 'string' && !observation.llms.body.includes(item.redbubbleUrl)) {
+                llmsProblems.push(`missing shop ${item.redbubbleUrl}`);
+            }
+        }
+    }
+    assertions.push({
+        name: 'GET /llms.txt describes Hidden Walnuts and links each design to its shop',
+        ok: llmsProblems.length === 0,
+        detail: llmsProblems.join('\n'),
+    });
+
+    /** @type {string[]} */
+    const designProblems = [];
+    const seen = new Map((observation.designs || []).map((design) => [design.id, design]));
+    if (Array.isArray(raw)) {
+        for (const item of raw) {
+            if (!isPlainObject(item) || typeof item.id !== 'string') continue;
+            const design = seen.get(item.id);
+            if (!design) {
+                designProblems.push(`missing observation for ${item.id}`);
+                continue;
+            }
+            if (design.page.status !== 200 || !design.page.contentType.startsWith('text/html')) {
+                designProblems.push(`${item.id} status ${design.page.status}`);
+                continue;
+            }
+            if (typeof item.title === 'string' && !design.page.body.includes(`<h1>${escapeForAttribute(item.title)}</h1>`)) {
+                designProblems.push(`${item.id} missing title`);
+            }
+            if (typeof item.redbubbleUrl === 'string' && !design.page.body.includes(`href="${escapeForAttribute(item.redbubbleUrl)}"`)) {
+                designProblems.push(`${item.id} missing shop link`);
+            }
+            if (!design.page.body.includes(`https://hiddenwalnuts.com/portfolio/${item.id}`)) {
+                designProblems.push(`${item.id} missing canonical`);
+            }
+        }
+    }
+    assertions.push({
+        name: 'GET /portfolio/:id returns the design title, shop link, and canonical URL',
+        ok: designProblems.length === 0 && Array.isArray(raw),
+        detail: designProblems.join('\n'),
+    });
+
+    const missingOk = observation.missingDesign.status === 404;
+    assertions.push({
+        name: 'GET /portfolio/zzzznotreal returns 404',
+        ok: missingOk,
+        detail: missingOk ? '' : `status ${observation.missingDesign.status}`,
+    });
+
+    /** @type {string[]} */
+    const homeProblems = [];
+    if (observation.home.status !== 200 || !observation.home.contentType.startsWith('text/html')) {
+        homeProblems.push(`status ${observation.home.status} content-type ${observation.home.contentType || '(none)'}`);
+    }
+    if (observation.home.body.includes('__HOME_DISCOVERY__')) homeProblems.push('discovery token was not replaced');
+    if (!observation.home.body.includes('rel="canonical" href="https://hiddenwalnuts.com/"')) {
+        homeProblems.push('missing canonical');
+    }
+    if (!observation.home.body.includes('"@type":"Organization"') || !observation.home.body.includes('"@type":"WebSite"')) {
+        homeProblems.push('missing Organization or WebSite JSON-LD');
+    }
+    assertions.push({
+        name: 'GET / includes a canonical URL and Organization and WebSite JSON-LD',
+        ok: homeProblems.length === 0,
+        detail: homeProblems.join('\n'),
+    });
+
     return assertions;
+}
+
+/**
+ * @param {string} html
+ * @param {unknown[]} raw
+ * @returns {string[]}
+ */
+function portfolioJsonLdProblems(html, raw) {
+    const match = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    if (!match) return ['missing JSON-LD'];
+    /** @type {unknown} */
+    let data;
+    try {
+        data = JSON.parse(match[1]);
+    } catch {
+        return ['JSON-LD does not parse'];
+    }
+    if (!isPlainObject(data) || data['@type'] !== 'ItemList') return ['JSON-LD is not an ItemList'];
+    const elements = data.itemListElement;
+    if (!Array.isArray(elements) || elements.length !== raw.length) {
+        return [`ItemList length ${Array.isArray(elements) ? elements.length : 'not an array'} expected ${raw.length}`];
+    }
+    /** @type {string[]} */
+    const problems = [];
+    const banned = new Set(['price', 'pricecurrency', 'aggregaterating', 'ratingvalue', 'reviewcount', 'ratingcount', 'availability']);
+    walkJson(data, (key) => {
+        if (banned.has(key.toLowerCase())) problems.push(`forbidden ${key}`);
+    });
+    raw.forEach((item, index) => {
+        const element = elements[index];
+        if (!isPlainObject(element) || !isPlainObject(element.item)) {
+            problems.push(`item ${index} is not a ListItem`);
+            return;
+        }
+        const artwork = element.item;
+        if (!isPlainObject(item) || artwork.name !== item.title) problems.push(`item ${index} name`);
+        const offers = artwork.offers;
+        if (!isPlainObject(item) || typeof item.redbubbleUrl !== 'string') return;
+        if (!isPlainObject(offers) || offers.url !== item.redbubbleUrl) problems.push(`item ${index} offer url`);
+    });
+    return problems;
+}
+
+/**
+ * @param {unknown} value
+ * @param {(key: string) => void} visit
+ */
+function walkJson(value, visit) {
+    if (!value || typeof value !== 'object') return;
+    if (Array.isArray(value)) {
+        for (const entry of value) walkJson(entry, visit);
+        return;
+    }
+    for (const [key, entry] of Object.entries(value)) {
+        visit(key);
+        walkJson(entry, visit);
+    }
+}
+
+/**
+ * @param {string} value
+ * @returns {string}
+ */
+function escapeForAttribute(value) {
+    return value.replace(/[&<>"']/g, (character) => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+    }[character]));
 }
 
 /**

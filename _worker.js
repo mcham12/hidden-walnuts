@@ -1,3 +1,13 @@
+import {
+    designDocumentHtml,
+    homeDiscoveryHtml,
+    llmsText,
+    portfolioDiscoveryHtml,
+    portfolioGridHtml,
+    readCatalog,
+    robotsText,
+    sitemapXml,
+} from './catalog-documents.js';
 import { ALLOWED_SEASONS, presentPortfolioItem, selectFeatured } from './featured-seasons.js';
 
 /**
@@ -11,7 +21,7 @@ const GITHUB_ROOT_BASE_URL = 'https://raw.githubusercontent.com/mcham12/hidden-w
 const GITHUB_BASE_URL = 'https://raw.githubusercontent.com/mcham12/hidden-walnuts/main/images/';
 const APP_STORE_URL = 'https://apps.apple.com/us/app/hidden-walnuts/id6760266796?uo=4';
 const APP_STORE_ASSET_BASE = `${GITHUB_BASE_URL}app-store/`;
-const SITE_BUILD_ID = 'home-storefront-hero-2026-07-03-v2';
+const SITE_BUILD_ID = 'ai-readable-catalog-2026-11-15';
 const ADMIN_USERNAME = 'admin';
 const ADMIN_PASSWORD = 'hidden2024!';
 const HOME_VISUAL_SRC_TOKEN = '__HOME_VISUAL_SRC__';
@@ -386,8 +396,7 @@ const LIVE_ABOUT_HTML = `<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hidden Walnuts | Artful Merch And Playful Products</title>
-    <meta name="description" content="Hidden Walnuts makes print-on-demand merchandise on TeePublic and Redbubble, plus a playful iPhone and iPad game now live on the App Store.">
+    __HOME_DISCOVERY__
     <meta name="hw-site-version" content="${SITE_BUILD_ID}">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5">
@@ -1849,7 +1858,95 @@ function renderHomeHTML(visual) {
     return ABOUT_HTML
         .split(HOME_VISUAL_SRC_TOKEN).join(escapeHtmlAttribute(visual.src))
         .split(HOME_VISUAL_ALT_TOKEN).join(escapeHtmlAttribute(visual.alt))
-        .split(HOME_VISUAL_POSITION_TOKEN).join(escapeHtmlAttribute(visual.position));
+        .split(HOME_VISUAL_POSITION_TOKEN).join(escapeHtmlAttribute(visual.position))
+        .split('__HOME_DISCOVERY__').join(homeDiscoveryHtml(siteFacts()));
+}
+
+function siteFacts() {
+    return {
+        appStoreUrl: APP_STORE_URL,
+        logoUrl: `${GITHUB_BASE_URL}LogoForInsta.png`,
+    };
+}
+
+function chicagoDateKey(now = new Date()) {
+    return new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'America/Chicago',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+    }).format(now);
+}
+
+function textResponse(body, contentType, cacheControl = 'public, max-age=300') {
+    return new Response(body, {
+        headers: {
+            'Content-Type': contentType,
+            'Cache-Control': cacheControl,
+        },
+    });
+}
+
+function htmlResponse(body) {
+    return textResponse(body, 'text/html; charset=utf-8');
+}
+
+async function withCatalogCache(request, cachePath, produce) {
+    const cacheRequest = catalogCacheRequest(request, cachePath);
+    const hit = await matchCatalogCache(cacheRequest);
+    if (hit) return hit;
+    const response = await produce();
+    if (response.ok) await storeCatalogCache(cacheRequest, response);
+    return response;
+}
+
+function catalogCacheRequest(request, cachePath) {
+    const cacheUrl = new URL(request.url);
+    cacheUrl.pathname = cachePath;
+    cacheUrl.search = `day=${chicagoDateKey()}`;
+    return new Request(cacheUrl.toString(), { method: 'GET' });
+}
+
+async function matchCatalogCache(cacheRequest) {
+    try {
+        return await caches.default.match(cacheRequest);
+    } catch {
+        return null;
+    }
+}
+
+async function storeCatalogCache(cacheRequest, response) {
+    try {
+        await caches.default.put(cacheRequest, response.clone());
+    } catch {
+        return;
+    }
+}
+
+async function portfolioDocumentResponse(request, env) {
+    return withCatalogCache(request, '/portfolio', async () => {
+        const designs = readCatalog(await getPortfolioItems(env));
+        const html = MAIN_HTML
+            .split('__PORTFOLIO_DISCOVERY__').join(portfolioDiscoveryHtml(designs, siteFacts()))
+            .split('__PORTFOLIO_GRID__').join(portfolioGridHtml(designs));
+        return htmlResponse(html);
+    });
+}
+
+async function designDocumentResponse(request, env, id) {
+    return withCatalogCache(request, `/portfolio/${id}`, async () => {
+        const design = readCatalog([await loadPortfolioItem(env, id)])[0];
+        if (!design || design.id !== id) {
+            return new Response('Not Found', {
+                status: 404,
+                headers: {
+                    'Content-Type': 'text/plain; charset=utf-8',
+                    'Cache-Control': 'no-store',
+                },
+            });
+        }
+        return htmlResponse(designDocumentHtml(design, siteFacts()));
+    });
 }
 
 function homeResponse(request) {
@@ -1924,10 +2021,27 @@ export default {
                     headers: { 'Content-Type': 'text/html', 'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0' }
                 });
             }
-            if (path === '/portfolio' || path === '/portfolio/') {
-                return new Response(MAIN_HTML, {
-                    headers: { 'Content-Type': 'text/html', 'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0' }
+            if (path === '/robots.txt') {
+                return textResponse(robotsText(), 'text/plain; charset=utf-8', 'public, max-age=3600');
+            }
+            if (path === '/sitemap.xml') {
+                return withCatalogCache(request, '/sitemap.xml', async () => {
+                    const designs = readCatalog(await getPortfolioItems(env));
+                    return textResponse(sitemapXml(designs), 'application/xml; charset=utf-8');
                 });
+            }
+            if (path === '/llms.txt') {
+                return withCatalogCache(request, '/llms.txt', async () => {
+                    const designs = readCatalog(await getPortfolioItems(env));
+                    return textResponse(llmsText(designs, siteFacts()), 'text/plain; charset=utf-8');
+                });
+            }
+            const designMatch = /^\/portfolio\/([a-z0-9]+)\/?$/.exec(path);
+            if (designMatch) {
+                return designDocumentResponse(request, env, designMatch[1]);
+            }
+            if (path === '/portfolio' || path === '/portfolio/') {
+                return portfolioDocumentResponse(request, env);
             }
 
             // Game landing page route
@@ -2028,13 +2142,19 @@ async function getPortfolioItems(env) {
     }
 }
 
+async function loadPortfolioItem(env, id) {
+    const item = await env.PORTFOLIO_KV.get(`item:${id}`, { type: 'json' });
+    if (!item) return null;
+    return presentPortfolioItem(item);
+}
+
 async function getPortfolioItem(env, id) {
     try {
-        const item = await env.PORTFOLIO_KV.get(`item:${id}`, { type: 'json' });
+        const item = await loadPortfolioItem(env, id);
         if (!item) {
             return { status: 404, body: JSON.stringify({ error: 'Item not found' }) };
         }
-        return { status: 200, body: JSON.stringify(presentPortfolioItem(item)) };
+        return { status: 200, body: JSON.stringify(item) };
     } catch (error) {
         return { status: 500, body: JSON.stringify({ error: error.message }) };
     }
@@ -2967,7 +3087,7 @@ const MAIN_HTML = `<!DOCTYPE html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hidden Walnuts</title>
+    __PORTFOLIO_DISCOVERY__
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico?v=5">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon.ico?v=5">
     <link rel="shortcut icon" type="image/png" href="/favicon.ico?v=5">
@@ -3443,6 +3563,47 @@ footer {
         text-align: center;
     }
 }
+
+.portfolio-static {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.portfolio-static-page {
+    color: inherit;
+    text-decoration: none;
+}
+
+.portfolio-static-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.portfolio-static h2 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #233026;
+}
+
+.portfolio-static-description,
+.portfolio-static-artist {
+    color: #526357;
+    font-size: 0.92rem;
+}
+
+.portfolio-static-shop {
+    color: #2a5d31;
+    font-weight: 700;
+}
+
+.portfolio-static-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem 0;
+    color: #6c757d;
+}
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -3469,10 +3630,7 @@ footer {
         <section id="portfolio" class="portfolio-section">
             <div class="container">
                 <div class="portfolio-grid" id="portfolioGrid">
-                    <div class="loading-state">
-                        <div class="spinner"></div>
-                        <p>Loading portfolio...</p>
-                    </div>
+                    __PORTFOLIO_GRID__
                 </div>
             </div>
         </section>
