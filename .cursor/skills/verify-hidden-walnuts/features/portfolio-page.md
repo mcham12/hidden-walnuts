@@ -25,5 +25,6 @@ Preconditions:
 
 ## Gotchas
 
-- An empty or failing feed still renders five sample items in the browser. The HTML shell does not show that KV has items.
+- The first HTML response already contains each design title, image alt text, and shop link. The page script still replaces `#portfolioGrid` from `/api/portfolio`.
+- An empty or failing feed still renders five sample items in the browser.
 - The curl checks do not replace the report assertion. Finish with `scripts/verify.mjs`.

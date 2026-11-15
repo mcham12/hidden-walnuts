@@ -74,6 +74,18 @@ pattern = "hiddenwalnuts.com/portfolio/*"
 zone_name = "hiddenwalnuts.com"
 
 [[routes]]
+pattern = "hiddenwalnuts.com/robots.txt"
+zone_name = "hiddenwalnuts.com"
+
+[[routes]]
+pattern = "hiddenwalnuts.com/sitemap.xml"
+zone_name = "hiddenwalnuts.com"
+
+[[routes]]
+pattern = "hiddenwalnuts.com/llms.txt"
+zone_name = "hiddenwalnuts.com"
+
+[[routes]]
 pattern = "hiddenwalnuts.com/game"
 zone_name = "hiddenwalnuts.com"
 
