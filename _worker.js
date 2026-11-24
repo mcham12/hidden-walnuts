@@ -2173,10 +2173,52 @@ function portfolioSeasonFields(data) {
     return fields;
 }
 
+const PORTFOLIO_ID = /^[a-z0-9]{1,64}$/;
+
+function portfolioCreateIdentity(data) {
+    const source = data && typeof data === 'object' ? data : {};
+    let id = null;
+    if (Object.hasOwn(source, 'id') && source.id !== undefined) {
+        if (typeof source.id !== 'string' || !PORTFOLIO_ID.test(source.id)) {
+            return { error: 'Invalid id' };
+        }
+        id = source.id;
+    }
+    let dateAdded = null;
+    if (Object.hasOwn(source, 'dateAdded') && source.dateAdded !== undefined) {
+        if (typeof source.dateAdded !== 'string' || Number.isNaN(Date.parse(source.dateAdded))) {
+            return { error: 'Invalid dateAdded' };
+        }
+        dateAdded = source.dateAdded;
+    }
+    return { id, dateAdded, overwrite: source.overwrite === true };
+}
+
 async function createPortfolioItem(request, env) {
     try {
         const data = await request.json();
-        const id = generateId();
+        const identity = portfolioCreateIdentity(data);
+        if (identity.error) {
+            return { status: 400, body: JSON.stringify({ error: identity.error }) };
+        }
+
+        let id = identity.id;
+        let dateAdded = identity.dateAdded;
+        let replacing = false;
+        if (id) {
+            const existingItem = await env.PORTFOLIO_KV.get(`item:${id}`, { type: 'json' });
+            if (existingItem && !identity.overwrite) {
+                return { status: 409, body: JSON.stringify({ error: 'Item already exists' }) };
+            }
+            if (existingItem) {
+                replacing = true;
+                if (dateAdded === null) dateAdded = existingItem.dateAdded;
+            }
+        } else {
+            id = generateId();
+        }
+        if (dateAdded === null) dateAdded = new Date().toISOString();
+
         const item = {
             id,
             title: data.title,
@@ -2185,12 +2227,12 @@ async function createPortfolioItem(request, env) {
             redbubbleUrl: data.redbubbleUrl,
             tags: data.tags || [],
             featured: data.featured || false,
-            dateAdded: new Date().toISOString(),
+            dateAdded,
             ...portfolioSeasonFields(data)
         };
 
         await env.PORTFOLIO_KV.put(`item:${id}`, JSON.stringify(item));
-        return { status: 201, body: JSON.stringify(item) };
+        return { status: replacing ? 200 : 201, body: JSON.stringify(item) };
     } catch (error) {
         return { status: 500, body: JSON.stringify({ error: error.message }) };
     }

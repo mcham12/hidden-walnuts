@@ -748,6 +748,145 @@ await checkAsync('worker stores season fields and serves seasonal portfolio orde
     assert.equal(feed.some((item) => item.id === 'stored-excluded'), true);
 });
 
+await checkAsync('worker restore keeps caller id and dateAdded', async () => {
+    const kv = memoryKv();
+    const auth = adminAuthorization(workerSource);
+    const before = Date.now();
+    const created = await fetchWorker(kv, '/api/portfolio', {
+        method: 'POST',
+        auth,
+        body: {
+            title: 'Fresh design',
+            description: '',
+            imageUrl: 'https://example.com/fresh.jpg',
+            redbubbleUrl: 'https://www.teepublic.com/user/hidden-walnuts/fresh',
+            tags: [],
+            featured: false,
+        },
+    });
+    const after = Date.now();
+    assert.equal(created.status, 201);
+    const createdItem = await created.json();
+    assert.match(createdItem.id, /^[a-z0-9]+$/);
+    const createdAt = Date.parse(createdItem.dateAdded);
+    assert.equal(Number.isNaN(createdAt), false);
+    assert.equal(createdAt >= before - 1000 && createdAt <= after + 1000, true);
+    const second = await fetchWorker(kv, '/api/portfolio', {
+        method: 'POST',
+        auth,
+        body: {
+            title: 'Another fresh design',
+            description: '',
+            imageUrl: 'https://example.com/fresh-2.jpg',
+            redbubbleUrl: 'https://www.teepublic.com/user/hidden-walnuts/fresh-2',
+            tags: [],
+            featured: false,
+        },
+    });
+    const secondItem = await second.json();
+    assert.equal(second.status, 201);
+    assert.notEqual(secondItem.id, createdItem.id);
+
+    const dateAdded = '2026-08-27T18:45:42.277Z';
+    const restoreBody = {
+        id: 'augdesign1',
+        title: 'August design',
+        description: 'Returned after a mistaken delete',
+        imageUrl: 'https://example.com/august.jpg',
+        redbubbleUrl: 'https://www.teepublic.com/user/hidden-walnuts/august',
+        tags: ['summer'],
+        season: 'summer',
+        religious: false,
+        featured: false,
+        dateAdded,
+    };
+    const restored = await fetchWorker(kv, '/api/portfolio', {
+        method: 'POST',
+        auth,
+        body: restoreBody,
+    });
+    assert.equal(restored.status, 201);
+    const restoredItem = await restored.json();
+    assert.equal(restoredItem.id, 'augdesign1');
+    assert.equal(restoredItem.dateAdded, dateAdded);
+    assert.equal(restoredItem.imageUrl, restoreBody.imageUrl);
+    assert.equal(restoredItem.redbubbleUrl, restoreBody.redbubbleUrl);
+    assert.equal(restoredItem.season, 'summer');
+    assert.equal(restoredItem.religious, false);
+    assert.equal(restoredItem.featured, false);
+    assert.equal(Object.hasOwn(restoredItem, 'overwrite'), false);
+
+    const read = await fetchWorker(kv, '/api/portfolio/augdesign1');
+    assert.equal(read.status, 200);
+    const stored = await read.json();
+    assert.equal(stored.id, 'augdesign1');
+    assert.equal(stored.dateAdded, dateAdded);
+    assert.equal(stored.redbubbleUrl, restoreBody.redbubbleUrl);
+
+    const conflict = await fetchWorker(kv, '/api/portfolio', {
+        method: 'POST',
+        auth,
+        body: { ...restoreBody, title: 'Should not replace', overwrite: 'true' },
+    });
+    assert.equal(conflict.status, 409);
+    const still = await fetchWorker(kv, '/api/portfolio/augdesign1');
+    const stillItem = await still.json();
+    assert.equal(stillItem.title, 'August design');
+    assert.equal(stillItem.dateAdded, dateAdded);
+
+    const replacement = { ...restoreBody };
+    delete replacement.dateAdded;
+    const replaced = await fetchWorker(kv, '/api/portfolio', {
+        method: 'POST',
+        auth,
+        body: {
+            ...replacement,
+            redbubbleUrl: 'https://www.teepublic.com/user/hidden-walnuts/august-new',
+            overwrite: true,
+        },
+    });
+    assert.equal(replaced.status, 200);
+    const replacedItem = await replaced.json();
+    assert.equal(replacedItem.id, 'augdesign1');
+    assert.equal(replacedItem.dateAdded, dateAdded);
+    assert.equal(replacedItem.redbubbleUrl, 'https://www.teepublic.com/user/hidden-walnuts/august-new');
+
+    const badId = await fetchWorker(kv, '/api/portfolio', {
+        method: 'POST',
+        auth,
+        body: { ...restoreBody, id: 'Bad-Id', dateAdded },
+    });
+    assert.equal(badId.status, 400);
+    const badIdRead = await fetchWorker(kv, '/api/portfolio/Bad-Id');
+    assert.equal(badIdRead.status, 404);
+
+    const badDate = await fetchWorker(kv, '/api/portfolio', {
+        method: 'POST',
+        auth,
+        body: { ...restoreBody, id: 'baddate1', dateAdded: 'yesterday' },
+    });
+    assert.equal(badDate.status, 400);
+    const badDateRead = await fetchWorker(kv, '/api/portfolio/baddate1');
+    assert.equal(badDateRead.status, 404);
+
+    const denied = await fetchWorker(kv, '/api/portfolio', {
+        method: 'POST',
+        body: { ...restoreBody, id: 'sneaky1' },
+    });
+    assert.equal(denied.status, 401);
+    const sneaky = await fetchWorker(kv, '/api/portfolio/sneaky1');
+    assert.equal(sneaky.status, 404);
+
+    const missingPut = await fetchWorker(kv, '/api/portfolio/missingitem', {
+        method: 'PUT',
+        auth,
+        body: { title: 'Nope', dateAdded: '2020-01-01T00:00:00.000Z' },
+    });
+    assert.equal(missingPut.status, 404);
+    const missingRead = await fetchWorker(kv, '/api/portfolio/missingitem');
+    assert.equal(missingRead.status, 404);
+});
+
 async function checkAsync(name, fn) {
     try {
         await fn();
